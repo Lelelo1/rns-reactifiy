@@ -12,11 +12,10 @@ export function Reactified<T extends Observable & ExtraProps<T>>(observable: T) 
 
     class Reactify extends React.Component<T & ExtraProps<T>, any> {
         
-        // static defaultProps = {... observable} can't work
-        constructor(props) {
-            super(props);
-            console.log("contructor: " + this.myRef.current);
-            console.log("T is: " + nameOf(observable));
+        // static defaultProps = {... observable } 
+        constructor(props: ExtraProps<T>) {
+            super({... observable, props});
+            console.log("constructor: " + JSON.stringify(props));
         }
         protected readonly myRef: React.RefObject<T> = React.createRef<T>();
         protected getCurrentRef(): T | null {
@@ -51,6 +50,7 @@ export function Reactified<T extends Observable & ExtraProps<T>>(observable: T) 
         }
         componentDidMount() {
             this.updateListenersHelper(true);
+            console.log("componentDidMount: " + JSON.stringify(this.getCurrentRef()));
         }
         /**
         * PureComponent's shouldComponentUpdate() method is ignored and replaced with a shallowEqual()
@@ -70,45 +70,25 @@ export function Reactified<T extends Observable & ExtraProps<T>>(observable: T) 
         componentWillUnmount() {
             this.updateListenersHelper(false);
         }
-        // abstract render(): React.ReactNode;
+        render(): React.ReactNode {
+            const { forwardedRef, children, ...rest } = this.props
+            return React.createElement(
+                firstLetterLowercase(nameOf(observable)),
+                {
+                    ...rest,
+                    ref: forwardedRef || this.myRef,
+                },
+                children
+            );
+        }
     }
     return Reactify; // have to declare class name to make decorators work  // https://github.com/microsoft/TypeScript/issues/7342
 }
 
-// helper to register to elementRegistry
+// helpers to register to elementRegistry
 function nameOf(object: Object): string {
     return object.constructor.name;
 }
-
-
-class MyComponent extends React.Component {
-    constructor(props) {
-        super(props);
-        console.log("Constructor: " + this.myRef.current);
-    }
-    myRef: React.RefObject<Button> = React.createRef<Button>();
+function firstLetterLowercase(name: string) {
+    return name.charAt(0).toLocaleLowerCase + name.slice(1);
 }
-const m = new MyComponent(null);
-
-function makeHigherOrderComponent(object: MyComponent) { // will take ns component object
-    return class extends React.Component {
-        constructor(props) {
-            super(props);
-            console.log(this.myRef.current);
-            console.log(this.myVar);
-            console.log("create: " + React.createRef<MyComponent>());
-        }
-        myRef: React.RefObject<MyComponent> = React.createRef<MyComponent>();
-        myVar: string = "hello";
-    }
-}
-
-const hoc = makeHigherOrderComponent(null);
-const myComponent = new hoc(null);
-console.log("the ref is: " + myComponent.myRef.current);
-console.log(myComponent.myVar);
-/*
-const RNSButton = Reactified(new Button());
-const b = new RNSButton();
-b.componentDidMount();
-*/

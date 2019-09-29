@@ -41,9 +41,11 @@ class AppContainer extends React.Component<Props, State> {
                     <$StackLayout>
                         <$Button text={"test"} onTap={() => {
                             console.log("tap");
-                            const RNSLabel = Reactified(new Label);
-                            const label = new RNSLabel(null);
-                            label.test();
+                            const forwardRef = React.createRef<Label>();
+                            const props = new Label();
+                            const RNSLabel = Reactified(props);
+                            const label = new RNSLabel({forwardedRef: forwardRef});
+                            label.componentDidMount();
                         }}/>
                     </$StackLayout>
                 </$Page>

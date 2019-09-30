@@ -3,7 +3,7 @@ import * as React from "react";
 import { $Page, $Label, $ActionBar, $GridLayout, $FormattedString, $Span, $Switch, $Frame, $Button, $StackLayout } from "react-nativescript";
 import { ItemSpec } from 'tns-core-modules/ui/layouts/grid-layout/grid-layout';
 import { Frame, Page, Color } from 'tns-core-modules/ui/frame/frame';
-import { Reactified, MyButton, MyContentView } from '~/Reactified/Reactified';
+import { Reactified, MyButton, MyContentView, MyObservable } from '~/Reactified/Reactified';
 import { Label } from 'tns-core-modules/ui/label/label';
 import { _Label as LabelComponent } from "react-nativescript/dist/components/Label";
 // import { Button } from 'tns-core-modules/ui/button/button';
@@ -41,7 +41,9 @@ class AppContainer extends React.Component<Props, State> {
                     </$ActionBar>
             
                     <$StackLayout>
-                        <MyContentView width={200} height={200} backgroundColor={new Color("orange")}/>
+                        <MyContentView width={200} height={200} backgroundColor={new Color("orange")}>
+                            <$Button text={"hello"} margin={0}/>
+                        </MyContentView>
                         <$Button text={"test"} onTap={() => {
                             console.log("tap");
                             const forwardRef = React.createRef<Label>();

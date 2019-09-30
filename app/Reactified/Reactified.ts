@@ -117,11 +117,14 @@ function JSX<T extends Observable>(observable: T ) {
         }
     )
 }
-// opens up the possible of making rnsobservable. A plugin can extends ns Observable. Might be benifical. However 
+/* 
+    opens up the possible of making rnsobservable. A plugin can extend ns Observable. Might be benifical.
+    And Observable can be rendered as well (useful?). However, stuff like onPinch is visible and exists on
+    the rns observable component which does not make sense? But again, making plugin from Observable it could
+    be good to have the gesture event handlers added.
+*/
 export const MyObservable: React.ComponentType<PropsWithoutForwardedRef<Observable> & ExtraProps<Observable>> & React.ClassAttributes<Observable> = JSX(new Observable());
-
 export const MyButton: React.ComponentType<PropsWithoutForwardedRef<Button & ExtraProps<Button>>> & React.ClassAttributes<Button> = JSX<Button>(new Button());
-
 export const MyContentView = JSX<ContentView>(new ContentView());
 
 

@@ -2,9 +2,11 @@ import { hot } from 'react-hot-loader/root';
 import * as React from "react";
 import { $Page, $Label, $ActionBar, $GridLayout, $FormattedString, $Span, $Switch, $Frame, $Button, $StackLayout } from "react-nativescript";
 import { ItemSpec } from 'tns-core-modules/ui/layouts/grid-layout/grid-layout';
-import { Frame, Page } from 'tns-core-modules/ui/frame/frame';
-import { Reactified } from '~/Reactified/Reactified';
+import { Frame, Page, Color } from 'tns-core-modules/ui/frame/frame';
+import { Reactified, MyButton, MyContentView } from '~/Reactified/Reactified';
 import { Label } from 'tns-core-modules/ui/label/label';
+import { _Label as LabelComponent } from "react-nativescript/dist/components/Label";
+// import { Button } from 'tns-core-modules/ui/button/button';
 
 interface Props {
     forwardedRef: React.RefObject<Frame>,
@@ -16,7 +18,7 @@ interface State {
 
 class AppContainer extends React.Component<Props, State> {
     private readonly pageRef: React.RefObject<Page> = React.createRef<Page>();
-
+    // private readonly myButtonRef = React.createRef<Button>();
     componentDidMount(){
         const frame: Frame = this.props.forwardedRef.current!;
         frame.navigate({
@@ -39,13 +41,14 @@ class AppContainer extends React.Component<Props, State> {
                     </$ActionBar>
             
                     <$StackLayout>
+                        <MyContentView width={200} height={200} backgroundColor={new Color("orange")}/>
                         <$Button text={"test"} onTap={() => {
                             console.log("tap");
                             const forwardRef = React.createRef<Label>();
                             const RNSLabel = Reactified(new Label());
-                            const label = new RNSLabel({ forwardedRef : forwardRef});
-                            label.render();
-                            label.componentDidMount();
+                            const rLabel = new RNSLabel({ forwardedRef : forwardRef});
+                            const cLabel = new LabelComponent(null);
+
                         }}/>
                     </$StackLayout>
                 </$Page>

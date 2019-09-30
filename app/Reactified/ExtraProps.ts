@@ -13,10 +13,10 @@ import {
 } from "tns-core-modules/ui/gestures/gestures";
 
 
-
+// should extras be on every rns component?
 export type ExtraProps<T extends Observable> = ObservableProps<T> & ViewBaseProps & ViewProps;
 
-export interface ObservableProps<T extends Observable> {
+interface ObservableProps<T extends Observable> {
     elementKey?: string // added
     forwardedRef?: React.RefObject<T>;
     onPropertyChange?: (data: EventData) => void;

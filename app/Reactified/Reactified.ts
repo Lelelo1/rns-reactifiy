@@ -3,9 +3,11 @@ import { Observable, EventData } from "tns-core-modules/data/observable/observab
 import { Button } from "tns-core-modules/ui/button/button";
 import { updateListener } from "react-nativescript/dist/client/EventHandling";
 import { shallowEqual } from "react-nativescript/dist/client/shallowEqual";
+import { PropsWithoutForwardedRef } from "react-nativescript/dist/shared/NativeScriptComponentTypings";
 import { ExtraProps } from "./ExtraProps";
 import { viewImpl } from "./Implementation";
-import { GestureTypes } from "tns-core-modules/ui/gestures/gestures";
+import { register, ContentView } from "react-nativescript/dist/client/ElementRegistry";
+import { Container, HostContext, Instance } from "react-nativescript/dist/shared/HostConfigTypes";
 
 
 export function Reactified<T extends Observable & ExtraProps<T>>(observable: T) {
@@ -15,7 +17,12 @@ export function Reactified<T extends Observable & ExtraProps<T>>(observable: T) 
         // static defaultProps = {... observable } 
         constructor(props: ExtraProps<T>) {
             super({... observable, props});
-            console.log("constructor: " + JSON.stringify(props));
+            console.log("constructor");
+            const name =  firstLetterLowercase(nameOf(observable));
+            console.log("registering: " + name);
+            register(name, () => {
+                return observable;
+            });
         }
         protected readonly myRef: React.RefObject<T> = React.createRef<T>();
         protected getCurrentRef(): T | null {
@@ -50,7 +57,7 @@ export function Reactified<T extends Observable & ExtraProps<T>>(observable: T) 
         }
         componentDidMount() {
             this.updateListenersHelper(true);
-            console.log("componentDidMount: " + JSON.stringify(this.getCurrentRef()));
+            console.log("componentDidMount: " + this.myRef.current);
         }
         /**
         * PureComponent's shouldComponentUpdate() method is ignored and replaced with a shallowEqual()
@@ -85,10 +92,56 @@ export function Reactified<T extends Observable & ExtraProps<T>>(observable: T) 
     return Reactify; // have to declare class name to make decorators work  // https://github.com/microsoft/TypeScript/issues/7342
 }
 
-// helpers to register to elementRegistry
+// helpers for registering to elementRegistry
 function nameOf(object: Object): string {
     return object.constructor.name;
 }
 function firstLetterLowercase(name: string) {
-    return name.charAt(0).toLocaleLowerCase + name.slice(1);
+    return name.charAt(0).toLowerCase() + name.slice(1);
 }
+
+
+function JSX<T extends Observable>(observable: T ) {
+    return React.forwardRef<T, PropsWithoutForwardedRef<T & ExtraProps<T>>>(
+        (props: React.PropsWithChildren<PropsWithoutForwardedRef<T & ExtraProps<T>>>, ref: React.RefObject<T>) => {
+            const { children, ...rest } = props;
+            
+            return React.createElement(
+                Reactified(observable),
+                {
+                    ...rest,
+                    forwardedRef: ref,
+                },
+                children
+            );
+        }
+    )
+}
+// opens up the possible of making rnsobservable. A plugin can extends ns Observable. Might be benifical. However 
+export const MyObservable: React.ComponentType<PropsWithoutForwardedRef<Observable> & ExtraProps<Observable>> & React.ClassAttributes<Observable> = JSX(new Observable());
+
+export const MyButton: React.ComponentType<PropsWithoutForwardedRef<Button & ExtraProps<Button>>> & React.ClassAttributes<Button> = JSX<Button>(new Button());
+
+export const MyContentView = JSX<ContentView>(new ContentView());
+
+
+/*
+type OwnPropsWithoutForwardedRef = PropsWithoutForwardedRef<ContentView & ExtraProps<ContentView>>;
+
+export const MyContentView: React.ComponentType<
+    OwnPropsWithoutForwardedRef & React.ClassAttributes<ContentView>
+> = React.forwardRef<ContentView, OwnPropsWithoutForwardedRef>(
+    (props: React.PropsWithChildren<OwnPropsWithoutForwardedRef>, ref: React.RefObject<ContentView>) => {
+        const { children, ...rest } = props;
+
+        return React.createElement(
+            Reactified(new ContentView()),
+            {
+                ...rest,
+                forwardedRef: ref,
+            },
+            children
+        );
+    }
+);
+*/

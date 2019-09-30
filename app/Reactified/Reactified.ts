@@ -5,7 +5,7 @@ import { updateListener } from "react-nativescript/dist/client/EventHandling";
 import { shallowEqual } from "react-nativescript/dist/client/shallowEqual";
 import { PropsWithoutForwardedRef } from "react-nativescript/dist/shared/NativeScriptComponentTypings";
 import { ExtraProps } from "./ExtraProps";
-import { viewImpl } from "./Implementation";
+import { viewImpl, observableImpl } from "./Implementation";
 import { register, ContentView } from "react-nativescript/dist/client/ElementRegistry";
 import { Container, HostContext, Instance } from "react-nativescript/dist/shared/HostConfigTypes";
 
@@ -89,6 +89,7 @@ export function Reactified<T extends Observable & ExtraProps<T>>(observable: T) 
             );
         }
     }
+    // const WithObservableImpl = observableImpl(Reactify);
     return Reactify; // have to declare class name to make decorators work  // https://github.com/microsoft/TypeScript/issues/7342
 }
 
@@ -105,7 +106,7 @@ function JSX<T extends Observable>(observable: T ) {
     return React.forwardRef<T, PropsWithoutForwardedRef<T & ExtraProps<T>>>(
         (props: React.PropsWithChildren<PropsWithoutForwardedRef<T & ExtraProps<T>>>, ref: React.RefObject<T>) => {
             const { children, ...rest } = props;
-            
+            const re = Reactified(observable);
             return React.createElement(
                 Reactified(observable),
                 {
@@ -117,17 +118,30 @@ function JSX<T extends Observable>(observable: T ) {
         }
     )
 }
-/* 
-    opens up the possible of making rnsobservable. A plugin can extend ns Observable. Might be benifical.
-    And Observable can be rendered as well (useful?). However, stuff like onPinch is visible and exists on
-    the rns observable component which does not make sense? But again, making plugin from Observable it could
-    be good to have the gesture event handlers added.
-*/
+
 export const MyObservable: React.ComponentType<PropsWithoutForwardedRef<Observable> & ExtraProps<Observable>> & React.ClassAttributes<Observable> = JSX(new Observable());
 export const MyButton: React.ComponentType<PropsWithoutForwardedRef<Button & ExtraProps<Button>>> & React.ClassAttributes<Button> = JSX<Button>(new Button());
-export const MyContentView = JSX<ContentView>(new ContentView());
+export const MyContentView: React.ComponentType<PropsWithoutForwardedRef<ContentView & ExtraProps<ContentView>>> & React.ClassAttributes<ContentView> = JSX<ContentView>(new ContentView());
 
+class base {
 
+}
+
+type Constructor<R> = new(...args: any[]) => R;
+export const hello1Impl = <R extends Constructor<{}>>(reactify: R) => {
+    return class extends reactify {
+        helloWorld = () => { console.log("helloWorld! 1"); }
+    }
+}
+export const hello2Impl = <R extends Constructor<{}>>(reactify: R) => {
+    return class extends reactify {
+        helloWorld = () => { console.log("helloWorld! 2"); }
+    }
+}
+
+const WhatIs = hello2Impl(hello1Impl(base));
+const obj = new WhatIs();
+obj.helloWorld();
 /*
 type OwnPropsWithoutForwardedRef = PropsWithoutForwardedRef<ContentView & ExtraProps<ContentView>>;
 

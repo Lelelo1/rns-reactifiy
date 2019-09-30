@@ -6,6 +6,24 @@ import { View } from "tns-core-modules/ui/core/view/view";
 import {Reactified} from "./Reactified";
 
 
+/*
+type Constructor<R> = new(...args: any[]) => R;
+export const observableImpl= <T extends Observable, R extends Constructor<React.Component<T & ExtraProps<T>, any>>>(reactify: R) => {
+    return class extends reactify {
+        helloWorld = () => { console.log("helloWorld!"); super}
+    }
+}
+*/
+/* can't add methods with decorators
+export function observableImpl<T extends Observable>(observable: T) {
+    return function<R extends Constructor<{}>>(reactify: R) {
+        return class extends reactify {
+            helloWorld = () => { console.log("helloWorld!"); }
+        }
+    }
+}
+*/
+
 // https://github.com/shirakaba/react-nativescript/blob/master/react-nativescript/src/components/View.ts
 export const viewImpl = <T extends Observable>(instance: React.Component<T & ExtraProps<T>, any>,node: T, attach: boolean | null, nextProps?: T & ExtraProps<T>) => {
     console.log("viewImpl...");

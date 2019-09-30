@@ -48,3 +48,11 @@ interface ViewProps {
     // onLayout?: (left: number, top: number, right: number, bottom: number) => void;
     // onMeasure?: (widthMeasureSpec: number, heightMeasureSpec: number) => void;
 }
+
+//...
+
+interface SwitchProps {
+    onToggle?: (checked: boolean) => void;
+}
+// inside https://github.com/shirakaba/react-nativescript/blob/master/react-nativescript/src/components/Switch.ts
+// can listener be attached to this:PROPS.onToggle ?

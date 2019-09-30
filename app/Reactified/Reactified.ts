@@ -5,24 +5,20 @@ import { updateListener } from "react-nativescript/dist/client/EventHandling";
 import { shallowEqual } from "react-nativescript/dist/client/shallowEqual";
 import { PropsWithoutForwardedRef } from "react-nativescript/dist/shared/NativeScriptComponentTypings";
 import { ExtraProps } from "./ExtraProps";
-import { viewImpl, observableImpl } from "./Implementation";
+import { viewImpl } from "./Implementation/Implementation";
 import { register, ContentView } from "react-nativescript/dist/client/ElementRegistry";
 import { Container, HostContext, Instance } from "react-nativescript/dist/shared/HostConfigTypes";
 
 
-export function Reactified<T extends Observable & ExtraProps<T>>(observable: T) {
+function Reactified<T extends Observable & ExtraProps<T>>(observable: T) { // used inernally only
 
     class Reactify extends React.Component<T & ExtraProps<T>, any> {
-        
+        static countOfInstances = 0;
         // static defaultProps = {... observable } 
         constructor(props: ExtraProps<T>) {
             super({... observable, props});
-            console.log("constructor");
-            const name =  firstLetterLowercase(nameOf(observable));
-            console.log("registering: " + name);
-            register(name, () => {
-                return observable;
-            });
+            Reactify.countOfInstances ++;
+            console.log("constructing instance " + Reactify.countOfInstances);
         }
         protected readonly myRef: React.RefObject<T> = React.createRef<T>();
         protected getCurrentRef(): T | null {
@@ -93,22 +89,23 @@ export function Reactified<T extends Observable & ExtraProps<T>>(observable: T) 
     return Reactify; // have to declare class name to make decorators work  // https://github.com/microsoft/TypeScript/issues/7342
 }
 
-// helpers for registering to elementRegistry
-function nameOf(object: Object): string {
-    return object.constructor.name;
-}
-function firstLetterLowercase(name: string) {
-    return name.charAt(0).toLowerCase() + name.slice(1);
-}
 
+// React.Component<T & ExtraProps<T>
+// type Constructor<T extends Observable> = new(...args: any[]) => React.Component<T & ExtraProps<T>>;
 
-function JSX<T extends Observable>(observable: T ) {
+export function JSX<T extends Observable>(observable: T ) {
+    const name = firstLetterLowercase(nameOf(observable));
+    console.log("registering " + name);
+    register(name, () => {
+        return observable;
+    });
+    const reactComponent = Reactified(observable)
     return React.forwardRef<T, PropsWithoutForwardedRef<T & ExtraProps<T>>>(
         (props: React.PropsWithChildren<PropsWithoutForwardedRef<T & ExtraProps<T>>>, ref: React.RefObject<T>) => {
             const { children, ...rest } = props;
-            const re = Reactified(observable);
             return React.createElement(
-                Reactified(observable),
+                reactComponent
+                ,
                 {
                     ...rest,
                     forwardedRef: ref,
@@ -119,10 +116,20 @@ function JSX<T extends Observable>(observable: T ) {
     )
 }
 
-export const MyObservable: React.ComponentType<PropsWithoutForwardedRef<Observable> & ExtraProps<Observable>> & React.ClassAttributes<Observable> = JSX(new Observable());
-export const MyButton: React.ComponentType<PropsWithoutForwardedRef<Button & ExtraProps<Button>>> & React.ClassAttributes<Button> = JSX<Button>(new Button());
-export const MyContentView: React.ComponentType<PropsWithoutForwardedRef<ContentView & ExtraProps<ContentView>>> & React.ClassAttributes<ContentView> = JSX<ContentView>(new ContentView());
+// helpers for registering to elementRegistry
+function nameOf(object: Object): string {
+    return object.constructor.name;
+}
+function firstLetterLowercase(name: string) {
+    return name.charAt(0).toLowerCase() + name.slice(1);
+}
 
+// export const MyObservable: React.ComponentType<PropsWithoutForwardedRef<Observable> & ExtraProps<Observable>> & React.ClassAttributes<Observable> = JSX(new Observable());
+export const MyButton: React.ComponentType<PropsWithoutForwardedRef<Button & ExtraProps<Button>>> & React.ClassAttributes<Button> = JSX<Button>(new Button());
+export const MyContentView: React.ComponentType<PropsWithoutForwardedRef<ContentView & ExtraProps<ContentView>>> & React.ClassAttributes<ContentView> = JSX(new ContentView());
+
+
+/*
 class base {
 
 }
@@ -135,13 +142,14 @@ export const hello1Impl = <R extends Constructor<{}>>(reactify: R) => {
 }
 export const hello2Impl = <R extends Constructor<{}>>(reactify: R) => {
     return class extends reactify {
-        helloWorld = () => { console.log("helloWorld! 2"); }
+        helloWorld = () => { if(super.helloworld !== undefined)  }
     }
 }
 
-const WhatIs = hello2Impl(hello1Impl(base));
+const WhatIs = ;
 const obj = new WhatIs();
 obj.helloWorld();
+*/
 /*
 type OwnPropsWithoutForwardedRef = PropsWithoutForwardedRef<ContentView & ExtraProps<ContentView>>;
 

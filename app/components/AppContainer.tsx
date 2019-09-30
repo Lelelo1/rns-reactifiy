@@ -3,7 +3,7 @@ import * as React from "react";
 import { $Page, $Label, $ActionBar, $GridLayout, $FormattedString, $Span, $Switch, $Frame, $Button, $StackLayout } from "react-nativescript";
 import { ItemSpec } from 'tns-core-modules/ui/layouts/grid-layout/grid-layout';
 import { Frame, Page, Color } from 'tns-core-modules/ui/frame/frame';
-import { Reactified, MyButton, MyContentView, MyObservable } from '~/Reactified/Reactified';
+import { MyContentView, MyButton } from '~/Reactified/Reactified';
 import { Label } from 'tns-core-modules/ui/label/label';
 import { _Label as LabelComponent } from "react-nativescript/dist/components/Label";
 // import { Button } from 'tns-core-modules/ui/button/button';
@@ -36,14 +36,20 @@ class AppContainer extends React.Component<Props, State> {
         return (
             <$Frame ref={forwardedRef}>
                 <$Page ref={this.pageRef} className="page" actionBarHidden={false}>
-                    <$ActionBar className="action-bar">
-                        <$Label className="action-bar-title">Home</$Label>
-                    </$ActionBar>
+                    
             
                     <$StackLayout>
-                        <MyContentView width={200} height={200} backgroundColor={new Color("orange")}>
-                            <$Button text={"hello"} margin={0}/>
-                        </MyContentView>
+                    <MyButton backgroundColor={new Color("green")}/>
+                    <MyButton backgroundColor={new Color("green")}/>
+                    <MyContentView width={200} height={250} backgroundColor={new Color("orange")}>
+                        <$Button text={"hello"}/>
+                    </MyContentView>
+                    <MyContentView width={200} height={250} backgroundColor={new Color("orange")}>
+                        <$Button text={"hello"}/>
+                    </MyContentView>
+                    <MyContentView width={200} height={250} backgroundColor={new Color("orange")}>
+                        <$Button text={"hello"}/>
+                    </MyContentView>
                         <$Button text={"test"} onTap={() => {
                             console.log("tap");
                             const forwardRef = React.createRef<Label>();
@@ -58,6 +64,5 @@ class AppContainer extends React.Component<Props, State> {
         );
     }
 }
-
 // export default AppContainer;
 export default hot(AppContainer); // Replace this line with the above line if you want to remove hot loading.

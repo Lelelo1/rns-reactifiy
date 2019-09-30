@@ -1,9 +1,9 @@
 import { Observable, EventData } from "tns-core-modules/data/observable/observable";
-import { ExtraProps } from "./ExtraProps";
+import { ExtraProps } from "../ExtraProps";
 import { updateListener } from "react-nativescript/dist/client/EventHandling";
 import { GestureTypes } from "tns-core-modules/ui/gestures/gestures";
 import { View } from "tns-core-modules/ui/core/view/view";
-import {Reactified} from "./Reactified";
+
 
 
 /*
@@ -27,6 +27,9 @@ export function observableImpl<T extends Observable>(observable: T) {
 // https://github.com/shirakaba/react-nativescript/blob/master/react-nativescript/src/components/View.ts
 export const viewImpl = <T extends Observable>(instance: React.Component<T & ExtraProps<T>, any>,node: T, attach: boolean | null, nextProps?: T & ExtraProps<T>) => {
     console.log("viewImpl...");
+    if(node instanceof View) {
+        
+    }
     if (attach === null) {
         updateListener(node, "loaded", instance.props.onLoaded, nextProps.onLoaded);
         updateListener(node, "unloaded", instance.props.onUnloaded, nextProps.onUnloaded);
@@ -58,6 +61,8 @@ export const viewImpl = <T extends Observable>(instance: React.Component<T & Ext
         if (instance.props.onTouch) method(GestureTypes.touch, instance.props.onTouch);
     }
 }
+
+export const datePickerImpl = <T extends Observable>(instance: React.Component<T & ExtraProps<T>, any>, ) => {}
 
 /*
 // decorators: https://www.logicbig.com/tutorials/misc/typescript/method-decorator.html

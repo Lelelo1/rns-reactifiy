@@ -14,7 +14,7 @@ import {
 
 
 // should extras be on every rns component?
-export type ExtraProps<T extends Observable> = ObservableProps<T> & ViewBaseProps & ViewProps;
+export type ExtraProps<T extends Observable> = ObservableProps<T> & ViewBaseProps & ViewProps & ActionItemProps;
 
 interface ObservableProps<T extends Observable> {
     elementKey?: string // added
@@ -47,6 +47,9 @@ interface ViewProps {
     /* These are to be overridden in subclasses of View, so unlikely to be appropriate. */
     // onLayout?: (left: number, top: number, right: number, bottom: number) => void;
     // onMeasure?: (widthMeasureSpec: number, heightMeasureSpec: number) => void;
+}
+interface ActionItemProps {
+    onTap?: (args: GestureEventData) => void;
 }
 
 //...

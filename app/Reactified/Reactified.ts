@@ -7,7 +7,7 @@ import { PropsWithoutForwardedRef } from "react-nativescript/dist/shared/NativeS
 import { ExtraProps } from "./ExtraProps";
 import { updateListenersImpl } from "./Implementation/updateListenersImpl";
 import { register, ContentView } from "react-nativescript/dist/client/ElementRegistry";
-import { Container, HostContext, Instance } from "react-nativescript/dist/shared/HostConfigTypes";
+import { Container, HostContext, Instance, CustomNodeHierarchyManager } from "react-nativescript/dist/shared/HostConfigTypes";
 import { number } from "prop-types";
 import { updateListenersHelperImpl } from "./Implementation/updateListenersHelperImpl";
 import { Extras } from "./Extras";
@@ -24,14 +24,16 @@ function Reactified<T extends Observable & ExtraProps<T>>(observable: T) {
        return observable;
     });
 
-    class Reactify extends React.Component<T & ExtraProps<T>, any> implements Extras<T>{
+    class Reactify extends React.Component<T & ExtraProps<T>, any> implements Extras<T>, CustomNodeHierarchyManager<T>{
         static countOfInstances = 0;
         // static defaultProps = {... observable } 
+        /*
         constructor(props: T & ExtraProps<T>) {
             super(props);
             Reactify.countOfInstances ++;
             console.log("constructing instance " + Reactify.countOfInstances);
         }
+        */
         readonly myRef: React.RefObject<T> = React.createRef<T>();
         getCurrentRef(): T | null {
             return getCurrentRefImpl(this);

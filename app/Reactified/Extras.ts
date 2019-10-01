@@ -7,3 +7,5 @@ export interface Extras<T extends Observable> {
     updateListenersHelper(attach: boolean | null, nextProps?: T & ExtraProps<T>): void;
     updateListeners(node: T, attach: boolean | null, nextProps?: T & ExtraProps<T>): void;
 }
+// https://github.com/Lelelo1/rns-reactify/issues/3
+// import { CustomNodeHierarchyManager } from "react-nativescript/dist/shared/HostConfigTypes"

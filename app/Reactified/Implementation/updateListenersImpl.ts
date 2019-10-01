@@ -8,22 +8,25 @@ import { Reactify } from "../Types"
 
 export const updateListenersImpl = <T extends Observable>(instance: Reactify<T> ,node: T, attach: boolean | null, nextProps?: T & ExtraProps<T>) => {
     observableImpl(instance, node, attach, nextProps);
+    // directly inheriting viewbase
     viewImpl(instance,node, attach, nextProps);
+    actionItemImpl(instance, node, attach, nextProps);
 }
 
 
-const observableImpl = <T extends Observable>(instance: React.Component<T & ExtraProps<T>, any>,node: T, attach: boolean | null, nextProps?: T & ExtraProps<T>) => {
+const observableImpl = <T extends Observable>(instance: Reactify<T>, node: T, attach: boolean | null, nextProps?: T & ExtraProps<T>) => {
+    
     if (attach === null) {
         updateListener(node, "propertyChange", instance.props.onPropertyChange, nextProps.onPropertyChange);
     } else {
         const method = (attach ? node.on : node.off).bind(node);
         if (instance.props.onPropertyChange) method("propertyChange", instance.props.onPropertyChange);
     }
+    
 }
 
 // https://github.com/shirakaba/react-nativescript/blob/master/react-nativescript/src/components/View.ts
-const viewImpl = <T extends Observable>(instance: React.Component<T & ExtraProps<T>, any>,node: T, attach: boolean | null, nextProps?: T & ExtraProps<T>) => {
-    console.log("viewImpl...");
+const viewImpl = <T extends Observable>(instance: Reactify<T>, node: T, attach: boolean | null, nextProps?: T & ExtraProps<T>) => {
     if (attach === null) {
         updateListener(node, "loaded", instance.props.onLoaded, nextProps.onLoaded);
         updateListener(node, "unloaded", instance.props.onUnloaded, nextProps.onUnloaded);
@@ -55,3 +58,12 @@ const viewImpl = <T extends Observable>(instance: React.Component<T & ExtraProps
         if (instance.props.onTouch) method(GestureTypes.touch, instance.props.onTouch);
     }
 }
+const actionItemImpl = <T extends Observable>(instance: Reactify<T>, node: T, attach: boolean | null, nextProps?: T & ExtraProps<T>) => {
+    if (attach === null) {
+        updateListener(node, "tap", instance.props.onTap, nextProps.onTap);
+    } else {
+        const method = (attach ? node.on : node.off).bind(node);
+        if (instance.props.onTap) method("tap", instance.props.onTap);
+    }
+}
+

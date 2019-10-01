@@ -1,28 +1,10 @@
+
 import { Observable, EventData } from "tns-core-modules/data/observable/observable";
 import { ExtraProps } from "../ExtraProps";
 import { updateListener } from "react-nativescript/dist/client/EventHandling";
 import { GestureTypes } from "tns-core-modules/ui/gestures/gestures";
 import { View } from "tns-core-modules/ui/core/view/view";
 
-
-
-/*
-type Constructor<R> = new(...args: any[]) => R;
-export const observableImpl= <T extends Observable, R extends Constructor<React.Component<T & ExtraProps<T>, any>>>(reactify: R) => {
-    return class extends reactify {
-        helloWorld = () => { console.log("helloWorld!"); super}
-    }
-}
-*/
-/* can't add methods with decorators
-export function observableImpl<T extends Observable>(observable: T) {
-    return function<R extends Constructor<{}>>(reactify: R) {
-        return class extends reactify {
-            helloWorld = () => { console.log("helloWorld!"); }
-        }
-    }
-}
-*/
 
 // https://github.com/shirakaba/react-nativescript/blob/master/react-nativescript/src/components/View.ts
 export const viewImpl = <T extends Observable>(instance: React.Component<T & ExtraProps<T>, any>,node: T, attach: boolean | null, nextProps?: T & ExtraProps<T>) => {
@@ -61,16 +43,3 @@ export const viewImpl = <T extends Observable>(instance: React.Component<T & Ext
         if (instance.props.onTouch) method(GestureTypes.touch, instance.props.onTouch);
     }
 }
-
-export const datePickerImpl = <T extends Observable>(instance: React.Component<T & ExtraProps<T>, any>, ) => {}
-
-/*
-// decorators: https://www.logicbig.com/tutorials/misc/typescript/method-decorator.html
-type updateListeners<T extends Observable> = (node: T, attach: boolean | null, nextProps?: T & ExtraProps<T>) => void
-// https://github.com/shirakaba/react-nativescript/blob/master/react-nativescript/src/components/View.ts
-export const viewImpl = <T extends Observable>() => { // might not event want generic here?
-    return (target: any, propertyKey: string, descriptor: TypedPropertyDescriptor<updateListeners<T>>) => {
-
-    }
-}
-*/

@@ -3,7 +3,7 @@ import * as React from "react";
 import { $Page, $Label, $ActionBar, $GridLayout, $FormattedString, $Span, $Switch, $Frame, $Button, $StackLayout } from "react-nativescript";
 import { ItemSpec } from 'tns-core-modules/ui/layouts/grid-layout/grid-layout';
 import { Frame, Page, Color } from 'tns-core-modules/ui/frame/frame';
-import { MyContentView, MyButton } from '~/Reactified/Reactified';
+import { MyButton } from '~/Reactified/Reactified';
 import { Label } from 'tns-core-modules/ui/label/label';
 import { _Label as LabelComponent } from "react-nativescript/dist/components/Label";
 // import { Button } from 'tns-core-modules/ui/button/button';
@@ -39,17 +39,9 @@ class AppContainer extends React.Component<Props, State> {
                     
             
                     <$StackLayout>
+                    <MyButton backgroundColor={new Color("green")} height={300} width={50}/>
                     <MyButton backgroundColor={new Color("green")}/>
-                    <MyButton backgroundColor={new Color("green")}/>
-                    <MyContentView width={200} height={250} backgroundColor={new Color("orange")}>
-                        <$Button text={"hello"}/>
-                    </MyContentView>
-                    <MyContentView width={200} height={250} backgroundColor={new Color("orange")}>
-                        <$Button text={"hello"}/>
-                    </MyContentView>
-                    <MyContentView width={200} height={250} backgroundColor={new Color("orange")}>
-                        <$Button text={"hello"}/>
-                    </MyContentView>
+  
                         <$Button text={"test"} onTap={() => {
                             console.log("tap");
                             const forwardRef = React.createRef<Label>();

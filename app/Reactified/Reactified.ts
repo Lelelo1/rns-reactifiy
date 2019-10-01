@@ -5,18 +5,25 @@ import { updateListener } from "react-nativescript/dist/client/EventHandling";
 import { shallowEqual } from "react-nativescript/dist/client/shallowEqual";
 import { PropsWithoutForwardedRef } from "react-nativescript/dist/shared/NativeScriptComponentTypings";
 import { ExtraProps } from "./ExtraProps";
-import { viewImpl } from "./Implementation/Implementation";
+import { viewImpl } from "./Implementation/updateListeners";
 import { register, ContentView } from "react-nativescript/dist/client/ElementRegistry";
 import { Container, HostContext, Instance } from "react-nativescript/dist/shared/HostConfigTypes";
+import { number } from "prop-types";
 
 
 function Reactified<T extends Observable & ExtraProps<T>>(observable: T) { // used inernally only
 
+    const name = firstLetterLowercase(nameOf(observable));
+    console.log("registering " + name);
+    register(name, () => {
+       return observable;
+    });
+
     class Reactify extends React.Component<T & ExtraProps<T>, any> {
         static countOfInstances = 0;
         // static defaultProps = {... observable } 
-        constructor(props: ExtraProps<T>) {
-            super({... observable, props});
+        constructor(props: T & ExtraProps<T>) {
+            super(props);
             Reactify.countOfInstances ++;
             console.log("constructing instance " + Reactify.countOfInstances);
         }
@@ -43,6 +50,7 @@ function Reactified<T extends Observable & ExtraProps<T>>(observable: T) { // us
         */
 
         protected updateListeners(node: T, attach: boolean | null, nextProps?: T & ExtraProps<T>): void {
+            
             if (attach === null) {
                 updateListener(node, "propertyChange", this.props.onPropertyChange, nextProps.onPropertyChange);
             } else {
@@ -76,7 +84,7 @@ function Reactified<T extends Observable & ExtraProps<T>>(observable: T) { // us
         render(): React.ReactNode {
             const { forwardedRef, children, ...rest } = this.props
             return React.createElement(
-                firstLetterLowercase(nameOf(observable)),
+                name,
                 {
                     ...rest,
                     ref: forwardedRef || this.myRef,
@@ -91,20 +99,15 @@ function Reactified<T extends Observable & ExtraProps<T>>(observable: T) { // us
 
 
 // React.Component<T & ExtraProps<T>
-// type Constructor<T extends Observable> = new(...args: any[]) => React.Component<T & ExtraProps<T>>;
 
-export function JSX<T extends Observable>(observable: T ) {
-    const name = firstLetterLowercase(nameOf(observable));
-    console.log("registering " + name);
-    register(name, () => {
-        return observable;
-    });
-    const reactComponent = Reactified(observable)
+/* 
+// Are not actually needed ?!
+function JSX<T extends Observable>(observable: new(...args: any[]) => React.Component<T & ExtraProps<T>>) {
     return React.forwardRef<T, PropsWithoutForwardedRef<T & ExtraProps<T>>>(
         (props: React.PropsWithChildren<PropsWithoutForwardedRef<T & ExtraProps<T>>>, ref: React.RefObject<T>) => {
             const { children, ...rest } = props;
             return React.createElement(
-                reactComponent
+                observable
                 ,
                 {
                     ...rest,
@@ -115,6 +118,7 @@ export function JSX<T extends Observable>(observable: T ) {
         }
     )
 }
+*/
 
 // helpers for registering to elementRegistry
 function nameOf(object: Object): string {
@@ -125,8 +129,9 @@ function firstLetterLowercase(name: string) {
 }
 
 // export const MyObservable: React.ComponentType<PropsWithoutForwardedRef<Observable> & ExtraProps<Observable>> & React.ClassAttributes<Observable> = JSX(new Observable());
-export const MyButton: React.ComponentType<PropsWithoutForwardedRef<Button & ExtraProps<Button>>> & React.ClassAttributes<Button> = JSX<Button>(new Button());
-export const MyContentView: React.ComponentType<PropsWithoutForwardedRef<ContentView & ExtraProps<ContentView>>> & React.ClassAttributes<ContentView> = JSX(new ContentView());
+// export const MyButton = JSX(new Button());
+export const MyButton = Reactified(new Button());
+// export const MyContentView: React.ComponentType<PropsWithoutForwardedRef<ContentView & ExtraProps<ContentView>>> & React.ClassAttributes<ContentView> = JSX(new ContentView());
 
 
 /*

@@ -5,13 +5,18 @@ import { updateListener } from "react-nativescript/dist/client/EventHandling";
 import { shallowEqual } from "react-nativescript/dist/client/shallowEqual";
 import { PropsWithoutForwardedRef } from "react-nativescript/dist/shared/NativeScriptComponentTypings";
 import { ExtraProps } from "./ExtraProps";
-import { viewImpl } from "./Implementation/updateListeners";
+import { updateListenersImpl } from "./Implementation/updateListenersImpl";
 import { register, ContentView } from "react-nativescript/dist/client/ElementRegistry";
 import { Container, HostContext, Instance } from "react-nativescript/dist/shared/HostConfigTypes";
 import { number } from "prop-types";
+import { updateListenersHelperImpl } from "./Implementation/updateListenersHelperImpl";
+import { Extras } from "./Extras";
+import { getCurrentRefImpl } from "./Implementation/getCurrentRefImpl";
+import { componentDidMountImpl } from "./Implementation/React/componentDidMountImpl"
+import { componentWillUnmountImpl } from "./Implementation/React/componentWillUnmountImpl";
+import { shouldComponentUpdateImpl } from "./Implementation/React/shouldComponentUpdateImpl";
 
-
-function Reactified<T extends Observable & ExtraProps<T>>(observable: T) { // used inernally only
+function Reactified<T extends Observable & ExtraProps<T>>(observable: T) { 
 
     const name = firstLetterLowercase(nameOf(observable));
     console.log("registering " + name);
@@ -19,7 +24,7 @@ function Reactified<T extends Observable & ExtraProps<T>>(observable: T) { // us
        return observable;
     });
 
-    class Reactify extends React.Component<T & ExtraProps<T>, any> {
+    class Reactify extends React.Component<T & ExtraProps<T>, any> implements Extras<T>{
         static countOfInstances = 0;
         // static defaultProps = {... observable } 
         constructor(props: T & ExtraProps<T>) {
@@ -27,41 +32,27 @@ function Reactified<T extends Observable & ExtraProps<T>>(observable: T) { // us
             Reactify.countOfInstances ++;
             console.log("constructing instance " + Reactify.countOfInstances);
         }
-        protected readonly myRef: React.RefObject<T> = React.createRef<T>();
-        protected getCurrentRef(): T | null {
-            console.log("getRef: " + (this.props.forwardedRef || this.myRef).current);
-            return (this.props.forwardedRef || this.myRef).current;
+        readonly myRef: React.RefObject<T> = React.createRef<T>();
+        getCurrentRef(): T | null {
+            return getCurrentRefImpl(this);
         }
         /**
         * Helper method for updateListeners: simply gets the current ref to pass on to it.
         * @param attach true: attach; false: detach; null: update
         */
-        protected updateListenersHelper(attach: boolean | null, nextProps?: T & ExtraProps<T>): void {
-            const node: T | null = this.getCurrentRef();
-            if (node === null) {
-                console.warn(`React ref to NativeScript View lost, so unable to update event listeners.`);
-                return;
-            }
-            this.updateListeners(node, attach, nextProps);
+        updateListenersHelper(attach: boolean | null, nextProps?: T & ExtraProps<T>): void {
+            updateListenersHelperImpl(this, attach, nextProps);
         }
         /**
         *
         * @param attach true: attach; false: detach; null: update
         */
 
-        protected updateListeners(node: T, attach: boolean | null, nextProps?: T & ExtraProps<T>): void {
-            
-            if (attach === null) {
-                updateListener(node, "propertyChange", this.props.onPropertyChange, nextProps.onPropertyChange);
-            } else {
-                const method = (attach ? node.on : node.off).bind(node);
-                if (this.props.onPropertyChange) method("propertyChange", this.props.onPropertyChange);
-            }
-            viewImpl(this, node, attach, nextProps);
+        updateListeners(node: T, attach: boolean | null, nextProps?: T & ExtraProps<T>): void {
+            updateListenersImpl(this, node, attach, nextProps);
         }
         componentDidMount() {
-            this.updateListenersHelper(true);
-            console.log("componentDidMount: " + this.myRef.current);
+            componentDidMountImpl(this);
         }
         /**
         * PureComponent's shouldComponentUpdate() method is ignored and replaced with a shallowEqual()
@@ -69,17 +60,10 @@ function Reactified<T extends Observable & ExtraProps<T>>(observable: T) { // us
         * match the way PureComponent is handled.
         */
         shouldComponentUpdate(nextProps: T & ExtraProps<T>, nextState: any): boolean {
-            // console.log(`Observable's shouldComponentUpdate`);
-            const shouldUpdate: boolean = !shallowEqual(this.props, nextProps) || !shallowEqual(this.state, nextState);
-            // console.log(`[shouldComponentUpdate] shouldUpdate: ${shouldUpdate}.`);
-
-            this.updateListenersHelper(null, nextProps);
-
-            // https://lucybain.com/blog/2018/react-js-pure-component/
-            return shouldUpdate;
+            return shouldComponentUpdateImpl(this, nextState, nextState);
         }
         componentWillUnmount() {
-            this.updateListenersHelper(false);
+            componentWillUnmountImpl(this);
         }
         render(): React.ReactNode {
             const { forwardedRef, children, ...rest } = this.props
@@ -174,4 +158,14 @@ export const MyContentView: React.ComponentType<
         );
     }
 );
+*/
+
+/* 
+use dynamic imports or decorators - as the current implementation setup will have import name clashes
+(viewImpl being present in both updateListeners and componentDidMount for example)
+on dynamic imorts used in Reactify: https://mariusschulz.com/blog/dynamic-import-expressions-in-typescript
+is it bad from performence? https://stackoverflow.com/questions/58181158/performance-when-using-dynamic-imports-in-typescript
+yes it's bad for perfomence
+// https://babeljs.io/docs/en/babel-plugin-syntax-dynamic-import
+
 */

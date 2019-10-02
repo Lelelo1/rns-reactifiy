@@ -1,7 +1,7 @@
 
-import { Observable, EventData } from "tns-core-modules/data/observable/observable";
+import { EventData} from "tns-core-modules/data/observable/observable";
 import { Dock } from "tns-core-modules/ui/layouts/dock-layout/dock-layout";
-import { View as NativeScriptView, ShownModallyData } from "tns-core-modules/ui/core/view/view";
+import { ShownModallyData} from "tns-core-modules/ui/core/view/view";
 import {
     GestureEventData,
     GestureTypes,
@@ -12,21 +12,32 @@ import {
     PanGestureEventData,
 } from "tns-core-modules/ui/gestures/gestures";
 
+import {Observable, ViewBase, View, Page, ActionItem} from "react-nativescript/dist/client/ElementRegistry";
 
-// should extras be on every rns component?
-export type ExtraProps<T extends Observable> = ObservableProps<T> & ViewBaseProps & ViewProps & ActionItemProps;
+import { PageNavigationEventHandler } from "react-nativescript/dist/components/Page";
+import { Switch } from "tns-core-modules/ui/switch/switch";
 
-interface ObservableProps<T extends Observable> {
+
+export type ExtraProps<T> = ObservableProps<T> & ViewBaseProps<T> & ViewProps<T> & PageProps<T> & ActionItemProps<T>;
+
+// using conditional so that RNSButton don't get navigatedTo (PageProps) 
+
+
+type ObservableProps<T> = T extends Observable ? IObservable<T> : Empty
+interface IObservable<T> {
     elementKey?: string // added
     forwardedRef?: React.RefObject<T>;
     onPropertyChange?: (data: EventData) => void;
 }
 
-interface ViewBaseProps {
+type ViewBaseProps<T> = T extends ViewBase ? IViewBase : Empty
+interface IViewBase {
     __rns__nodeTreeRole?: string;
     dock?: Dock;
 }
-interface ViewProps {
+
+type ViewProps<T> = T extends View ? IView : Empty;
+interface IView {
     /* From View. */
     onLoaded?: (args: EventData) => void;
     onUnloaded?: (args: EventData) => void;
@@ -48,14 +59,24 @@ interface ViewProps {
     // onLayout?: (left: number, top: number, right: number, bottom: number) => void;
     // onMeasure?: (widthMeasureSpec: number, heightMeasureSpec: number) => void;
 }
-interface ActionItemProps {
+
+type PageProps<T> = T extends Page ? IPage : Empty
+interface IPage {
+    onNavigatingTo?: PageNavigationEventHandler;
+    onNavigatedTo?: PageNavigationEventHandler;
+    onNavigatingFrom?: PageNavigationEventHandler;
+    onNavigatedFrom?: PageNavigationEventHandler;
+}
+
+type ActionItemProps<T> = T extends ActionItem ? IActionItem : Empty
+interface IActionItem {
     onTap?: (args: GestureEventData) => void;
 }
 
-//...
+/* could be used set props for every stingle RNS Component*/
+interface Empty {
 
-interface SwitchProps {
-    onToggle?: (checked: boolean) => void;
 }
+
 // inside https://github.com/shirakaba/react-nativescript/blob/master/react-nativescript/src/components/Switch.ts
 // can listener be attached to this:PROPS.onToggle ?

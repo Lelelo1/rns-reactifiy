@@ -1,21 +1,42 @@
 
-import { Observable, EventData } from "tns-core-modules/data/observable/observable";
+import { EventData } from "tns-core-modules/data/observable/observable";
+import { Observable, View, Page, ActionItem } from "react-nativescript/dist/client/ElementRegistry";
+
 import { ExtraProps } from "../ExtraProps";
 import { updateListener } from "react-nativescript/dist/client/EventHandling";
 import { GestureTypes } from "tns-core-modules/ui/gestures/gestures";
-import { View } from "tns-core-modules/ui/core/view/view";
-import { Reactify } from "../Types"
+import { Reactify, Props } from "./Types"
+import { tryCast } from "./Types";
 
-export const updateListenersImpl = <T extends Observable>(instance: Reactify<T> ,node: T, attach: boolean | null, nextProps?: T & ExtraProps<T>) => {
+export const updateListenersImpl = <T extends Observable>(instance: Reactify<T> ,node: T, attach: boolean | null, nextProps?: Props<T>) => {
+    
+    /* implementation for any rns component here - or on reactify class body*/
+    
     observableImpl(instance, node, attach, nextProps);
     // directly inheriting viewbase
-    viewImpl(instance,node, attach, nextProps);
-    actionItemImpl(instance, node, attach, nextProps);
+
+    viewImpl(
+        tryCast<Reactify<View>>(instance),
+        tryCast(node), attach,
+        tryCast<Props<View>>(nextProps)
+    );
+
+    actionItemImpl(
+        tryCast<Reactify<ActionItem>>(instance),
+        tryCast<ActionItem>(node),
+        attach,
+        tryCast<Props<ActionItem>>(nextProps)
+    );
+    // directly inheriting view
+    pageImpl(
+        tryCast<Reactify<Page>>(instance),
+        tryCast<Page>(node),
+        attach, 
+        tryCast<Props<Page>>(nextProps)
+    );
 }
 
-
-const observableImpl = <T extends Observable>(instance: Reactify<T>, node: T, attach: boolean | null, nextProps?: T & ExtraProps<T>) => {
-    
+const observableImpl = <T extends Observable>(instance: Reactify<Observable>, node: T, attach: boolean | null, nextProps?: T & ExtraProps<T>) => {
     if (attach === null) {
         updateListener(node, "propertyChange", instance.props.onPropertyChange, nextProps.onPropertyChange);
     } else {
@@ -26,7 +47,8 @@ const observableImpl = <T extends Observable>(instance: Reactify<T>, node: T, at
 }
 
 // https://github.com/shirakaba/react-nativescript/blob/master/react-nativescript/src/components/View.ts
-const viewImpl = <T extends Observable>(instance: Reactify<T>, node: T, attach: boolean | null, nextProps?: T & ExtraProps<T>) => {
+const viewImpl = <T extends View>(instance: Reactify<T>, node: T, attach: boolean | null, nextProps?: T & ExtraProps<T>) => {
+    console.log("viewImpl");
     if (attach === null) {
         updateListener(node, "loaded", instance.props.onLoaded, nextProps.onLoaded);
         updateListener(node, "unloaded", instance.props.onUnloaded, nextProps.onUnloaded);
@@ -58,7 +80,8 @@ const viewImpl = <T extends Observable>(instance: Reactify<T>, node: T, attach: 
         if (instance.props.onTouch) method(GestureTypes.touch, instance.props.onTouch);
     }
 }
-const actionItemImpl = <T extends Observable>(instance: Reactify<T>, node: T, attach: boolean | null, nextProps?: T & ExtraProps<T>) => {
+
+const actionItemImpl = <T extends ActionItem>(instance: Reactify<T>, node: T, attach: boolean | null, nextProps?: T & ExtraProps<T>) => {
     if (attach === null) {
         updateListener(node, "tap", instance.props.onTap, nextProps.onTap);
     } else {
@@ -66,4 +89,23 @@ const actionItemImpl = <T extends Observable>(instance: Reactify<T>, node: T, at
         if (instance.props.onTap) method("tap", instance.props.onTap);
     }
 }
+
+const pageImpl = <T extends Page>(instance: Reactify<T>, node: T, attach: boolean | null, nextProps?: T & ExtraProps<T>) => {
+    console.log("page impl");
+    if (attach === null) {
+        updateListener(node, "navigatedFrom", instance.props.onNavigatedFrom, nextProps.onNavigatedFrom);
+        updateListener(node, "navigatedTo", instance.props.onNavigatedTo, nextProps.onNavigatedTo);
+        updateListener(node, "navigatingFrom", instance.props.onNavigatingFrom, nextProps.onNavigatingFrom);
+        updateListener(node, "navigatingTo", instance.props.onNavigatingTo, nextProps.onNavigatingTo);
+    } else {
+        const method = (attach ? node.on : node.off).bind(node);
+    
+        if (instance.props.onNavigatedFrom) method("navigatedFrom", instance.props.onNavigatedFrom);
+        if (instance.props.onNavigatedTo) method("navigatedTo", instance.props.onNavigatedTo);
+        if (instance.props.onNavigatingFrom) method("navigatingFrom", instance.props.onNavigatingFrom);
+        if (instance.props.onNavigatingTo) method("navigatingTo", instance.props.onNavigatingTo);
+    }
+}
+
+
 

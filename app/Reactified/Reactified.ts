@@ -16,7 +16,7 @@ import { componentDidMountImpl } from "./Implementation/React/componentDidMountI
 import { componentWillUnmountImpl } from "./Implementation/React/componentWillUnmountImpl";
 import { shouldComponentUpdateImpl } from "./Implementation/React/shouldComponentUpdateImpl";
 
-function Reactified<T extends Observable & ExtraProps<T>>(observable: T) { 
+function Reactified<T extends Observable>(observable: T) { 
 
     const name = firstLetterLowercase(nameOf(observable));
     console.log("registering " + name);
@@ -24,7 +24,7 @@ function Reactified<T extends Observable & ExtraProps<T>>(observable: T) {
        return observable;
     });
 
-    class Reactify extends React.Component<T & ExtraProps<T>, any> implements Extras<T>, CustomNodeHierarchyManager<T>{
+    class Reactify extends React.Component<T & ExtraProps<T>, any> implements Extras<T> {
         static countOfInstances = 0;
         // static defaultProps = {... observable } 
         /*

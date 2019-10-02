@@ -1,7 +1,7 @@
 import { Observable } from "tns-core-modules/data/observable/observable";
 import { ExtraProps } from "../ExtraProps";
 import { Extras } from "../Extras";
-import { Reactify } from "../Types";
+import { Reactify } from "./Types";
 
 /*
 export const observableImpl = <T extends Observable>(instance: React.Component<T & ExtraProps<T>>, attach: boolean | null, nextProps?: P) => {

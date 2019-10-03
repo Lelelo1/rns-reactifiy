@@ -10,11 +10,11 @@ import { register, ContentView } from "react-nativescript/dist/client/ElementReg
 import { Container, HostContext, Instance, CustomNodeHierarchyManager } from "react-nativescript/dist/shared/HostConfigTypes";
 import { number } from "prop-types";
 import { updateListenersHelperImpl } from "./Implementation/updateListenersHelperImpl";
-import { Extras } from "./Extras";
 import { getCurrentRefImpl } from "./Implementation/getCurrentRefImpl";
 import { componentDidMountImpl } from "./Implementation/React/componentDidMountImpl"
 import { componentWillUnmountImpl } from "./Implementation/React/componentWillUnmountImpl";
 import { shouldComponentUpdateImpl } from "./Implementation/React/shouldComponentUpdateImpl";
+
 
 function Reactified<T extends Observable>(observable: T) { 
 
@@ -24,7 +24,7 @@ function Reactified<T extends Observable>(observable: T) {
        return observable;
     });
 
-    class Reactify extends React.Component<T & ExtraProps<T>, any> implements Extras<T> {
+    class Reactify extends React.Component<T & ExtraProps<T>, any> {
         static countOfInstances = 0;
         // static defaultProps = {... observable } 
         /*
@@ -118,56 +118,3 @@ function firstLetterLowercase(name: string) {
 // export const MyButton = JSX(new Button());
 export const MyButton = Reactified(new Button());
 // export const MyContentView: React.ComponentType<PropsWithoutForwardedRef<ContentView & ExtraProps<ContentView>>> & React.ClassAttributes<ContentView> = JSX(new ContentView());
-
-
-/*
-class base {
-
-}
-
-type Constructor<R> = new(...args: any[]) => R;
-export const hello1Impl = <R extends Constructor<{}>>(reactify: R) => {
-    return class extends reactify {
-        helloWorld = () => { console.log("helloWorld! 1"); }
-    }
-}
-export const hello2Impl = <R extends Constructor<{}>>(reactify: R) => {
-    return class extends reactify {
-        helloWorld = () => { if(super.helloworld !== undefined)  }
-    }
-}
-
-const WhatIs = ;
-const obj = new WhatIs();
-obj.helloWorld();
-*/
-/*
-type OwnPropsWithoutForwardedRef = PropsWithoutForwardedRef<ContentView & ExtraProps<ContentView>>;
-
-export const MyContentView: React.ComponentType<
-    OwnPropsWithoutForwardedRef & React.ClassAttributes<ContentView>
-> = React.forwardRef<ContentView, OwnPropsWithoutForwardedRef>(
-    (props: React.PropsWithChildren<OwnPropsWithoutForwardedRef>, ref: React.RefObject<ContentView>) => {
-        const { children, ...rest } = props;
-
-        return React.createElement(
-            Reactified(new ContentView()),
-            {
-                ...rest,
-                forwardedRef: ref,
-            },
-            children
-        );
-    }
-);
-*/
-
-/* 
-use dynamic imports or decorators - as the current implementation setup will have import name clashes
-(viewImpl being present in both updateListeners and componentDidMount for example)
-on dynamic imorts used in Reactify: https://mariusschulz.com/blog/dynamic-import-expressions-in-typescript
-is it bad from performence? https://stackoverflow.com/questions/58181158/performance-when-using-dynamic-imports-in-typescript
-yes it's bad for perfomence
-// https://babeljs.io/docs/en/babel-plugin-syntax-dynamic-import
-
-*/

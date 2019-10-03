@@ -13,13 +13,13 @@ export const updateListenersImpl = <T extends Observable>(instance: Reactify<T> 
     /* implementation for any rns component here - or on reactify class body*/
     
     observableImpl(instance, node, attach, nextProps);
-    // directly inheriting viewbase
 
     viewImpl(
         tryCast<Reactify<View>>(instance),
         tryCast(node), attach,
         tryCast<Props<View>>(nextProps)
     );
+
 
     actionItemImpl(
         tryCast<Reactify<ActionItem>>(instance),
@@ -48,7 +48,9 @@ const observableImpl = <T extends Observable>(instance: Reactify<Observable>, no
 
 // https://github.com/shirakaba/react-nativescript/blob/master/react-nativescript/src/components/View.ts
 const viewImpl = <T extends View>(instance: Reactify<T>, node: T, attach: boolean | null, nextProps?: T & ExtraProps<T>) => {
-    console.log("viewImpl");
+    if(!instance) {
+        return;
+    }
     if (attach === null) {
         updateListener(node, "loaded", instance.props.onLoaded, nextProps.onLoaded);
         updateListener(node, "unloaded", instance.props.onUnloaded, nextProps.onUnloaded);

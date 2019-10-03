@@ -4,6 +4,7 @@ import { $Page, $Label, $ActionBar, $GridLayout, $FormattedString, $Span, $Switc
 import { ItemSpec } from 'tns-core-modules/ui/layouts/grid-layout/grid-layout';
 import { Frame, Page, Color } from 'tns-core-modules/ui/frame/frame';
 import { MyButton } from '~/Reactified/Reactified';
+
 import { Label } from 'tns-core-modules/ui/label/label';
 import { _Label as LabelComponent } from "react-nativescript/dist/components/Label";
 // import { Button } from 'tns-core-modules/ui/button/button';
@@ -39,17 +40,13 @@ class AppContainer extends React.Component<Props, State> {
                     
             
                     <$StackLayout>
-                    <MyButton backgroundColor={new Color("green")} height={300} width={50}/>
-                    <MyButton backgroundColor={new Color("green")}/>
-  
+                    <MyButton backgroundColor={new Color("green")} height={300} width={50} />
+                    <MyButton backgroundColor={new Color("green")} height={300} width={50} />
                         <$Button text={"test"} onTap={() => {
                             console.log("tap");
-                            const forwardRef = React.createRef<Label>();
-                            const RNSLabel = Reactified(new Label());
-                            const rLabel = new RNSLabel({ forwardedRef : forwardRef});
-                            const cLabel = new LabelComponent(null);
-
-                        }}/>
+                        }}
+                        
+                        />
                     </$StackLayout>
                 </$Page>
             </$Frame>

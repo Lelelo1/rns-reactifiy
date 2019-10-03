@@ -1,5 +1,5 @@
 import { Observable } from "tns-core-modules/data/observable/observable";
-import { Reactify } from "../../Types";
+import { Reactify } from "../Types";
 import { ExtraProps } from "~/Reactified/ExtraProps";
 import { shallowEqual } from "react-nativescript/dist/client/shallowEqual";
 

@@ -18,17 +18,26 @@ import { PageNavigationEventHandler } from "react-nativescript/dist/components/P
 import { Switch } from "tns-core-modules/ui/switch/switch";
 
 
-export type ExtraProps<T> = ObservableProps<T> & ViewBaseProps<T> & ViewProps<T> & PageProps<T> & ActionItemProps<T>;
+export type ExtraProps<T extends Observable> = ObservableProps<T> & ViewBaseProps<T> & ViewProps<T> & PageProps<T> & ActionItemProps<T>;
 
 // using conditional so that RNSButton don't get navigatedTo (PageProps) 
 
 
-type ObservableProps<T> = T extends Observable ? IObservable<T> : Empty
-interface IObservable<T> {
+/* 
+ Should get ObservableProps
+ with getter/onditional typing - since the ns component
+ must be of type Observable. using below conidtional type
+ also cause an type error in getCurrentRefImpl
+ */
+// type ObservableProps<T extends Observable> = T extends Observable ? IObservable<T> : Empty
+
+interface ObservableProps<T extends Observable> {
     elementKey?: string // added
     forwardedRef?: React.RefObject<T>;
     onPropertyChange?: (data: EventData) => void;
 }
+
+/* rest is using conditional type "getters" so that button don't access get page's props etc*/
 
 type ViewBaseProps<T> = T extends ViewBase ? IViewBase : Empty
 interface IViewBase {

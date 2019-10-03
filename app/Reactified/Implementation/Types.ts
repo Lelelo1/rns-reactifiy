@@ -2,8 +2,10 @@ import { Observable, ViewBase, View } from "react-nativescript/dist/client/Eleme
 import { ExtraProps } from "../ExtraProps";
 import { Extras } from "../Extras";
 
-export type Reactify<T extends Observable> = React.Component<Props<T>> & Extras<T>;
-export type Props<T> = T & ExtraProps<T>;
+
+export type Reactify<T extends Observable> = React.Component<T & ExtraProps<T>, any>;
+
+export type Props<T extends Observable> = T & ExtraProps<T>;
 /*
 export type Observable<T> = T extends Observable ? Reactify<Observable> : Empty
 

@@ -14,17 +14,22 @@ import { getCurrentRefImpl } from "./Implementation/getCurrentRefImpl";
 import { componentDidMountImpl } from "./Implementation/React/componentDidMountImpl"
 import { componentWillUnmountImpl } from "./Implementation/React/componentWillUnmountImpl";
 import { shouldComponentUpdateImpl } from "./Implementation/React/shouldComponentUpdateImpl";
+import { firstLetterLowercase, nameOf } from "./Implementation/Helpers";
 
-
-function Reactified<T extends Observable>(observable: T) { 
-
-    const name = firstLetterLowercase(nameOf(observable));
+export function Reactified<T extends Observable>(observable: T, name?: string) { 
+    
+    if(!name) {
+        name = firstLetterLowercase(nameOf(observable));
+    }
+    
     console.log("registering " + name);
     register(name, () => {
        return observable;
     });
-
-    class Reactify extends React.Component<T & ExtraProps<T>, any> {
+    
+    // const WithObservableImpl = observableImpl(Reactify);
+    
+    return class Reactify extends React.Component<T & ExtraProps<T>, any>{
         static countOfInstances = 0;
         // static defaultProps = {... observable } 
         /*
@@ -34,7 +39,8 @@ function Reactified<T extends Observable>(observable: T) {
             console.log("constructing instance " + Reactify.countOfInstances);
         }
         */
-        readonly myRef: React.RefObject<T> = React.createRef<T>();
+        protected myNativeScriptType = observable;
+        protected myRef: React.RefObject<T> = React.createRef<T>();;
         getCurrentRef(): T | null {
             return getCurrentRefImpl(this);
         }
@@ -49,7 +55,7 @@ function Reactified<T extends Observable>(observable: T) {
         *
         * @param attach true: attach; false: detach; null: update
         */
-
+    
         updateListeners(node: T, attach: boolean | null, nextProps?: T & ExtraProps<T>): void {
             updateListenersImpl(this, node, attach, nextProps);
         }
@@ -78,10 +84,9 @@ function Reactified<T extends Observable>(observable: T) {
                 children
             );
         }
-    }
-    // const WithObservableImpl = observableImpl(Reactify);
-    return Reactify; // have to declare class name to make decorators work  // https://github.com/microsoft/TypeScript/issues/7342
-}
+    }        
+} // have to declare class name to make decorators work  // https://github.com/microsoft/TypeScript/issues/7342
+
 
 
 // React.Component<T & ExtraProps<T>
@@ -106,15 +111,7 @@ function JSX<T extends Observable>(observable: new(...args: any[]) => React.Comp
 }
 */
 
-// helpers for registering to elementRegistry
-function nameOf(object: Object): string {
-    return object.constructor.name;
-}
-function firstLetterLowercase(name: string) {
-    return name.charAt(0).toLowerCase() + name.slice(1);
-}
-
 // export const MyObservable: React.ComponentType<PropsWithoutForwardedRef<Observable> & ExtraProps<Observable>> & React.ClassAttributes<Observable> = JSX(new Observable());
 // export const MyButton = JSX(new Button());
-export const MyButton = Reactified(new Button());
+
 // export const MyContentView: React.ComponentType<PropsWithoutForwardedRef<ContentView & ExtraProps<ContentView>>> & React.ClassAttributes<ContentView> = JSX(new ContentView());

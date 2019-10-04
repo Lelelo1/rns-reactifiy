@@ -1,11 +1,13 @@
-import { Observable, ViewBase, View } from "react-nativescript/dist/client/ElementRegistry";
+import { Observable, ViewBase, View, Page } from "react-nativescript/dist/client/ElementRegistry";
 import { ExtraProps } from "../ExtraProps";
-import { Extras } from "../Extras";
-
+import { shallowEqual } from "react-nativescript/dist/client/shallowEqual";
+import { getCurrentRefImpl } from "./getCurrentRefImpl";
 
 export type Reactify<T extends Observable> = React.Component<T & ExtraProps<T>, any>;
 
 export type Props<T extends Observable> = T & ExtraProps<T>;
+
+
 /*
 export type Observable<T> = T extends Observable ? Reactify<Observable> : Empty
 
@@ -17,8 +19,32 @@ interface Empty {
 
 }
 */
+/*
+export const tryCast = <T extends Observable>(instance: Reactify<T>) => {
+    if((instance.props) as Props<T>) {
+        console.log("Was instance");
+        return instance;
+    }
+    console.log("Was not instance");
+    return null;
+}
+*/
+// https://stackoverflow.com/questions/17392349/how-can-i-check-if-element-is-an-instanceof-u
+/*
+export function tryCast<T>(instance: any) {
+    if(instance instanceof T) {
+        console.log("was");
+        return instance;
+    }
+    console.log("was not");
+    return null;
+}
+*/
 
-// helper method to be able to cast Reactify<Observable> to Reactify<View>  etc 
-export const tryCast = <T>(parameter: any) => {
-    return parameter as T;
+// https://stackoverflow.com/questions/23533374/compare-types-in-generic-function-using-typescript
+// helper method to be able to cast Reactify<Observable> to Reactify<View>  etc
+
+/* never got his to work*/
+export const tryCast = <T extends Observable>(instance: any) => {
+    return instance;
 }

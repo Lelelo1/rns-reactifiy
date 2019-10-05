@@ -19,6 +19,7 @@
     "react-mixin": "^2.0.2",
     "react-nativescript": "^0.12.0",
     "tns-core-modules": "~6.1.0",
+    "tns-platform-declarations": "^6.1.1",
     "ts-mixer": "^4.0.0",
     "typescript-mix": "^3.1.3"
   },

@@ -6,7 +6,7 @@ export const componentDidMountImpl = <T extends Observable>(instance: Reactify<T
 }
 
 const observableImpl = <T extends Observable>(instance: Reactify<T>) => {
-    instance.updateListenersHelper(true);
+    Reflect.get(instance, "updateListenersHelper")(true);
 }
 /*
 const viewBaseImpl = <T extends Observable>(instance: React.Component<T & ExtraProps<T>>) => {

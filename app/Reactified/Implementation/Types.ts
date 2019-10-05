@@ -1,9 +1,8 @@
 import { Observable, ViewBase, View } from "react-nativescript/dist/client/ElementRegistry";
 import { ExtraProps } from "../ExtraProps";
-import { Extras } from "../Extras";
 
 
-export type Reactify<T extends Observable> = React.Component<T & ExtraProps<T>, any>;
+// export type Reactify<T extends Observable> = React.Component<T & ExtraProps<T>, any>;
 
 export type Props<T extends Observable> = T & ExtraProps<T>;
 /*
@@ -17,6 +16,7 @@ interface Empty {
 
 }
 */
+
 
 // helper method to be able to cast Reactify<Observable> to Reactify<View>  etc 
 export const tryCast = <T>(parameter: any) => {

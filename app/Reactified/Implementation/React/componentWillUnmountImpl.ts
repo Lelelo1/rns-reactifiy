@@ -1,5 +1,6 @@
 import { Observable } from "tns-core-modules/data/observable/observable";
-import { Reactify } from "../Types";
+import { Reactify } from "~/Reactified/API";
+
 
 
 export const componentWillUnmountImpl = <T extends Observable>(instance: Reactify<T>) => {
@@ -7,5 +8,5 @@ export const componentWillUnmountImpl = <T extends Observable>(instance: Reactif
 }
 
 const observableImpl = <T extends Observable>(instance: Reactify<T>) => {
-    instance.updateListenersHelper(false);
+    Reflect.get(instance, "updateListenersHelper")(false);
 }

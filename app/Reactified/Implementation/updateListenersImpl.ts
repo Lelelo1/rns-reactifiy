@@ -5,8 +5,8 @@ import { Observable, View, Page, ActionItem } from "react-nativescript/dist/clie
 import { ExtraProps } from "../ExtraProps";
 import { updateListener } from "react-nativescript/dist/client/EventHandling";
 import { GestureTypes } from "tns-core-modules/ui/gestures/gestures";
-import { Reactify, Props } from "./Types"
-import { tryCast } from "./Types";
+import { tryCast, Props } from "./Types";
+import { Reactify } from "../API";
 
 export const updateListenersImpl = <T extends Observable>(instance: Reactify<T> ,node: T, attach: boolean | null, nextProps?: Props<T>) => {
     
@@ -48,9 +48,6 @@ const observableImpl = <T extends Observable>(instance: Reactify<Observable>, no
 
 // https://github.com/shirakaba/react-nativescript/blob/master/react-nativescript/src/components/View.ts
 const viewImpl = <T extends View>(instance: Reactify<T>, node: T, attach: boolean | null, nextProps?: T & ExtraProps<T>) => {
-    if(!instance) {
-        return;
-    }
     if (attach === null) {
         updateListener(node, "loaded", instance.props.onLoaded, nextProps.onLoaded);
         updateListener(node, "unloaded", instance.props.onUnloaded, nextProps.onUnloaded);

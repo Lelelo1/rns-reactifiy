@@ -1,5 +1,5 @@
 import { Observable } from "tns-core-modules/data/observable/observable";
-import { Reactify } from "../Types";
+import { Reactify } from "~/Reactified/API";
 
 export const componentDidMountImpl = <T extends Observable>(instance: Reactify<T>) => {
     observableImpl(instance);

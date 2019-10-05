@@ -1,11 +1,5 @@
 import { Observable, ViewBase, View, Page } from "react-nativescript/dist/client/ElementRegistry";
 import { ExtraProps } from "../ExtraProps";
-<<<<<<< HEAD
-
-=======
-import { shallowEqual } from "react-nativescript/dist/client/shallowEqual";
-import { getCurrentRefImpl } from "./getCurrentRefImpl";
->>>>>>> a3b5339711abfeaa0959f5eb65d1eeace8042726
 
 // export type Reactify<T extends Observable> = React.Component<T & ExtraProps<T>, any>;
 
@@ -48,14 +42,8 @@ export function tryCast<T>(instance: any) {
 // https://stackoverflow.com/questions/23533374/compare-types-in-generic-function-using-typescript
 // helper method to be able to cast Reactify<Observable> to Reactify<View>  etc
 
-<<<<<<< HEAD
 
 // helper method to be able to cast Reactify<Observable> to Reactify<View>  etc 
 export const tryCast = <T>(parameter: any) => {
     return parameter as T;
-=======
-/* never got his to work*/
-export const tryCast = <T extends Observable>(instance: any) => {
-    return instance;
->>>>>>> a3b5339711abfeaa0959f5eb65d1eeace8042726
 }

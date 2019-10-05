@@ -31,15 +31,15 @@ export class Reactify<T extends Observable> extends React.Component<T & ExtraPro
     * @param attach true: attach; false: detach; null: update
     */
     protected updateListenersHelper(attach: boolean | null, nextProps?: T & ExtraProps<T>): void {
-        updateListenersHelperImpl(this, attach, nextProps); // can't run for some reason
-        /*
+        // updateListenersHelperImpl(this, attach, nextProps); // can't run for some reason
+        
         const node: T | null = this.getCurrentRef();
         if (node === null) {
             console.warn(`React ref to NativeScript View lost, so unable to update event listeners.`);
             return;
         }
         this.updateListeners(node, attach, nextProps);
-        */
+        
     }
     /**
     *

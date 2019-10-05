@@ -3,28 +3,11 @@ import * as React from "react";
 import { $Page, $Label, $ActionBar, $GridLayout, $FormattedString, $Span, $Switch, $Frame, $Button, $StackLayout } from "react-nativescript";
 import { ItemSpec } from 'tns-core-modules/ui/layouts/grid-layout/grid-layout';
 import { Frame, Page, Color } from 'tns-core-modules/ui/frame/frame';
-<<<<<<< HEAD
 import { Reactified } from '~/Reactified/Reactified';
 
 import { Label } from 'tns-core-modules/ui/label/label';
 import { _Label as LabelComponent } from "react-nativescript/dist/components/Label";
 import { Button } from 'tns-core-modules/ui/button/button';
-=======
-
-import { Label } from 'tns-core-modules/ui/label/label';
-import { _Label as LabelComponent } from "react-nativescript/dist/components/Label";
-import { RNSFriendlyFormattedString } from "react-nativescript/dist/components/FormattedString";
-import { Button } from 'react-nativescript/dist/client/ElementRegistry';
-import { Reactified } from "../Reactified/Reactified";
-
-class MyFancyButton extends Button{
-
-}
-const MyButton = Reactified(new MyFancyButton(), "button");
-
-const bb = new MyButton(null);
-
->>>>>>> a3b5339711abfeaa0959f5eb65d1eeace8042726
 // import { Button } from 'tns-core-modules/ui/button/button';
 
 class MyFancyButton extends Button {
@@ -44,12 +27,7 @@ interface State {
 
 class AppContainer extends React.Component<Props, State> {
     private readonly pageRef: React.RefObject<Page> = React.createRef<Page>();
-<<<<<<< HEAD
     private readonly myFancyButtonRef: React.RefObject<MyFancyButton> = React.createRef<MyFancyButton>();
-=======
-    // private readonly myButtonRef = React.createRef<Button>();
-    
->>>>>>> a3b5339711abfeaa0959f5eb65d1eeace8042726
     componentDidMount(){
 
 
@@ -61,7 +39,6 @@ class AppContainer extends React.Component<Props, State> {
                 return page;
             }
         });
-<<<<<<< HEAD
         setTimeout(() => {
             const myFancyButton = this.myFancyButtonRef.current;
             myFancyButton.backgroundColor = new Color("silver");
@@ -69,10 +46,6 @@ class AppContainer extends React.Component<Props, State> {
                 console.log("tap");
             })
         },2000)
-=======
-
-
->>>>>>> a3b5339711abfeaa0959f5eb65d1eeace8042726
     }
 
     render(){
@@ -84,7 +57,6 @@ class AppContainer extends React.Component<Props, State> {
                     
             
                     <$StackLayout>
-<<<<<<< HEAD
                     <MyButton
                         forwardedRef={this.myFancyButtonRef}
                         backgroundColor={new Color("green")}
@@ -92,11 +64,6 @@ class AppContainer extends React.Component<Props, State> {
                         height={40}
                     />
                     <MyButton backgroundColor={new Color("orange")} width={100} height={20} />
-=======
-                    <MyButton backgroundColor={new Color("green")} height={300} width={50} />
-                    <MyButton backgroundColor={new Color("green")} height={300} width={50} />
-                    
->>>>>>> a3b5339711abfeaa0959f5eb65d1eeace8042726
                         <$Button text={"test"} onTap={() => {
                             console.log("tap");
                         }}

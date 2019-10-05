@@ -19,7 +19,7 @@ import { Switch } from "tns-core-modules/ui/switch/switch";
 
 
 // export type ExtraProps<T extends Observable> = ObservableProps<T> & ViewBaseProps<T> & ViewProps<T> & PageProps<T> & ActionItemProps<T>;
-export type ExtraProps<T extends Observable> = ObservableProps<T> & IView & ViewProps<T> & PageProps<T> & ActionItemProps<T>;
+export type ExtraProps<T extends Observable> = ObservableProps<T> & ViewBaseProps<T> & ViewProps<T> & PageProps<T> & ActionItemProps<T>;
 // using conditional so that RNSButton don't get navigatedTo (PageProps) 
 
 

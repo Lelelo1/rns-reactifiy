@@ -12,7 +12,7 @@ import { executeInOrder } from "./Helpers";
 export const updateListenersImpl = <T extends Observable>(instance: Reactify<T> ,node: T, attach: boolean | null, nextProps?: Props<T>) => {
     
     /* implementation for any rns component here - or on reactify class body*/
-    // executeInOrder([pageImpl, viewImpl, observableImpl, actionItemImpl], instance, node, attach);
+    executeInOrder([pageImpl, viewImpl, observableImpl, actionItemImpl], instance, node, attach);
 }
 
 const observableImpl = <T extends Observable>(instance: Reactify<Observable>, node: T, attach: boolean | null, nextProps?: T & ExtraProps<T>) => {

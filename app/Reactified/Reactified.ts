@@ -3,6 +3,7 @@ import { Observable, EventData } from "tns-core-modules/data/observable/observab
 import { register, ContentView } from "react-nativescript/dist/client/ElementRegistry";
 import { nameOf, firstLetterLowercase } from "./Implementation/Helpers";
 import { Reactify } from "./API";
+import { renderImpl } from "./Implementation/React/renderImpl";
 
 
 
@@ -19,15 +20,7 @@ export function Reactified<T extends Observable>(observable: T, name?: string) {
     
     return class extends Reactify<T> {
         render(): React.ReactNode {
-            const { forwardedRef, children, ...rest } = this.props
-            return React.createElement(
-                name,
-                {
-                    ...rest,
-                    ref: forwardedRef || this.myRef,
-                },
-                children
-            );
+            return renderImpl(name, this, observable);
         }
     }    // have to declare class name to make decorators work  // https://github.com/microsoft/TypeScript/issues/7342
 }

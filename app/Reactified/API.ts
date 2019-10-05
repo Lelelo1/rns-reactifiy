@@ -9,9 +9,13 @@ import { updateListenersImpl } from "./Implementation/updateListenersImpl";
 import { shouldComponentUpdateImpl } from "./Implementation/React/shouldComponentUpdateImpl";
 import { componentWillUnmountImpl } from "./Implementation/React/componentWillUnmountImpl";
 import { GestureTypes } from "tns-core-modules/ui/gestures/gestures";
+import { CustomNodeHierarchyManager } from "react-nativescript/dist/shared/HostConfigTypes";
+import { __customHostConfigAppendChildImpl } from "./Implementation/CustomNodeHierarchyManager/__customHostConfigAppendChildImpl";
+import { __customHostConfigRemoveChildImpl } from "./Implementation/CustomNodeHierarchyManager/__customHostConfigRemoveChildImpl";
+import { __customHostConfigInsertBeforeImpl } from "./Implementation/CustomNodeHierarchyManager/__customHostConfigInsertBeforeImpl";
 
 /* declared here in seperate file so class can be accessed from impl files*/
-export class Reactify<T extends Observable> extends React.Component<T & ExtraProps<T>, any> {
+export class Reactify<T extends Observable> extends React.Component<T & ExtraProps<T>, any> implements CustomNodeHierarchyManager<T> {
     static countOfInstances = 0;
     // static defaultProps = {... observable } 
     /*
@@ -74,4 +78,17 @@ export class Reactify<T extends Observable> extends React.Component<T & ExtraPro
         // this.updateListenersHelper(false);
         componentWillUnmountImpl(this);
     }
+    /* render */
+
+    __ImplementsCustomNodeHierarchyManager__: true;
+    __customHostConfigAppendChild?(parentInstance: T, child: Observable | import("tns-core-modules/ui/text-base/text-base").TextBase): boolean {
+        return __customHostConfigAppendChildImpl(parentInstance, child);
+    }
+    __customHostConfigRemoveChild?(parentInstance: T, child: Observable | import("tns-core-modules/ui/text-base/text-base").TextBase): boolean {
+        return __customHostConfigRemoveChildImpl(parentInstance, child);
+    }
+    __customHostConfigInsertBefore?(parentInstance: T, child: Observable | import("tns-core-modules/ui/text-base/text-base").TextBase, beforeChild: Observable | import("tns-core-modules/ui/text-base/text-base").TextBase): boolean {
+        return __customHostConfigInsertBeforeImpl(parentInstance, child, beforeChild);
+    }
+
 }

@@ -63,7 +63,7 @@ class AppContainer extends React.Component<Props, State> {
                         width={120}
                         height={40}
                     />
-                    <MyButton backgroundColor={new Color("orange")} width={100} height={20} />
+                    <MyButton backgroundColor={new Color("orange")} text={"hello world"}/>
                         <$Button text={"test"} onTap={() => {
                             console.log("tap");
                         }}

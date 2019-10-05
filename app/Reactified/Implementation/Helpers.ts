@@ -27,6 +27,12 @@ export const executeInOrder = (implMethods: ImplMethod[], ...args: any) => {
     let returnValue : any = undefined;
     let run = undefined;
 
+    run = implMethods.find((method) => method.name === "genericImpl");
+    if(run) {
+        returnValue = run(...args);
+        run = undefined;
+    }
+
     run = implMethods.find((method) => method.name === "observableImpl");
     if(run) { 
         returnValue = run(...args);
@@ -57,6 +63,20 @@ export const executeInOrder = (implMethods: ImplMethod[], ...args: any) => {
         returnValue = run(...args);
         run = undefined;
     }
+
+    run = implMethods.find((method) => method.name == "textBaseImpl");
+    if(run) {
+        returnValue = run(...args);
+        run = undefined;
+    }
+
+    run = implMethods.find((method) => method.name == "buttonImpl"); // extends TextBase...
+    if(run) {
+        returnValue = run(...args);
+        run = undefined;
+    }
+
+    return returnValue;
 }
 
 const hierarchyMap: Record<string, string> = {

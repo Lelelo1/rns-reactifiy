@@ -90,7 +90,7 @@ export function Reactified<T extends Observable>(observable: T, name?: string) {
             onDataChangeImpl(self,args);
         };
         render(): React.ReactNode {
-            return renderImpl(name, self);
+            return renderImpl(name, self, observable);
         }
     }
     return Reactify;

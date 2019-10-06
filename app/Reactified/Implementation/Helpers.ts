@@ -29,57 +29,84 @@ export const executeInOrder = (implMethods: ImplMethod[], ...args: any) => {
 
     run = implMethods.find((method) => method.name === "genericImpl");
     if(run) {
-        returnValue = run(...args);
+        const value = run(...args);
+        if(value) {
+            returnValue = value;
+        }
         run = undefined;
     }
 
     run = implMethods.find((method) => method.name === "observableImpl");
     if(run) { 
-        returnValue = run(...args);
+        const value = run(...args);
+        if(value) {
+            returnValue = value;
+        }
         run = undefined;
     }
 
     run = implMethods.find((method) => method.name === "viewBaseImpl"); // extends Observable...
     
     if(run) {
-        returnValue = run(...args);
+        const value = run(...args);
+        if(value) {
+            returnValue = value;
+        }
         run = undefined
     }
 
     run = implMethods.find((method) => method.name === "viewImpl"); // extends ViewBase...
     if(run) {
-        returnValue = run(...args);
+        const value = run(...args);
+        if(value) {
+            returnValue = value;
+        }
         run = undefined
     }
 
     run = implMethods.find((method) => method.name === "actionItemImpl");
     if(run) {
-        returnValue = run(...args);
+        const value = run(...args);
+        if(value) {
+            returnValue = value;
+        }
         run = undefined;
     }
 
     run = implMethods.find((method) => method.name === "pageImpl") // extends View...
     if(run) {
-        returnValue = run(...args);
+        const value = run(...args);
+        if(value) {
+            returnValue = value;
+        }
         run = undefined;
     }
 
     run = implMethods.find((method) => method.name === "textBaseImpl");
     if(run) {
-        returnValue = run(...args);
+        const value = run(...args);
+        if(value) {
+            returnValue = value;
+        }
         run = undefined;
     }
 
     run = implMethods.find((method) => method.name === "datePickerImpl");
     if(run) {
-        returnValue = run(...args);
+        const value = run(...args);
+        if(value) {
+            returnValue = value;
+        }
         run = undefined;
     }
 
 
     run = implMethods.find((method) => method.name === "buttonImpl"); // extends TextBase...
     if(run) {
-        returnValue = run(...args);
+        const value = run(...args);
+        if(value) {
+            returnValue = value;
+        }
         run = undefined;
     }
 

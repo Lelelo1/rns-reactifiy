@@ -15,7 +15,7 @@ class MyFancyButton extends Button {
 
 }
 
-const MyButton = Reactified(new Button(), "button");
+// const MyButton = Reactified(new Button(), "button");
 
 const MyDatePicker = Reactified(new DatePicker()); 
 
@@ -43,11 +43,13 @@ class AppContainer extends React.Component<Props, State> {
             }
         });
         setTimeout(() => {
+            /*
             const myFancyButton = this.myFancyButtonRef.current;
             myFancyButton.backgroundColor = new Color("silver");
             myFancyButton.on("tap", (event) => {
                 console.log("tap");
             })
+            */
             /*
             const myDatePicker = this.myDatePickerRef.current;
             myDatePicker.backgroundColor = new Color("green");
@@ -68,31 +70,13 @@ class AppContainer extends React.Component<Props, State> {
                     
             
                     <$StackLayout>
-                    <MyButton
-                        forwardedRef={this.myFancyButtonRef}
-                        backgroundColor={new Color("green")}
-                        width={120}
-                        height={40}
-                    />
-                    <MyButton
-                        backgroundColor={new Color("orange")}
-                        text={"hello world"}
-                        onTap={(event) => {
-                            console.log("tapped");
-                        }}
-                        />
+                    
                     <MyDatePicker
                         forwardedRef={this.myDatePickerRef}
                         onDateChange={(date) => {
                             console.log("date Changed")
                         }}
                     />
-                    <$Button text={"test"} onTap={() => {
-                        console.log("tap");
-                    }}
-                    >
-                    <$FormattedString />    
-                    </$Button>
                     </$StackLayout>
                 </$Page>
             </$Frame>

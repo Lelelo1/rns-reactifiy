@@ -15,14 +15,12 @@ export const updateListenersImpl = <T extends Observable>(instance: Reactify<T> 
 }
 
 const observableImpl = <T extends Observable>(instance: Reactify<Observable>, node: T, attach: boolean | null, nextProps?: T & ExtraProps<T>) => {
-    if(tryCast(instance)) {
-        console.log("observableImpl");
-        if (attach === null) {
-            updateListener(node, "propertyChange", instance.props.onPropertyChange, nextProps.onPropertyChange);
-        } else {
-            const method = (attach ? node.on : node.off).bind(node);
-            if (instance.props.onPropertyChange) method("propertyChange", instance.props.onPropertyChange);
-        }
+    console.log("observableImpl");
+    if (attach === null) {
+        updateListener(node, "propertyChange", instance.props.onPropertyChange, nextProps.onPropertyChange);
+    } else {
+        const method = (attach ? node.on : node.off).bind(node);
+        if (instance.props.onPropertyChange) method("propertyChange", instance.props.onPropertyChange);
     }
     
 }
@@ -63,32 +61,28 @@ const viewImpl = <T extends View>(instance: Reactify<T>, node: T, attach: boolea
 
 const actionItemImpl = <T extends ActionItem>(instance: Reactify<T>, node: T, attach: boolean | null, nextProps?: T & ExtraProps<T>) => {
     // console.log("actionItem try cast: " + instance as ActionItem);
-    if(tryCast<ActionItem>(instance)) {
-        console.log("actionItemImpl")
-        if (attach === null) {
-            updateListener(node, "tap", instance.props.onTap, nextProps.onTap);
-        } else {
-            const method = (attach ? node.on : node.off).bind(node);
-            if (instance.props.onTap) method("tap", instance.props.onTap);
-        }
+    console.log("actionItemImpl")
+    if (attach === null) {
+        updateListener(node, "tap", instance.props.onTap, nextProps.onTap);
+    } else {
+        const method = (attach ? node.on : node.off).bind(node);
+        if (instance.props.onTap) method("tap", instance.props.onTap);
     }
 }
 const pageImpl = <T extends Page>(instance: Reactify<T>, node: Page, attach: boolean | null, nextProps?: Page & ExtraProps<Page>) => {
-    if(tryCast<Page>(instance)) {
-        console.log("pageImpl");
-        if (attach === null) {
-            updateListener(node, "navigatedFrom", instance.props.onNavigatedFrom, nextProps.onNavigatedFrom);
-            updateListener(node, "navigatedTo", instance.props.onNavigatedTo, nextProps.onNavigatedTo);
-            updateListener(node, "navigatingFrom", instance.props.onNavigatingFrom, nextProps.onNavigatingFrom);
-            updateListener(node, "navigatingTo", instance.props.onNavigatingTo, nextProps.onNavigatingTo);
-        } else {
-            const method = (attach ? node.on : node.off).bind(node);
+    console.log("pageImpl");
+    if (attach === null) {
+        updateListener(node, "navigatedFrom", instance.props.onNavigatedFrom, nextProps.onNavigatedFrom);
+        updateListener(node, "navigatedTo", instance.props.onNavigatedTo, nextProps.onNavigatedTo);
+        updateListener(node, "navigatingFrom", instance.props.onNavigatingFrom, nextProps.onNavigatingFrom);
+        updateListener(node, "navigatingTo", instance.props.onNavigatingTo, nextProps.onNavigatingTo);
+    } else {
+        const method = (attach ? node.on : node.off).bind(node);
         
-            if (instance.props.onNavigatedFrom) method("navigatedFrom", instance.props.onNavigatedFrom);
-            if (instance.props.onNavigatedTo) method("navigatedTo", instance.props.onNavigatedTo);
-            if (instance.props.onNavigatingFrom) method("navigatingFrom", instance.props.onNavigatingFrom);
-            if (instance.props.onNavigatingTo) method("navigatingTo", instance.props.onNavigatingTo);
-        }
+        if (instance.props.onNavigatedFrom) method("navigatedFrom", instance.props.onNavigatedFrom);
+        if (instance.props.onNavigatedTo) method("navigatedTo", instance.props.onNavigatedTo);
+        if (instance.props.onNavigatingFrom) method("navigatingFrom", instance.props.onNavigatingFrom);
+        if (instance.props.onNavigatingTo) method("navigatingTo", instance.props.onNavigatingTo);
     }
 }
 

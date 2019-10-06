@@ -77,7 +77,6 @@ export function Reactified<T extends Observable>(observable: T, name?: string) {
             // this.updateListenersHelper(false);
             componentWillUnmountImpl(this);
         }
-        /* render */
     
         __ImplementsCustomNodeHierarchyManager__: true;
         __customHostConfigAppendChild?(parentInstance: T, child: Observable | import("tns-core-modules/ui/text-base/text-base").TextBase): boolean {

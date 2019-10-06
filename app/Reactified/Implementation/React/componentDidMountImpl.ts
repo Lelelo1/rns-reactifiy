@@ -12,12 +12,10 @@ const observableImpl = <T extends Observable>(instance: Reactify<T>) => {
     Reflect.get(instance, "updateListenersHelper")(true);
 }
 const datePickerImpl = <T extends DatePicker>(instance: Reactify<T>) => {
-    if(instance) {
-        const node: T | null = Reflect.get(instance, "getCurrentRef")();
+    const node: T | null = Reflect.get(instance, "getCurrentRef")();
         if (!node) {
             console.warn(`React ref to NativeScript View lost, so unable to update event listeners.`);
             return;
         }
         node.on("dateChange", Reflect.get(instance, "onDateChange"));
-    }
 }

@@ -3,21 +3,20 @@ Components having special implementation:
 					Button r Impl
 					DatePicker s, c Impl
 					EditableTextBase Impl
-					FormattedString m Impl (skipped)
+					FormattedString m Impl (skipped	CustomNodeHierarchyManager impl)
 					Frame Impl
 					(GridLayout props only)
 					HtmlView r Impl
 					Label r Impl
 					ListPicker s c Impl
-ListView Needs new implementation?
+ListView Needs new implementation? (Skipped)
 					Page Impl
-Placeholder
-ScrollView
-SearchBar s c u
-SegmentedBar m
-Slider s c
-Span r
-Switch s c
+					Placeholder Impl //did not test
+					ScrollView Impl
+					SearchBar s c u Impl
+					SegmentedBar m Impl (skipped CustomNodeHierarchyManager impl)
+					Slider s c Impl
+					Switch s c Impl
 TabView
 TabViewItem r
 					TextBase m  CustomNodeHierarchyManager Impl

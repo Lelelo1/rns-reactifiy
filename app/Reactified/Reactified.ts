@@ -1,6 +1,6 @@
 import * as React from "react";
-import { Observable, EventData } from "tns-core-modules/data/observable/observable";
-import { register, ContentView } from "react-nativescript/dist/client/ElementRegistry";
+import { EventData } from "tns-core-modules/data/observable/observable";
+import { Observable, register, ContentView } from "react-nativescript/dist/client/ElementRegistry";
 import { nameOf, firstLetterLowercase } from "./Implementation/Helpers";
 import { renderImpl } from "./Implementation/React/renderImpl";
 import { getCurrentRefImpl } from "./Implementation/getCurrentRefImpl";
@@ -16,6 +16,9 @@ import { onDataChangeImpl } from "./Implementation/Unique/onDataChangeImpl";
 import { CustomNodeHierarchyManager } from "react-nativescript/dist/shared/HostConfigTypes";
 import { updateListenersHelperImpl } from "./Implementation/updateListenersHelperImpl";
 import { onSelectIndexChangeImpl } from "./Implementation/Unique/onSelectedIndexChangeImpl";
+import { onTextChangeImpl } from "./Implementation/Unique/onTextChangeImpl";
+import { onValueChangeImpl } from "./Implementation/Unique/onValueChangeImpl";
+import { onToggleImpl } from "./Implementation/Unique/onToggleImpl";
 
 
 
@@ -96,6 +99,15 @@ export function Reactified<T extends Observable>(observable: T, name?: string) {
         private readonly onSelectedIndexChange = (args: EventData) => {
             onSelectIndexChangeImpl(this, args)
         };
+        private readonly onTextChange = (args: EventData) => {
+            onTextChangeImpl(this, args);
+        };
+        private readonly onValueChange = (args: EventData) => {
+            onValueChangeImpl(this, args);
+        };
+        private readonly onToggle = (args: EventData) => { 
+            onToggleImpl(this, args);
+        }
 
     }
     return Reactify;

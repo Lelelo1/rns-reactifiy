@@ -1,13 +1,27 @@
 import { hot } from 'react-hot-loader/root';
 import * as React from "react";
-import { $Page, $Label, $ActionBar, $GridLayout, $FormattedString, $Span, $Switch, $Frame, $Button, $StackLayout, $DatePicker, $TextField } from "react-nativescript";
+import { $Page, $Label, $ActionBar, $GridLayout, $FormattedString, $Span, $Switch, $Frame, $Button, $StackLayout, $DatePicker, $TextField, $SegmentedBarItem, $Slider, $ActionItem } from "react-nativescript";
 import { ItemSpec } from 'tns-core-modules/ui/layouts/grid-layout/grid-layout';
 import { Frame, Page, Color } from 'tns-core-modules/ui/frame/frame';
 import { Reactified } from '~/Reactified/Reactified';
 
 import { _Label as LabelComponent } from "react-nativescript/dist/components/Label";
-import { Button } from 'tns-core-modules/ui/button/button';
-import { DatePicker, EditableTextBase, TextField, HtmlView, Label, ListPicker } from 'react-nativescript/dist/client/ElementRegistry';
+import {
+    Button,
+    DatePicker,
+    EditableTextBase,
+    TextField,
+    HtmlView,
+    Label,
+    ListPicker,
+    Placeholder,
+    ScrollView,
+    SearchBar,
+    SegmentedBar,
+    Slider,
+    Switch,
+    ActionItem
+} from 'react-nativescript/dist/client/ElementRegistry';
 // import { Button } from 'tns-core-modules/ui/button/button';
 
 class MyFancyButton extends Button {
@@ -17,8 +31,7 @@ class MyFancyButton extends Button {
 
 // const MyButton = Reactified(new Button(), "button");
 
-const MyComponent = Reactified(new ListPicker()); 
-
+const MyComponent = Reactified(new Switch()); 
 interface Props {
     forwardedRef: React.RefObject<Frame>,
 }
@@ -68,16 +81,23 @@ class AppContainer extends React.Component<Props, State> {
         return (
             <$Frame ref={forwardedRef}>
                 <$Page ref={this.pageRef} className="page" actionBarHidden={false}>
-                    
+                    <$ActionBar>
+                        <$ActionItem text={"Check this out"} onTap={() => {
+                            console.log("tap");
+                        }}/>
+                    </$ActionBar>
             
                     <$StackLayout>
-                    
-                    <MyComponent
-                        width={200}
-                        height={200}
-                        backgroundColor={new Color("gray")}
-                        items={["hej", "och", "hå"]}
-                    />
+                        <MyComponent onTap={() => {
+                            console.log("tap");
+                        }}/>
+                        <$Switch onToggle={(checked) => {
+                            console.log("checked: " + checked);
+                        }}
+                        onTap={() => {
+                            console.log("tap");
+                        }}
+                        />
                     </$StackLayout>
                 </$Page>
             </$Frame>

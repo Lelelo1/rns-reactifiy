@@ -25,17 +25,25 @@ import {
     HtmlView,
     ListPicker,
     Switch,
+    ScrollView,
+    SearchBar,
+    SegmentedBar,
+    Slider,
 } from "react-nativescript/dist/client/ElementRegistry";
 
 import { PageNavigationEventHandler } from "react-nativescript/dist/components/Page";
 import { ItemSpec } from "tns-core-modules/ui/layouts/grid-layout/grid-layout";
 import { ItemsSource } from "tns-core-modules/ui/list-picker/list-picker";
+import { CreateViewEventData, Placeholder } from "tns-core-modules/ui/placeholder/placeholder";
+import { ScrollEventData } from "tns-core-modules/ui/scroll-view/scroll-view";
+import { SelectedIndexChangedEventData } from "tns-core-modules/ui/segmented-bar/segmented-bar";
 
 
 // export type ExtraProps<T extends Observable> = ObservableProps<T> & ViewBaseProps<T> & ViewProps<T> & PageProps<T> & ActionItemProps<T>;
 export type ExtraProps<T extends Observable> = ObservableProps<T> & ViewBaseProps<T> & ViewProps<T>
  & PageProps<T> & ActionItemProps<T> & DatePickerProps<T> & EditableTextBaseProps<T> & FrameProps<T>
- & GridLayoutProps<T> & HtmlViewProps<T> & ListPickerProps<T>;
+ & GridLayoutProps<T> & HtmlViewProps<T> & ListPickerProps<T> & PlaceholderProps<T> & ScrollViewProps<T>
+ & SearchBarProps<T> & SegmentedBarProps<T> & SliderProps<T> & SwitchProps<T>;
 
 // using conditional so that RNSButton don't get navigatedTo (PageProps) 
 
@@ -125,10 +133,43 @@ type HtmlViewProps<T> = T extends HtmlView ? IHtmlView : Empty
 interface IHtmlView {
     html: string;
 }
+
 type ListPickerProps<T> = T extends ListPicker ? IListPicker : Empty;
 interface IListPicker {
     items: any[] | ItemsSource;
     onSelectedIndexChange?: (selectedIndex: number) => void;
+}
+
+type PlaceholderProps<T> = T extends Placeholder ? IPlaceholder : Empty
+interface IPlaceholder {
+    onCreatingView?(args: CreateViewEventData): void;
+}
+
+type ScrollViewProps<T> = T extends ScrollView ? IScrollView : Empty;
+interface IScrollView {
+    onScroll?: (args: ScrollEventData) => void;
+}
+
+type SearchBarProps<T> = T extends SearchBar ? ISearchBar : Empty;
+interface ISearchBar {
+    onTextChange?: (text: string) => void;
+    onSubmit?: (args: EventData) => void;
+    onClose?: (args: EventData) => void;
+}
+
+type SegmentedBarProps<T> = T extends SegmentedBar ? ISegmentedBar : Empty
+interface ISegmentedBar {
+    onSelectedIndexChanged?: (args: SelectedIndexChangedEventData) => void;
+}
+
+type SliderProps<T> = T extends Slider ? ISlider : Empty;
+interface ISlider {
+    onValueChange?: (args: number) => void;
+}
+
+type SwitchProps<T> = T extends Switch ? ISwitch : Empty;
+interface ISwitch {
+    onToggle?: (checked: boolean) => void;
 }
 
 /* could be used set props for every single RNS Component*/

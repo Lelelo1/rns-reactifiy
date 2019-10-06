@@ -127,6 +127,69 @@ export const executeInOrder = (implMethods: ImplMethod[], ...args: any) => {
         run = undefined;
     }
 
+    run = implMethods.find((method) => method.name === "placeholderImpl");
+    if(run) {
+        const value = run(...args);
+        if(value) {
+            returnValue = value;
+        }
+        run = undefined;
+    }
+
+    run = implMethods.find((method) => method.name === "searchBarImpl");
+    if(run) {
+        const value = run(...args);
+        if(value) {
+            returnValue = value;
+        }
+        run = undefined;
+    }
+
+    run = implMethods.find((method) => method.name === "segmentedBarImpl");
+    if(run) {
+        const value = run(...args);
+        if(value) {
+            returnValue = value;
+        }
+        run = undefined;
+    }
+
+    run = implMethods.find((method) => method.name === "sliderImpl");
+    if(run) {
+        const value = run(...args);
+        if(value) {
+            returnValue = value;
+        }
+        run = undefined;
+    }
+
+    run = implMethods.find((method) => method.name === "switchImpl");
+    if(run) {
+        const value = run(...args);
+        if(value) {
+            returnValue = value;
+        }
+        run = undefined;
+    }
+
+    run = implMethods.find((method) => method.name === "contentViewImpl");
+    if(run) {
+        const value = run(...args);
+        if(value) {
+            returnValue = value;
+        }
+        run = undefined;
+    }
+
+    run = implMethods.find((method) => method.name === "scrollViewImpl"); // extends ContentView...
+    if(run) {
+        const value = run(...args);
+        if(value) {
+            returnValue = value;
+        }
+        run = undefined;
+    }
+
     run = implMethods.find((method) => method.name === "buttonImpl"); // extends TextBase...
     if(run) {
         const value = run(...args);

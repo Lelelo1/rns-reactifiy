@@ -1,11 +1,18 @@
-import { Observable, DatePicker, ListPicker } from "react-nativescript/dist/client/ElementRegistry";
+import { Observable, DatePicker, ListPicker, SearchBar, Slider, Switch } from "react-nativescript/dist/client/ElementRegistry";
 import { executeInOrder } from "../Helpers";
 import { Reactify } from "../Types";
 
 
 
 export const componentWillUnmountImpl = <T extends Observable>(instance: Reactify<T>) => {
-    executeInOrder([observableImpl, datePickerImpl, listPickerImpl], instance);
+    executeInOrder(
+        [observableImpl,
+        datePickerImpl,
+        listPickerImpl,
+        searchBarImpl,
+        sliderImpl,
+        switchImpl], 
+        instance);
 }
 
 const observableImpl = <T extends Observable>(instance: Reactify<T>) => {
@@ -26,4 +33,30 @@ const listPickerImpl = <T extends ListPicker>(instance: Reactify<T>) => {
             return;
         }
         node.off("selectedIndexChange", Reflect.get(instance, "onSelectedIndexChange"));
+}
+const searchBarImpl = <T extends SearchBar>(instance: Reactify<T>) => {
+    const node: T | null = Reflect.get(instance, "getCurrentRef")();
+        if (!node) {
+            console.warn(`React ref to NativeScript View lost, so unable to update event listeners.`);
+            return;
+        }
+        node.off("textChange", Reflect.get(instance, "onTextChange"));
+}
+
+/* (this slider impl not the same as the others. Is probably an error) */
+const sliderImpl = <T extends Slider>(instance: Reactify<T>) => {
+    const node: T | null = Reflect.get(instance, "getCurrentRef")();
+        if (!node) {
+            node.off("valueChange", Reflect.get(instance, "onValueChange"));
+            return;
+        }
+        console.warn(`React ref to NativeScript View lost, so unable to update event listeners.`)
+}
+const switchImpl = <T extends Switch>(instance: Reactify<T>) => {
+    const node: T | null = Reflect.get(instance, "getCurrentRef")();
+        if (!node) {
+            console.warn(`React ref to NativeScript View lost, so unable to update event listeners.`);
+            return;
+        }
+        node.off("checkedChange", Reflect.get(instance, "onToggle"));
 }

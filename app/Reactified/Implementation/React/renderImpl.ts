@@ -113,6 +113,7 @@ const htmlViewImpl = (name:string, instance: Reactify<HtmlView>, observable: Htm
 
 const labelImpl = (name:string, instance: Reactify<Label>, observable: Label) => {
     if(observable instanceof Label) {
+        console.log("label impl");
         const {
             forwardedRef,
     

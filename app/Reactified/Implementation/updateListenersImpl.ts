@@ -1,6 +1,6 @@
 
 import { EventData } from "tns-core-modules/data/observable/observable";
-import { Observable, View, Page, ActionItem } from "react-nativescript/dist/client/ElementRegistry";
+import { Observable, View, Page, ActionItem, EditableTextBase, Frame } from "react-nativescript/dist/client/ElementRegistry";
 
 import { ExtraProps } from "../ExtraProps";
 import { updateListener } from "react-nativescript/dist/client/EventHandling";
@@ -11,7 +11,7 @@ import { executeInOrder } from "./Helpers";
 export const updateListenersImpl = <T extends Observable>(instance: Reactify<T> ,node: T, attach: boolean | null, nextProps?: Props<T>) => {
     
     /* implementation for any rns component here - or on reactify class body*/
-    executeInOrder([pageImpl, viewImpl, observableImpl, actionItemImpl], instance, node, attach);
+    executeInOrder([pageImpl, viewImpl, observableImpl, actionItemImpl, editableTextBaseImpl, frameImpl], instance, node, attach);
 }
 
 const observableImpl = <T extends Observable>(instance: Reactify<Observable>, node: T, attach: boolean | null, nextProps?: T & ExtraProps<T>) => {
@@ -69,7 +69,7 @@ const actionItemImpl = <T extends ActionItem>(instance: Reactify<T>, node: T, at
         if (instance.props.onTap) method("tap", instance.props.onTap);
     }
 }
-const pageImpl = <T extends Page>(instance: Reactify<T>, node: Page, attach: boolean | null, nextProps?: Page & ExtraProps<Page>) => {
+const pageImpl = <T extends Page>(instance: Reactify<T>, node: T, attach: boolean | null, nextProps?: T & ExtraProps<T>) => {
     console.log("pageImpl");
     if (attach === null) {
         updateListener(node, "navigatedFrom", instance.props.onNavigatedFrom, nextProps.onNavigatedFrom);
@@ -86,5 +86,26 @@ const pageImpl = <T extends Page>(instance: Reactify<T>, node: Page, attach: boo
     }
 }
 
+const editableTextBaseImpl = <T extends EditableTextBase>(instance: Reactify<T>, node: T, attach: boolean | null, nextProps?: T & ExtraProps<T>) => {
+    if (attach === null) {
+        updateListener(node, "blur", instance.props.onBlur, nextProps.onBlur);
+        updateListener(node, "focus", instance.props.onFocus, nextProps.onFocus);
+        updateListener(node, "textChange", instance.props.onTextChange, nextProps.onTextChange);
+    } else {
+        const method = (attach ? node.on : node.off).bind(node);
+        if (instance.props.onBlur) method("blur", instance.props.onBlur);
+        if (instance.props.onFocus) method("focus", instance.props.onFocus);
+        if (instance.props.onTextChange) method("textChange", instance.props.onTextChange);
+    }
+}
+const frameImpl = <T extends Frame>(instance: Reactify<T>, node: T, attach: boolean | null, nextProps?: T & ExtraProps<T>) => {
+    if (attach === null) {
+        updateListener(node, "optionSelected", instance.props.onOptionSelected, nextProps.onOptionSelected);
+    } else {
+        const method = (attach ? node.on : node.off).bind(node);
+
+        if (instance.props.onOptionSelected) method("optionSelected", instance.props.onOptionSelected);
+    }
+}
 
 

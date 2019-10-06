@@ -12,15 +12,29 @@ import {
     PanGestureEventData,
 } from "tns-core-modules/ui/gestures/gestures";
 
-import {Observable, ViewBase, View, Page, ActionItem, DatePicker} from "react-nativescript/dist/client/ElementRegistry";
+import { 
+    Observable,
+    ViewBase,
+    View,
+    Page,
+    ActionItem,
+    DatePicker,
+    EditableTextBase,
+    Frame,
+    GridLayout,
+    HtmlView
+} from "react-nativescript/dist/client/ElementRegistry";
 
 import { PageNavigationEventHandler } from "react-nativescript/dist/components/Page";
 import { Switch } from "tns-core-modules/ui/switch/switch";
+import { ItemSpec } from "tns-core-modules/ui/layouts/grid-layout/grid-layout";
 
 
 // export type ExtraProps<T extends Observable> = ObservableProps<T> & ViewBaseProps<T> & ViewProps<T> & PageProps<T> & ActionItemProps<T>;
 export type ExtraProps<T extends Observable> = ObservableProps<T> & ViewBaseProps<T> & ViewProps<T>
- & PageProps<T> & ActionItemProps<T> & DatePickerProps<T>;
+ & PageProps<T> & ActionItemProps<T> & DatePickerProps<T> & EditableTextBaseProps<T> & FrameProps<T>
+ & GridLayoutProps<T> & HtmlViewProps<T>;
+
 // using conditional so that RNSButton don't get navigatedTo (PageProps) 
 
 
@@ -87,7 +101,29 @@ type DatePickerProps<T> = T extends DatePicker ? IDatePicker : Empty
 interface IDatePicker {
     onDateChange?: (date: Date) => void;
 }
-/* could be used set props for every stingle RNS Component*/
+type EditableTextBaseProps<T>= T extends EditableTextBase ? IEditableTextBase : Empty
+interface IEditableTextBase {
+    onBlur?: (args: EventData) => void;
+    onFocus?: (args: EventData) => void;
+    onTextChange?: (args: EventData) => void;
+}
+type FrameProps<T> = T extends Frame ? IFrame : Empty;
+interface IFrame {
+    onOptionSelected?: (args: EventData) => void;
+}
+type GridLayoutProps<T> = T extends GridLayout ? IGridLayout : Empty;
+interface IGridLayout {
+    /* Each constituent view passed in must bear "row" and "col" Props. */
+        /* rows and columns will be added in order specified. */
+    rows?: ItemSpec[];
+    columns?: ItemSpec[];
+}
+
+type HtmlViewProps<T> = T extends HtmlView ? IHtmlView : Empty
+interface IHtmlView {
+    html: string;
+}
+/* could be used set props for every single RNS Component*/
 interface Empty {
 
 }

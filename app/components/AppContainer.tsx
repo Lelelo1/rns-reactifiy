@@ -1,6 +1,6 @@
 import { hot } from 'react-hot-loader/root';
 import * as React from "react";
-import { $Page, $Label, $ActionBar, $GridLayout, $FormattedString, $Span, $Switch, $Frame, $Button, $StackLayout, $DatePicker } from "react-nativescript";
+import { $Page, $Label, $ActionBar, $GridLayout, $FormattedString, $Span, $Switch, $Frame, $Button, $StackLayout, $DatePicker, $TextField } from "react-nativescript";
 import { ItemSpec } from 'tns-core-modules/ui/layouts/grid-layout/grid-layout';
 import { Frame, Page, Color } from 'tns-core-modules/ui/frame/frame';
 import { Reactified } from '~/Reactified/Reactified';
@@ -8,16 +8,17 @@ import { Reactified } from '~/Reactified/Reactified';
 import { Label } from 'tns-core-modules/ui/label/label';
 import { _Label as LabelComponent } from "react-nativescript/dist/components/Label";
 import { Button } from 'tns-core-modules/ui/button/button';
-import { DatePicker } from 'react-nativescript/dist/client/ElementRegistry';
+import { DatePicker, EditableTextBase, TextField, HtmlView } from 'react-nativescript/dist/client/ElementRegistry';
 // import { Button } from 'tns-core-modules/ui/button/button';
 
 class MyFancyButton extends Button {
 
 }
 
+
 // const MyButton = Reactified(new Button(), "button");
 
-const MyDatePicker = Reactified(new DatePicker()); 
+const MyComponent = Reactified(new HtmlView()); 
 
 interface Props {
     forwardedRef: React.RefObject<Frame>,
@@ -31,6 +32,7 @@ class AppContainer extends React.Component<Props, State> {
     private readonly pageRef: React.RefObject<Page> = React.createRef<Page>();
     private readonly myFancyButtonRef: React.RefObject<MyFancyButton> = React.createRef<MyFancyButton>();
     private readonly myDatePickerRef = React.createRef<DatePicker>();
+    private readonly myEditableTextBaseRef = React.createRef<EditableTextBase>(); // (won't show)
     componentDidMount(){
 
 
@@ -71,11 +73,11 @@ class AppContainer extends React.Component<Props, State> {
             
                     <$StackLayout>
                     
-                    <MyDatePicker
-                        forwardedRef={this.myDatePickerRef}
-                        onDateChange={(date) => {
-                            console.log("date Changed")
-                        }}
+                    <MyComponent
+                        width={200}
+                        height={200}
+                        backgroundColor={new Color("gray")}
+                        html={"<h1>hello<h1/>"}
                     />
                     </$StackLayout>
                 </$Page>

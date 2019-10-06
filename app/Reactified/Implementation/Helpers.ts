@@ -100,8 +100,42 @@ export const executeInOrder = (implMethods: ImplMethod[], ...args: any) => {
         run = undefined;
     }
 
+    run = implMethods.find((method) => method.name === "frameImpl");
+    if(run) {
+        const value = run(...args);
+        if(value) {
+            returnValue = value;
+        }
+        run = undefined;
+    }
+
+    run = implMethods.find((method) => method.name === "htmlViewImpl");
+    if(run) {
+        const value = run(...args);
+        if(value) {
+            returnValue = value;
+        }
+        run = undefined;
+    }
 
     run = implMethods.find((method) => method.name === "buttonImpl"); // extends TextBase...
+    if(run) {
+        const value = run(...args);
+        if(value) {
+            returnValue = value;
+        }
+        run = undefined;
+    }
+    run = implMethods.find((method) => method.name === "editableTextBaseImpl");
+    if(run) {
+        const value = run(...args);
+        if(value) {
+            returnValue = value;
+        }
+        run = undefined;
+    }
+
+    run = implMethods.find((method) => method.name === "textFieldImpl"); // extends EditableTextBase...
     if(run) {
         const value = run(...args);
         if(value) {

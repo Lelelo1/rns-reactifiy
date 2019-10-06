@@ -5,10 +5,9 @@ import { ItemSpec } from 'tns-core-modules/ui/layouts/grid-layout/grid-layout';
 import { Frame, Page, Color } from 'tns-core-modules/ui/frame/frame';
 import { Reactified } from '~/Reactified/Reactified';
 
-import { Label } from 'tns-core-modules/ui/label/label';
 import { _Label as LabelComponent } from "react-nativescript/dist/components/Label";
 import { Button } from 'tns-core-modules/ui/button/button';
-import { DatePicker, EditableTextBase, TextField, HtmlView } from 'react-nativescript/dist/client/ElementRegistry';
+import { DatePicker, EditableTextBase, TextField, HtmlView, Label, ListPicker } from 'react-nativescript/dist/client/ElementRegistry';
 // import { Button } from 'tns-core-modules/ui/button/button';
 
 class MyFancyButton extends Button {
@@ -18,7 +17,7 @@ class MyFancyButton extends Button {
 
 // const MyButton = Reactified(new Button(), "button");
 
-const MyComponent = Reactified(new HtmlView()); 
+const MyComponent = Reactified(new ListPicker()); 
 
 interface Props {
     forwardedRef: React.RefObject<Frame>,
@@ -77,7 +76,7 @@ class AppContainer extends React.Component<Props, State> {
                         width={200}
                         height={200}
                         backgroundColor={new Color("gray")}
-                        html={"<h1>hello<h1/>"}
+                        items={["hej", "och", "hå"]}
                     />
                     </$StackLayout>
                 </$Page>

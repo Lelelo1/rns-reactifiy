@@ -1,11 +1,11 @@
 
 import * as React from "react";
-import { Observable, Button, TextField, HtmlView } from "react-nativescript/dist/client/ElementRegistry";
+import { Observable, Button, TextField, HtmlView, Label } from "react-nativescript/dist/client/ElementRegistry";
 import { executeInOrder } from "../Helpers";
 import { Reactify } from "../Types";
 
 export const renderImpl = <T extends Observable>(name:string, instance: Reactify<T>, observable: T): React.ReactNode => {
-    return executeInOrder([genericImpl, buttonImpl, textFieldImpl, htmlViewImpl], name, instance, observable);
+    return executeInOrder([genericImpl, buttonImpl, textFieldImpl, htmlViewImpl, labelImpl], name, instance, observable);
 }
 const genericImpl = <T extends Observable>(name: string, instance: Reactify<T>, observable: T) => {
     console.log("generic render");
@@ -106,6 +106,55 @@ const htmlViewImpl = (name:string, instance: Reactify<HtmlView>, observable: Htm
                 ref: forwardedRef || Reflect.get(instance, "myRef"),
             },
             null
+        );
+    }
+    return undefined;
+}
+
+const labelImpl = (name:string, instance: Reactify<Label>, observable: Label) => {
+    if(observable instanceof Label) {
+        const {
+            forwardedRef,
+    
+            onLoaded,
+            onUnloaded,
+            onAndroidBackPressed,
+            onShowingModally,
+            onShownModally,
+    
+            onTap,
+            onDoubleTap,
+            onPinch,
+            onPan,
+            onSwipe,
+            onRotation,
+            onLongPress,
+            onTouch,
+    
+            onPropertyChange,
+    
+            text,
+            formattedText,
+            children,
+            ...rest
+        } = instance.props;
+    
+        if (text && formattedText) {
+            console.warn(`Both text and formattedText provided; shall use formattedText.`);
+        }
+    
+        const textContent = {
+            [formattedText ? "formattedText" : "text"]: formattedText || text,
+        };
+    
+        return React.createElement(
+            name,
+            {
+                ...rest,
+                ...textContent,
+                ref: forwardedRef || Reflect.get(instance, "myRef"),
+            },
+            children // Weird that a Label may contain children, but what do I know.
         );
     }
     return undefined;

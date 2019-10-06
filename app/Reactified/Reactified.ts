@@ -15,6 +15,7 @@ import { __customHostConfigInsertBeforeImpl } from "./Implementation/CustomNodeH
 import { onDataChangeImpl } from "./Implementation/Unique/onDataChangeImpl";
 import { CustomNodeHierarchyManager } from "react-nativescript/dist/shared/HostConfigTypes";
 import { updateListenersHelperImpl } from "./Implementation/updateListenersHelperImpl";
+import { onSelectIndexChangeImpl } from "./Implementation/Unique/onSelectedIndexChangeImpl";
 
 
 
@@ -27,71 +28,75 @@ export function Reactified<T extends Observable>(observable: T, name?: string) {
     register(name, () => {
        return observable;
     });
-    let self: Reactify = null;
+    // let self: Reactify = null;
     class Reactify extends React.Component<T & ExtraProps<T>, any> implements CustomNodeHierarchyManager<T> {
         static countOfInstances = 0;
         // static defaultProps = {... observable } 
-        
+        /*
         constructor(props: T & ExtraProps<T>) {
             super(props);
             Reactify.countOfInstances ++;
             console.log("constructing instance " + Reactify.countOfInstances);
-            self = this;
         }
-        
+        */
         protected readonly myRef: React.RefObject<T> = React.createRef<T>();
-        protected getCurrentRef(): T | null {
-            return (self.props.forwardedRef || self.myRef).current;
+        protected getCurrentRef = (): T | null => {
+            return (this.props.forwardedRef || this.myRef).current;
         }
         /**
         * Helper method for updateListeners: simply gets the current ref to pass on to it.
         * @param attach true: attach; false: detach; null: update
         */
-        protected updateListenersHelper(attach: boolean | null, nextProps?: T & ExtraProps<T>): void {
-            updateListenersHelperImpl(self, attach, nextProps);
+        protected updateListenersHelper = (attach: boolean | null, nextProps?: T & ExtraProps<T>): void  => {
+            updateListenersHelperImpl(this, attach, nextProps);
         }
         /**
         *
         * @param attach true: attach; false: detach; null: update
         */
     
-        protected updateListeners(node: T, attach: boolean | null, nextProps?: T & ExtraProps<T>): void {
-            updateListenersImpl(self, node, attach, nextProps);        
+        protected updateListeners = (node: T, attach: boolean | null, nextProps?: T & ExtraProps<T>): void => {
+            updateListenersImpl(this, node, attach, nextProps);        
         }
-        componentDidMount() {
-            componentDidMountImpl(self);
+        componentDidMount = () => {
+            componentDidMountImpl(this);
         }
         /**
         * PureComponent's shouldComponentUpdate() method is ignored and replaced with a shallowEqual()
         * comparison of props and state. We'll implement our Component's shouldComponentUpdate() to
         * match the way PureComponent is handled.
         */
-        shouldComponentUpdate(nextProps: T & ExtraProps<T>, nextState: any): boolean {
-            return shouldComponentUpdateImpl(self, nextProps, nextState);
+        shouldComponentUpdate = (nextProps: T & ExtraProps<T>, nextState: any): boolean => {
+            return shouldComponentUpdateImpl(this, nextProps, nextState);
         }
-        componentWillUnmount() {
+        componentWillUnmount = () => {
             // this.updateListenersHelper(false);
-            componentWillUnmountImpl(self);
+            componentWillUnmountImpl(this);
         }
-    
+        
+        render = (): React.ReactNode => {
+            return renderImpl(name, this, observable);
+        }
+
         __ImplementsCustomNodeHierarchyManager__: true;
-        __customHostConfigAppendChild?(parentInstance: T, child: Observable | import("tns-core-modules/ui/text-base/text-base").TextBase): boolean {
+        __customHostConfigAppendChild? = (parentInstance: T, child: Observable | import("tns-core-modules/ui/text-base/text-base").TextBase): boolean => {
             return __customHostConfigAppendChildImpl(parentInstance, child);
         }
-        __customHostConfigRemoveChild?(parentInstance: T, child: Observable | import("tns-core-modules/ui/text-base/text-base").TextBase): boolean {
+        __customHostConfigRemoveChild? = (parentInstance: T, child: Observable | import("tns-core-modules/ui/text-base/text-base").TextBase): boolean => {
             return __customHostConfigRemoveChildImpl(parentInstance, child);
         }
-        __customHostConfigInsertBefore?(parentInstance: T, child: Observable | import("tns-core-modules/ui/text-base/text-base").TextBase, beforeChild: Observable | import("tns-core-modules/ui/text-base/text-base").TextBase): boolean {
+        __customHostConfigInsertBefore?= (parentInstance: T, child: Observable | import("tns-core-modules/ui/text-base/text-base").TextBase, beforeChild: Observable | import("tns-core-modules/ui/text-base/text-base").TextBase): boolean => {
             return __customHostConfigInsertBeforeImpl(parentInstance, child, beforeChild);
         }
     
         /* unique/ completely custom stuff... */
         private readonly onDateChange = (args: EventData) => {
-            onDataChangeImpl(self,args);
+            onDataChangeImpl(this, args);
         };
-        render(): React.ReactNode {
-            return renderImpl(name, self, observable);
-        }
+        private readonly onSelectedIndexChange = (args: EventData) => {
+            onSelectIndexChangeImpl(this, args)
+        };
+
     }
     return Reactify;
      // have to declare class name to make decorators work  // https://github.com/microsoft/TypeScript/issues/7342

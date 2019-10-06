@@ -22,18 +22,20 @@ import {
     EditableTextBase,
     Frame,
     GridLayout,
-    HtmlView
+    HtmlView,
+    ListPicker,
+    Switch,
 } from "react-nativescript/dist/client/ElementRegistry";
 
 import { PageNavigationEventHandler } from "react-nativescript/dist/components/Page";
-import { Switch } from "tns-core-modules/ui/switch/switch";
 import { ItemSpec } from "tns-core-modules/ui/layouts/grid-layout/grid-layout";
+import { ItemsSource } from "tns-core-modules/ui/list-picker/list-picker";
 
 
 // export type ExtraProps<T extends Observable> = ObservableProps<T> & ViewBaseProps<T> & ViewProps<T> & PageProps<T> & ActionItemProps<T>;
 export type ExtraProps<T extends Observable> = ObservableProps<T> & ViewBaseProps<T> & ViewProps<T>
  & PageProps<T> & ActionItemProps<T> & DatePickerProps<T> & EditableTextBaseProps<T> & FrameProps<T>
- & GridLayoutProps<T> & HtmlViewProps<T>;
+ & GridLayoutProps<T> & HtmlViewProps<T> & ListPickerProps<T>;
 
 // using conditional so that RNSButton don't get navigatedTo (PageProps) 
 
@@ -123,6 +125,12 @@ type HtmlViewProps<T> = T extends HtmlView ? IHtmlView : Empty
 interface IHtmlView {
     html: string;
 }
+type ListPickerProps<T> = T extends ListPicker ? IListPicker : Empty;
+interface IListPicker {
+    items: any[] | ItemsSource;
+    onSelectedIndexChange?: (selectedIndex: number) => void;
+}
+
 /* could be used set props for every single RNS Component*/
 interface Empty {
 

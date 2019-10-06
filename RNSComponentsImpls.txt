@@ -7,8 +7,8 @@ Components having special implementation:
 					Frame Impl
 					(GridLayout props only)
 					HtmlView r Impl
-Label r
-ListPicker s c
+					Label r Impl
+					ListPicker s c Impl
 ListView Needs new implementation?
 					Page Impl
 Placeholder

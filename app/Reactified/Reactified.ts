@@ -27,32 +27,28 @@ export function Reactified<T extends Observable>(observable: T, name?: string) {
     register(name, () => {
        return observable;
     });
-
+    let self: Reactify = null;
     class Reactify extends React.Component<T & ExtraProps<T>, any> implements CustomNodeHierarchyManager<T> {
         static countOfInstances = 0;
         // static defaultProps = {... observable } 
-        /*
+        
         constructor(props: T & ExtraProps<T>) {
             super(props);
-            Reactify.countOfthiss ++;
-            console.log("constructing this " + Reactify.countOfthiss);
+            Reactify.countOfInstances ++;
+            console.log("constructing instance " + Reactify.countOfInstances);
+            self = this;
         }
-        */
+        
         protected readonly myRef: React.RefObject<T> = React.createRef<T>();
         protected getCurrentRef(): T | null {
-            if(this) {
-                return (this.props.forwardedRef || this.myRef).current;
-            }
-            
+            return (self.props.forwardedRef || self.myRef).current;
         }
         /**
         * Helper method for updateListeners: simply gets the current ref to pass on to it.
         * @param attach true: attach; false: detach; null: update
         */
         protected updateListenersHelper(attach: boolean | null, nextProps?: T & ExtraProps<T>): void {
-            if(this) {
-                updateListenersHelperImpl(this, attach, nextProps);
-            }
+            updateListenersHelperImpl(self, attach, nextProps);
         }
         /**
         *
@@ -60,10 +56,10 @@ export function Reactified<T extends Observable>(observable: T, name?: string) {
         */
     
         protected updateListeners(node: T, attach: boolean | null, nextProps?: T & ExtraProps<T>): void {
-            updateListenersImpl(this, node, attach, nextProps);        
+            updateListenersImpl(self, node, attach, nextProps);        
         }
         componentDidMount() {
-            componentDidMountImpl(this);
+            componentDidMountImpl(self);
         }
         /**
         * PureComponent's shouldComponentUpdate() method is ignored and replaced with a shallowEqual()
@@ -71,11 +67,11 @@ export function Reactified<T extends Observable>(observable: T, name?: string) {
         * match the way PureComponent is handled.
         */
         shouldComponentUpdate(nextProps: T & ExtraProps<T>, nextState: any): boolean {
-            return shouldComponentUpdateImpl(this, nextProps, nextState);
+            return shouldComponentUpdateImpl(self, nextProps, nextState);
         }
         componentWillUnmount() {
             // this.updateListenersHelper(false);
-            componentWillUnmountImpl(this);
+            componentWillUnmountImpl(self);
         }
     
         __ImplementsCustomNodeHierarchyManager__: true;
@@ -91,10 +87,10 @@ export function Reactified<T extends Observable>(observable: T, name?: string) {
     
         /* unique/ completely custom stuff... */
         private readonly onDateChange = (args: EventData) => {
-            onDataChangeImpl(args);
+            onDataChangeImpl(self,args);
         };
         render(): React.ReactNode {
-            return renderImpl(name, this);
+            return renderImpl(name, self);
         }
     }
     return Reactify;

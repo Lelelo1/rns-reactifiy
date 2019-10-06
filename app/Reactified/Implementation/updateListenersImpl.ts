@@ -5,8 +5,7 @@ import { Observable, View, Page, ActionItem } from "react-nativescript/dist/clie
 import { ExtraProps } from "../ExtraProps";
 import { updateListener } from "react-nativescript/dist/client/EventHandling";
 import { GestureTypes } from "tns-core-modules/ui/gestures/gestures";
-import { tryCast, Props } from "./Types";
-import { Reactify } from "../API";
+import { tryCast, Props, Reactify } from "./Types";
 import { executeInOrder } from "./Helpers";
 
 export const updateListenersImpl = <T extends Observable>(instance: Reactify<T> ,node: T, attach: boolean | null, nextProps?: Props<T>) => {

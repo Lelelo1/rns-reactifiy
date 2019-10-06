@@ -1,13 +1,13 @@
 
 import * as React from "react";
 import { Observable, Button } from "react-nativescript/dist/client/ElementRegistry";
-import { Reactify } from "~/Reactified/API";
 import { executeInOrder } from "../Helpers";
+import { Reactify } from "../Types";
 
-export const renderImpl = <T extends Observable>(name:string, instance: Reactify<T>, observable: T): ReactNode => {
-    return executeInOrder([genericImpl, buttonImpl], name, instance, observable);
+export const renderImpl = <T extends Observable>(name:string, instance: Reactify<T>): React.ReactNode => {
+    return executeInOrder([genericImpl, buttonImpl], name, instance);
 }
-const genericImpl = <T extends Observable>(name: string, instance: Reactify<T>, observable: T) => {
+const genericImpl = <T extends Observable>(name: string, instance: Reactify<T>) => {
     const { forwardedRef, children, ...rest } = instance.props
     return React.createElement(
         name,

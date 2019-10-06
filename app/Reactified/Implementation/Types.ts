@@ -1,7 +1,7 @@
 import { Observable, ViewBase, View, Page } from "react-nativescript/dist/client/ElementRegistry";
 import { ExtraProps } from "../ExtraProps";
 
-// export type Reactify<T extends Observable> = React.Component<T & ExtraProps<T>, any>;
+export type Reactify<T extends Observable> = React.Component<T & ExtraProps<T>, any>;
 
 export type Props<T extends Observable> = T & ExtraProps<T>;
 

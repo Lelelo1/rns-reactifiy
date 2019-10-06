@@ -1,8 +1,8 @@
 Components having special implementation:
 					ActionItem Impl
 					Button r Impl
-DatePicker s, c
-EditableTextBase
+					DatePicker s, c Impl
+EditableTextBase Impl
 FormattedString r m
 Frame
 (GridLayout props only)

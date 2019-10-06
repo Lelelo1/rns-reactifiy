@@ -12,14 +12,15 @@ import {
     PanGestureEventData,
 } from "tns-core-modules/ui/gestures/gestures";
 
-import {Observable, ViewBase, View, Page, ActionItem} from "react-nativescript/dist/client/ElementRegistry";
+import {Observable, ViewBase, View, Page, ActionItem, DatePicker} from "react-nativescript/dist/client/ElementRegistry";
 
 import { PageNavigationEventHandler } from "react-nativescript/dist/components/Page";
 import { Switch } from "tns-core-modules/ui/switch/switch";
 
 
 // export type ExtraProps<T extends Observable> = ObservableProps<T> & ViewBaseProps<T> & ViewProps<T> & PageProps<T> & ActionItemProps<T>;
-export type ExtraProps<T extends Observable> = ObservableProps<T> & ViewBaseProps<T> & ViewProps<T> & PageProps<T> & ActionItemProps<T>;
+export type ExtraProps<T extends Observable> = ObservableProps<T> & ViewBaseProps<T> & ViewProps<T>
+ & PageProps<T> & ActionItemProps<T> & DatePickerProps<T>;
 // using conditional so that RNSButton don't get navigatedTo (PageProps) 
 
 
@@ -82,6 +83,10 @@ interface IActionItem {
     onTap?: (args: GestureEventData) => void;
 }
 
+type DatePickerProps<T> = T extends DatePicker ? IDatePicker : Empty
+interface IDatePicker {
+    onDateChange?: (date: Date) => void;
+}
 /* could be used set props for every stingle RNS Component*/
 interface Empty {
 

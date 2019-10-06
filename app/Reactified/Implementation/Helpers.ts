@@ -64,13 +64,20 @@ export const executeInOrder = (implMethods: ImplMethod[], ...args: any) => {
         run = undefined;
     }
 
-    run = implMethods.find((method) => method.name == "textBaseImpl");
+    run = implMethods.find((method) => method.name === "textBaseImpl");
     if(run) {
         returnValue = run(...args);
         run = undefined;
     }
 
-    run = implMethods.find((method) => method.name == "buttonImpl"); // extends TextBase...
+    run = implMethods.find((method) => method.name === "datePickerImpl");
+    if(run) {
+        returnValue = run(...args);
+        run = undefined;
+    }
+
+
+    run = implMethods.find((method) => method.name === "buttonImpl"); // extends TextBase...
     if(run) {
         returnValue = run(...args);
         run = undefined;

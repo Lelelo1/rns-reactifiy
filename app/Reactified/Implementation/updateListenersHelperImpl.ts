@@ -1,6 +1,6 @@
 import { Observable } from "tns-core-modules/data/observable/observable";
 import { ExtraProps } from "../ExtraProps";
-import { Reactify} from "../API";
+import { Reactify } from "./Types";
 // import { Reactify } from "./Types";
 
 /*
@@ -13,10 +13,10 @@ export const updateListenersHelperImpl = <T extends Observable>(instance: Reacti
 }
 
 const observableImpl = <T extends Observable>(instance: Reactify<T>, attach: boolean | null, nextProps?: T & ExtraProps<T>) => {
+    
     const node: T | null = Reflect.get(instance, "getCurrentRef")();
-    console.log("got node: " + node);
         if (node === null) {
-            console.warn(`React ref to NativeScript View lost, so unable to update event listeners.`);
+        // console.warn(`React ref to NativeScript View lost, so unable to update event listeners.`);
             return;
         }
         Reflect.get(instance, "updateListeners")(node, attach, nextProps);

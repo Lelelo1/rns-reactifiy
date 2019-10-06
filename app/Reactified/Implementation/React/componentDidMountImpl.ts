@@ -1,15 +1,23 @@
 import { Observable } from "tns-core-modules/data/observable/observable";
-import { Reactify } from "~/Reactified/API";
+import { DatePicker } from "react-nativescript/dist/client/ElementRegistry";
+import { executeInOrder } from "../Helpers";
+import { Reactify } from "../Types";
 
 export const componentDidMountImpl = <T extends Observable>(instance: Reactify<T>) => {
-    observableImpl(instance);
+    executeInOrder([observableImpl, datePickerImpl], instance);
+    
 }
 
 const observableImpl = <T extends Observable>(instance: Reactify<T>) => {
     Reflect.get(instance, "updateListenersHelper")(true);
 }
-/*
-const viewBaseImpl = <T extends Observable>(instance: React.Component<T & ExtraProps<T>>) => {
-    // none
+const datePickerImpl = <T extends DatePicker>(instance: Reactify<T>) => {
+    if(instance) {
+        const node: T | null = Reflect.get(instance, "getCurrentRef")();
+        if (!node) {
+            console.warn(`React ref to NativeScript View lost, so unable to update event listeners.`);
+            return;
+        }
+        node.on("dateChange", Reflect.get(instance, "onDateChange"));
+    }
 }
-*/

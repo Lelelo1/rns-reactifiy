@@ -2,7 +2,7 @@ import { Observable } from "tns-core-modules/data/observable/observable";
 
 import { ExtraProps } from "~/Reactified/ExtraProps";
 import { shallowEqual } from "react-nativescript/dist/client/shallowEqual";
-import { Reactify } from "~/Reactified/API";
+import { Reactify } from "../Types";
 
 
 export const shouldComponentUpdateImpl = <T extends Observable>(instance: Reactify<T>, nextProps: T & ExtraProps<T>, nextState: any): boolean => {

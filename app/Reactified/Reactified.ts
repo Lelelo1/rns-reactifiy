@@ -2,8 +2,19 @@ import * as React from "react";
 import { Observable, EventData } from "tns-core-modules/data/observable/observable";
 import { register, ContentView } from "react-nativescript/dist/client/ElementRegistry";
 import { nameOf, firstLetterLowercase } from "./Implementation/Helpers";
-import { Reactify } from "./API";
 import { renderImpl } from "./Implementation/React/renderImpl";
+import { getCurrentRefImpl } from "./Implementation/getCurrentRefImpl";
+import { ExtraProps } from "./ExtraProps";
+import { updateListenersImpl } from "./Implementation/updateListenersImpl";
+import { componentDidMountImpl } from "./Implementation/React/componentDidMountImpl";
+import { shouldComponentUpdateImpl } from "./Implementation/React/shouldComponentUpdateImpl";
+import { componentWillUnmountImpl } from "./Implementation/React/componentWillUnmountImpl";
+import { __customHostConfigAppendChildImpl } from "./Implementation/CustomNodeHierarchyManager/__customHostConfigAppendChildImpl";
+import { __customHostConfigRemoveChildImpl } from "./Implementation/CustomNodeHierarchyManager/__customHostConfigRemoveChildImpl";
+import { __customHostConfigInsertBeforeImpl } from "./Implementation/CustomNodeHierarchyManager/__customHostConfigInsertBeforeImpl";
+import { onDataChangeImpl } from "./Implementation/Unique/onDataChangeImpl";
+import { CustomNodeHierarchyManager } from "react-nativescript/dist/shared/HostConfigTypes";
+import { updateListenersHelperImpl } from "./Implementation/updateListenersHelperImpl";
 
 
 
@@ -17,12 +28,78 @@ export function Reactified<T extends Observable>(observable: T, name?: string) {
        return observable;
     });
 
-    
-    return class extends Reactify<T> {
-        render(): React.ReactNode {
-            return renderImpl(name, this, observable);
+    class Reactify extends React.Component<T & ExtraProps<T>, any> implements CustomNodeHierarchyManager<T> {
+        static countOfInstances = 0;
+        // static defaultProps = {... observable } 
+        /*
+        constructor(props: T & ExtraProps<T>) {
+            super(props);
+            Reactify.countOfthiss ++;
+            console.log("constructing this " + Reactify.countOfthiss);
         }
-    }    // have to declare class name to make decorators work  // https://github.com/microsoft/TypeScript/issues/7342
+        */
+        protected readonly myRef: React.RefObject<T> = React.createRef<T>();
+        protected getCurrentRef(): T | null {
+            if(this) {
+                return (this.props.forwardedRef || this.myRef).current;
+            }
+            
+        }
+        /**
+        * Helper method for updateListeners: simply gets the current ref to pass on to it.
+        * @param attach true: attach; false: detach; null: update
+        */
+        protected updateListenersHelper(attach: boolean | null, nextProps?: T & ExtraProps<T>): void {
+            if(this) {
+                updateListenersHelperImpl(this, attach, nextProps);
+            }
+        }
+        /**
+        *
+        * @param attach true: attach; false: detach; null: update
+        */
+    
+        protected updateListeners(node: T, attach: boolean | null, nextProps?: T & ExtraProps<T>): void {
+            updateListenersImpl(this, node, attach, nextProps);        
+        }
+        componentDidMount() {
+            componentDidMountImpl(this);
+        }
+        /**
+        * PureComponent's shouldComponentUpdate() method is ignored and replaced with a shallowEqual()
+        * comparison of props and state. We'll implement our Component's shouldComponentUpdate() to
+        * match the way PureComponent is handled.
+        */
+        shouldComponentUpdate(nextProps: T & ExtraProps<T>, nextState: any): boolean {
+            return shouldComponentUpdateImpl(this, nextProps, nextState);
+        }
+        componentWillUnmount() {
+            // this.updateListenersHelper(false);
+            componentWillUnmountImpl(this);
+        }
+        /* render */
+    
+        __ImplementsCustomNodeHierarchyManager__: true;
+        __customHostConfigAppendChild?(parentInstance: T, child: Observable | import("tns-core-modules/ui/text-base/text-base").TextBase): boolean {
+            return __customHostConfigAppendChildImpl(parentInstance, child);
+        }
+        __customHostConfigRemoveChild?(parentInstance: T, child: Observable | import("tns-core-modules/ui/text-base/text-base").TextBase): boolean {
+            return __customHostConfigRemoveChildImpl(parentInstance, child);
+        }
+        __customHostConfigInsertBefore?(parentInstance: T, child: Observable | import("tns-core-modules/ui/text-base/text-base").TextBase, beforeChild: Observable | import("tns-core-modules/ui/text-base/text-base").TextBase): boolean {
+            return __customHostConfigInsertBeforeImpl(parentInstance, child, beforeChild);
+        }
+    
+        /* unique/ completely custom stuff... */
+        private readonly onDateChange = (args: EventData) => {
+            onDataChangeImpl(args);
+        };
+        render(): React.ReactNode {
+            return renderImpl(name, this);
+        }
+    }
+    return Reactify;
+     // have to declare class name to make decorators work  // https://github.com/microsoft/TypeScript/issues/7342
 }
 
 

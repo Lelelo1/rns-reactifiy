@@ -22,7 +22,8 @@ import {
     Switch,
     ActionItem,
     TabView,
-    TabViewItem
+    TabViewItem,
+    StackLayout
 } from 'react-nativescript/dist/client/ElementRegistry';
 import { SelectedIndexChangedEventData } from 'tns-core-modules/ui/tab-view/tab-view';
 import { SegmentedBarItem } from 'tns-core-modules/ui/segmented-bar/segmented-bar';
@@ -41,8 +42,7 @@ const MyTabView = Reactified<TabView>(new TabView());
 const MyTabViewItem = Reactified(new TabViewItem());
 const MyButton = Reactified(new Button());
 const MySegmentedBar = Reactified(new SegmentedBar());
-
-
+const MyStackLayout = Reactified(new StackLayout());
 interface Props {
     forwardedRef: React.RefObject<Frame>,
 }
@@ -98,9 +98,10 @@ class AppContainer extends React.Component<Props, State> {
                         }}/>
                     </$ActionBar>
             
-                    <$StackLayout>
-                        <MyButton text={"heloo!"}/>
-                    </$StackLayout>
+                    <MyStackLayout>
+                        <MyButton text={"yooo"}/>
+                        <MyLabel text={"yeaaaaaaaa!"} backgroundColor={new Color("orange")}/>
+                    </MyStackLayout>
                 </$Page>
             </$Frame>
         );

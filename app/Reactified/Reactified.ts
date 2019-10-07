@@ -22,7 +22,6 @@ import { onToggleImpl } from "./Implementation/Unique/onToggleImpl";
 import { PropsWithoutForwardedRef } from "react-nativescript/dist/shared/NativeScriptComponentTypings";
 
 
-
 export function Reactified<T extends Observable>(observable: T, name?: string) { 
 
     if(!name) {
@@ -33,7 +32,7 @@ export function Reactified<T extends Observable>(observable: T, name?: string) {
        return observable;
     });
     // let self: Reactify = null;
-    class Reactify extends React.Component<T & ExtraProps<T>, any> implements CustomNodeHierarchyManager<T> {
+    class Reactify extends React.Component<Partial<T> & ExtraProps<T>, any> implements CustomNodeHierarchyManager<T> {
         static countOfInstances = 0;
         static defaultProps = {... observable } 
         /*
@@ -112,7 +111,7 @@ export function Reactified<T extends Observable>(observable: T, name?: string) {
 
     }
     
-    return React.forwardRef<T, T & ExtraProps<T>>((props, ref) => {
+    return React.forwardRef<T, Partial<T> & ExtraProps<T>>((props, ref) => {
         return React.createElement(name, {...props, forwardedRef: ref}, props.children);
     });
 

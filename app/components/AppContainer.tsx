@@ -31,7 +31,7 @@ class MyFancyButton extends Button {
 
 // const MyButton = Reactified(new Button(), "button");
 
-const MyComponent = Reactified(new Switch()); 
+const MyComponent = Reactified(new ActionItem()); 
 interface Props {
     forwardedRef: React.RefObject<Frame>,
 }
@@ -85,12 +85,13 @@ class AppContainer extends React.Component<Props, State> {
                         <$ActionItem text={"Check this out"} onTap={() => {
                             console.log("tap");
                         }}/>
+                        <MyComponent text={"my component!"} onTap={() => {
+                            console.log("tap");
+                        }}/>
                     </$ActionBar>
             
                     <$StackLayout>
-                        <MyComponent onTap={() => {
-                            console.log("tap");
-                        }}/>
+
                         <$Switch onToggle={(checked) => {
                             console.log("checked: " + checked);
                         }}

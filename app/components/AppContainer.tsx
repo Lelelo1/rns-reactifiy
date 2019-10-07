@@ -41,8 +41,7 @@ const MyTabView = Reactified<TabView>(new TabView());
 const MyTabViewItem = Reactified(new TabViewItem());
 const MyButton = Reactified(new Button());
 const MySegmentedBar = Reactified(new SegmentedBar());
-const testSegmentedBar = new MySegmentedBar(null);
-const test = new MyTabView(null);
+
 
 interface Props {
     forwardedRef: React.RefObject<Frame>,
@@ -100,7 +99,7 @@ class AppContainer extends React.Component<Props, State> {
                     </$ActionBar>
             
                     <$StackLayout>
-                        
+                        <MyButton text={"heloo!"}/>
                     </$StackLayout>
                 </$Page>
             </$Frame>

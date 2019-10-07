@@ -19,6 +19,7 @@ import { onSelectIndexChangeImpl } from "./Implementation/Unique/onSelectedIndex
 import { onTextChangeImpl } from "./Implementation/Unique/onTextChangeImpl";
 import { onValueChangeImpl } from "./Implementation/Unique/onValueChangeImpl";
 import { onToggleImpl } from "./Implementation/Unique/onToggleImpl";
+import { PropsWithoutForwardedRef } from "react-nativescript/dist/shared/NativeScriptComponentTypings";
 
 
 
@@ -34,7 +35,7 @@ export function Reactified<T extends Observable>(observable: T, name?: string) {
     // let self: Reactify = null;
     class Reactify extends React.Component<T & ExtraProps<T>, any> implements CustomNodeHierarchyManager<T> {
         static countOfInstances = 0;
-        // static defaultProps = {... observable } 
+        static defaultProps = {... observable } 
         /*
         constructor(props: T & ExtraProps<T>) {
             super(props);
@@ -110,7 +111,11 @@ export function Reactified<T extends Observable>(observable: T, name?: string) {
         }
 
     }
-    return Reactify;
+    
+    return React.forwardRef<T, T & ExtraProps<T>>((props, ref) => {
+        return React.createElement(name, {...props, forwardedRef: ref}, props.children);
+    });
+
      // have to declare class name to make decorators work  // https://github.com/microsoft/TypeScript/issues/7342
 }
 

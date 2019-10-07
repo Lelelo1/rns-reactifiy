@@ -201,17 +201,17 @@ const segmentedBarImpl = <T extends SegmentedBar>(instance: Reactify<T>, node: T
     if (attach === null) {
         updateListener(
             node,
-            "selectedIndexChanged",
-            instance.props.onSelectedIndexChanged,
-            nextProps.onSelectedIndexChanged
+            "selectedIndexChange",
+            instance.props.onSelectedIndexChange,
+            nextProps.onSelectedIndexChange
         );
     } else {
         const method = (attach ? node.on : node.off).bind(node);
 
-        if (instance.props.onSelectedIndexChanged) method("selectedIndexChanged", instance.props.onSelectedIndexChanged);
+        if (instance.props.onSelectedIndexChange) method("selectedIndexChange", instance.props.onSelectedIndexChange);
     }
 }
-const tabViewImpl = <T extends SegmentedBar>(instance: Reactify<T>, node: T, attach: boolean | null, nextProps?: T & ExtraProps<T>) => { 
+const tabViewImpl = <T extends TabView>(instance: Reactify<T>, node: T, attach: boolean | null, nextProps?: T & ExtraProps<T>) => { 
     
     if(!(Reflect.get(instance, "getCurrentRef")() instanceof TabView)) return;
     
@@ -219,14 +219,14 @@ const tabViewImpl = <T extends SegmentedBar>(instance: Reactify<T>, node: T, att
     if (attach === null) {
         updateListener(
             node,
-            "selectedIndexChanged",
-            instance.props.onSelectedIndexChanged,
-            nextProps.onSelectedIndexChanged
+            "selectedIndexChange",
+            instance.props.onSelectedIndexChange,
+            nextProps.onSelectedIndexChange
         );
     } else {
         const method = (attach ? node.on : node.off).bind(node);
     
-        if (instance.props.onSelectedIndexChanged) method("selectedIndexChanged", instance.props.onSelectedIndexChanged);
+        if (instance.props.onSelectedIndexChange) method("selectedIndexChange", instance.props.onSelectedIndexChange);
     }
 }
 

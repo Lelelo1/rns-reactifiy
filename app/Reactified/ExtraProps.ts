@@ -37,8 +37,8 @@ import { ItemSpec } from "tns-core-modules/ui/layouts/grid-layout/grid-layout";
 import { ItemsSource } from "tns-core-modules/ui/list-picker/list-picker";
 import { CreateViewEventData, Placeholder } from "tns-core-modules/ui/placeholder/placeholder";
 import { ScrollEventData } from "tns-core-modules/ui/scroll-view/scroll-view";
-import { SelectedIndexChangedEventData } from "tns-core-modules/ui/segmented-bar/segmented-bar";
-
+import { SelectedIndexChangedEventData as SegmentedBarSelectedIndexChangedEventData } from "tns-core-modules/ui/segmented-bar/segmented-bar";
+import { SelectedIndexChangedEventData as TabViewSelectedIndexChangedEventData } from 'tns-core-modules/ui/tab-view/tab-view';
 
 // export type ExtraProps<T extends Observable> = ObservableProps<T> & ViewBaseProps<T> & ViewProps<T> & PageProps<T> & ActionItemProps<T>;
 export type ExtraProps<T extends Observable> = ObservableProps<T> & ViewBaseProps<T> & ViewProps<T>
@@ -160,7 +160,7 @@ interface ISearchBar {
 
 type SegmentedBarProps<T> = T extends SegmentedBar ? ISegmentedBar : Empty
 interface ISegmentedBar {
-    onSelectedIndexChanged?: (args: SelectedIndexChangedEventData) => void;
+    onSelectedIndexChange?: (args: SegmentedBarSelectedIndexChangedEventData) => void;
 }
 
 type SliderProps<T> = T extends Slider ? ISlider : Empty;
@@ -175,7 +175,7 @@ interface ISwitch {
 
 type TabViewProps<T> = T extends TabView ? ITabView : Empty;
 interface ITabView {
-    onSelectedIndexChanged?(args: SelectedIndexChangedEventData): void;
+    onSelectedIndexChange?(args: TabViewSelectedIndexChangedEventData): void;
 }
 
 /* could be used set props for every single RNS Component*/

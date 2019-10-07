@@ -1,6 +1,6 @@
 import { hot } from 'react-hot-loader/root';
 import * as React from "react";
-import { $Page, $Label, $ActionBar, $GridLayout, $FormattedString, $Span, $Switch, $Frame, $Button, $StackLayout, $DatePicker, $TextField, $SegmentedBarItem, $Slider, $ActionItem } from "react-nativescript";
+import { $Page, $Label, $ActionBar, $GridLayout, $FormattedString, $Span, $Switch, $Frame, $Button, $StackLayout, $DatePicker, $TextField, $SegmentedBarItem, $Slider, $ActionItem, $TabView, $TabViewItem } from "react-nativescript";
 import { ItemSpec } from 'tns-core-modules/ui/layouts/grid-layout/grid-layout';
 import { Frame, Page, Color } from 'tns-core-modules/ui/frame/frame';
 import { Reactified } from '~/Reactified/Reactified';
@@ -24,6 +24,8 @@ import {
     TabView,
     TabViewItem
 } from 'react-nativescript/dist/client/ElementRegistry';
+import { SelectedIndexChangedEventData } from 'tns-core-modules/ui/tab-view/tab-view';
+import { SegmentedBarItem } from 'tns-core-modules/ui/segmented-bar/segmented-bar';
 // import { Button } from 'tns-core-modules/ui/button/button';
 
 class MyFancyButton extends Button {
@@ -35,9 +37,12 @@ class MyFancyButton extends Button {
 
 // const MyComponent = Reactified(new TabView()); 
 const MyLabel = Reactified(new Label());
-const MyTabView = Reactified(new TabView()); 
+const MyTabView = Reactified<TabView>(new TabView()); 
 const MyTabViewItem = Reactified(new TabViewItem());
 const MyButton = Reactified(new Button());
+const MySegmentedBar = Reactified(new SegmentedBar());
+const testSegmentedBar = new MySegmentedBar(null);
+const test = new MyTabView(null);
 
 interface Props {
     forwardedRef: React.RefObject<Frame>,
@@ -96,14 +101,6 @@ class AppContainer extends React.Component<Props, State> {
             
                     <$StackLayout>
                         
-                        
-                        <$Switch onToggle={(checked) => {
-                            console.log("checked: " + checked);
-                        }}
-                        onTap={() => {
-                            console.log("tap");
-                        }}
-                        />
                     </$StackLayout>
                 </$Page>
             </$Frame>

@@ -13,6 +13,9 @@ export const updateListenersHelperImpl = <T extends Observable>(instance: Reacti
 }
 
 const observableImpl = <T extends Observable>(instance: Reactify<T>, attach: boolean | null, nextProps?: T & ExtraProps<T>) => {
+    
+    // if(!(Reflect.get(instance, "getCurrentRef")() instanceof Observable)) return;
+    
     const node: T | null = Reflect.get(instance, "getCurrentRef")();
         if (node === null) {
         // console.warn(`React ref to NativeScript View lost, so unable to update event listeners.`);

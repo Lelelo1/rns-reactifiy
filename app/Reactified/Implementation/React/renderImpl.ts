@@ -1,11 +1,18 @@
 
 import * as React from "react";
-import { Observable, Button, TextField, HtmlView, Label } from "react-nativescript/dist/client/ElementRegistry";
+import { Observable, Button, TextField, HtmlView, Label, TabView, TabViewItem } from "react-nativescript/dist/client/ElementRegistry";
 import { executeInOrder } from "../Helpers";
 import { Reactify } from "../Types";
 
-export const renderImpl = <T extends Observable>(name:string, instance: Reactify<T>, observable: T): React.ReactNode => {
-    return executeInOrder([genericImpl, buttonImpl, textFieldImpl, htmlViewImpl, labelImpl], name, instance, observable);
+export const renderImpl = <T extends Observable>(name: string, instance: Reactify<T>, observable: T): React.ReactNode => {
+    return executeInOrder(
+        [genericImpl,
+        buttonImpl,
+        textFieldImpl,
+        htmlViewImpl,
+        labelImpl,
+        tabViewItemImpl],
+        name, instance, observable);
 }
 const genericImpl = <T extends Observable>(name: string, instance: Reactify<T>, observable: T) => {
     console.log("generic render");
@@ -20,9 +27,9 @@ const genericImpl = <T extends Observable>(name: string, instance: Reactify<T>, 
     );
 }
 
-const buttonImpl = (name:string, instance: Reactify<Button>, observable: Button) => {
-    if(observable instanceof Button) {
-        console.log("buttonImpl");
+const buttonImpl = <T extends Button>(name: string, instance: Reactify<T>, observable: T) => {
+    
+    if(!(Reflect.get(instance, "getCurrentRef")() instanceof Button)) return undefined;
         const {
             forwardedRef,
             text,
@@ -49,90 +56,73 @@ const buttonImpl = (name:string, instance: Reactify<Button>, observable: Button)
             },
             children // Weird that a button may contain children, but what do I know.
         );
-    }
-    return undefined;
 }
 
-const textFieldImpl = (name:string, instance: Reactify<TextField>, observable: TextField) => {
-    if(observable instanceof TextField) {
-        const {
-            forwardedRef,
+const textFieldImpl = <T extends TextField>(name: string, instance: Reactify<T>, observable: T) => {
     
+    if(!(Reflect.get(instance, "getCurrentRef")() instanceof TextField)) return undefined;
     
-            text,
-            formattedText,
-            children,
-            ...rest
-        } = instance.props;
-    
-        if (text && formattedText) {
-            console.warn(`Both text and formattedText provided; shall use formattedText.`);
-        }
-    
-        const textContent = {
-            [formattedText ? "formattedText" : "text"]: formattedText || text,
-        };
-    
-        return React.createElement(
-            name,
-            {
-                ...rest,
-                ...textContent,
-                ref: forwardedRef || Reflect.get(instance, "myRef"),
-            },
-            children // Weird that a TextField may contain children, but what do I know.
-        );
+    const {
+        forwardedRef,
+
+
+        text,
+        formattedText,
+        children,
+        ...rest
+    } = instance.props;
+
+    if (text && formattedText) {
+        console.warn(`Both text and formattedText provided; shall use formattedText.`);
     }
-    return undefined;
+
+    const textContent = {
+        [formattedText ? "formattedText" : "text"]: formattedText || text,
+    };
+
+    return React.createElement(
+        name,
+        {
+            ...rest,
+            ...textContent,
+            ref: forwardedRef || Reflect.get(instance, "myRef"),
+        },
+        children // Weird that a TextField may contain children, but what do I know.
+    );
 }
 
-const htmlViewImpl = (name:string, instance: Reactify<HtmlView>, observable: HtmlView) => {
-    if(observable instanceof HtmlView) {
-        const {
-            forwardedRef,
-            children,
+const htmlViewImpl = <T extends HtmlView>(name: string, instance: Reactify<T>, observable: T) => {
     
-            ...rest
-        } = instance.props;
+    if(!(Reflect.get(instance, "getCurrentRef")() instanceof HtmlView)) return undefined;
     
-        if (children) {
-            console.warn("Ignoring 'children' prop on HtmlView; not permitted");
-        }
-    
-        return React.createElement(
-            name,
-            {
-                ...rest,
-                ref: forwardedRef || Reflect.get(instance, "myRef"),
-            },
-            null
-        );
+    const {
+        forwardedRef,
+        children,
+
+        ...rest
+    } = instance.props;
+
+    if (children) {
+        console.warn("Ignoring 'children' prop on HtmlView; not permitted");
     }
-    return undefined;
+
+    return React.createElement(
+        name,
+        {
+            ...rest,
+            ref: forwardedRef || Reflect.get(instance, "myRef"),
+        },
+        null
+    );
 }
 
-const labelImpl = (name:string, instance: Reactify<Label>, observable: Label) => {
-    if(observable instanceof Label) {
-        console.log("label impl");
+const labelImpl = <T extends Label>(name: string, instance: Reactify<T>, observable: T) => {
+    
+    if(!(Reflect.get(instance, "getCurrentRef")() instanceof Label)) return undefined;
+    
+    console.log("label impl");
         const {
             forwardedRef,
-    
-            onLoaded,
-            onUnloaded,
-            onAndroidBackPressed,
-            onShowingModally,
-            onShownModally,
-    
-            onTap,
-            onDoubleTap,
-            onPinch,
-            onPan,
-            onSwipe,
-            onRotation,
-            onLongPress,
-            onTouch,
-    
-            onPropertyChange,
     
             text,
             formattedText,
@@ -157,6 +147,35 @@ const labelImpl = (name:string, instance: Reactify<Label>, observable: Label) =>
             },
             children // Weird that a Label may contain children, but what do I know.
         );
-    }
-    return undefined;
 }
+
+const tabViewItemImpl = <T extends TabViewItem>(name: string, instance: Reactify<T>, observable: T) => { 
+    
+    if(!(Reflect.get(instance, "getCurrentRef")() instanceof TabViewItem)) return undefined;
+    
+    const {
+        forwardedRef,
+    
+        children,
+        // view, /* We disallow this at the typings level. */
+        ...rest
+    } = instance.props;
+    
+    if (React.Children.count(children) > 1 || typeof children === "string" || typeof children === "number") {
+        console.log("count: " + React.Children.count(children));
+        throw new Error(
+            `'children' property passed into TabViewItem must be a single child node, which must not be a number or string`
+        );
+    }
+    
+    return React.createElement(
+        name,
+        {
+            ...rest,
+            ref: forwardedRef || Reflect.get(instance, "myRef"),
+        },
+        children
+    );
+}
+
+

@@ -29,6 +29,7 @@ import {
     SearchBar,
     SegmentedBar,
     Slider,
+    TabView
 } from "react-nativescript/dist/client/ElementRegistry";
 
 import { PageNavigationEventHandler } from "react-nativescript/dist/components/Page";
@@ -43,7 +44,7 @@ import { SelectedIndexChangedEventData } from "tns-core-modules/ui/segmented-bar
 export type ExtraProps<T extends Observable> = ObservableProps<T> & ViewBaseProps<T> & ViewProps<T>
  & PageProps<T> & ActionItemProps<T> & DatePickerProps<T> & EditableTextBaseProps<T> & FrameProps<T>
  & GridLayoutProps<T> & HtmlViewProps<T> & ListPickerProps<T> & PlaceholderProps<T> & ScrollViewProps<T>
- & SearchBarProps<T> & SegmentedBarProps<T> & SliderProps<T> & SwitchProps<T>;
+ & SearchBarProps<T> & SegmentedBarProps<T> & SliderProps<T> & SwitchProps<T> & TabViewProps<T>;
 
 // using conditional so that RNSButton don't get navigatedTo (PageProps) 
 
@@ -170,6 +171,11 @@ interface ISlider {
 type SwitchProps<T> = T extends Switch ? ISwitch : Empty;
 interface ISwitch {
     onToggle?: (checked: boolean) => void;
+}
+
+type TabViewProps<T> = T extends TabView ? ITabView : Empty;
+interface ITabView {
+    onSelectedIndexChanged?(args: SelectedIndexChangedEventData): void;
 }
 
 /* could be used set props for every single RNS Component*/

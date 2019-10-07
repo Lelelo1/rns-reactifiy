@@ -20,7 +20,9 @@ import {
     SegmentedBar,
     Slider,
     Switch,
-    ActionItem
+    ActionItem,
+    TabView,
+    TabViewItem
 } from 'react-nativescript/dist/client/ElementRegistry';
 // import { Button } from 'tns-core-modules/ui/button/button';
 
@@ -31,7 +33,12 @@ class MyFancyButton extends Button {
 
 // const MyButton = Reactified(new Button(), "button");
 
-const MyComponent = Reactified(new ActionItem()); 
+// const MyComponent = Reactified(new TabView()); 
+const MyLabel = Reactified(new Label());
+const MyTabView = Reactified(new TabView()); 
+const MyTabViewItem = Reactified(new TabViewItem());
+const MyButton = Reactified(new Button());
+
 interface Props {
     forwardedRef: React.RefObject<Frame>,
 }
@@ -85,13 +92,11 @@ class AppContainer extends React.Component<Props, State> {
                         <$ActionItem text={"Check this out"} onTap={() => {
                             console.log("tap");
                         }}/>
-                        <MyComponent text={"my component!"} onTap={() => {
-                            console.log("tap");
-                        }}/>
                     </$ActionBar>
             
                     <$StackLayout>
-
+                        
+                        
                         <$Switch onToggle={(checked) => {
                             console.log("checked: " + checked);
                         }}
@@ -105,5 +110,19 @@ class AppContainer extends React.Component<Props, State> {
         );
     }
 }
+
+/*
+<MyTabViewItem title={"left"}>
+                                <MyLabel text={"some content"}/>
+                            </MyTabViewItem>
+                            <MyTabViewItem title={"middle"}>
+                                <MyLabel text={"some content"}/>
+                            </MyTabViewItem>
+                            <MyTabViewItem title={"right"}>
+                                <MyLabel text={"some content"}/>
+                            </MyTabViewItem>
+*/
+
+
 // export default AppContainer;
 export default hot(AppContainer); // Replace this line with the above line if you want to remove hot loading.

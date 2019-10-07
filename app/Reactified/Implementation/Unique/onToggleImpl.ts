@@ -8,6 +8,9 @@ export const onToggleImpl = <T extends Observable>(instance: Reactify<T>, args: 
 }
 
 const switchImpl = <T extends Switch>(instance: Reactify<T>, args: EventData) => {
+    
+    if(!(Reflect.get(instance, "getCurrentRef")() instanceof Switch)) return;
+    
     const checked: boolean = (<Switch>args.object).checked;
 
         instance.props.onToggle && instance.props.onToggle(checked);

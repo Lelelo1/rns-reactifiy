@@ -16,9 +16,15 @@ export const componentDidMountImpl = <T extends Observable>(instance: Reactify<T
 }
 
 const observableImpl = <T extends Observable>(instance: Reactify<T>) => {
+    
+    // if(!(Reflect.get(instance, "getCurrentRef")() instanceof Observable)) return;
+
     Reflect.get(instance, "updateListenersHelper")(true);
 }
 const datePickerImpl = <T extends DatePicker>(instance: Reactify<T>) => {
+    
+    if(!(Reflect.get(instance, "getCurrentRef")() instanceof DatePicker)) return;
+    
     const node: T | null = Reflect.get(instance, "getCurrentRef")();
         if (!node) {
             console.warn(`React ref to NativeScript View lost, so unable to update event listeners.`);
@@ -27,6 +33,9 @@ const datePickerImpl = <T extends DatePicker>(instance: Reactify<T>) => {
         node.on("dateChange", Reflect.get(instance, "onDateChange"));
 }
 const listPickerImpl = <T extends ListPicker>(instance: Reactify<T>) => {
+    
+    if(!(Reflect.get(instance, "getCurrentRef")() instanceof ListPicker)) return;
+    
     const node: T | null = Reflect.get(instance, "getCurrentRef")();
         if (!node) {
             console.warn(`React ref to NativeScript View lost, so unable to update event listeners.`);
@@ -36,6 +45,9 @@ const listPickerImpl = <T extends ListPicker>(instance: Reactify<T>) => {
 }
 
 const searchBarImpl = <T extends SearchBar>(instance: Reactify<T>) => {
+    
+    if(!(Reflect.get(instance, "getCurrentRef")() instanceof SearchBar)) return;
+    
     const node: T | null = Reflect.get(instance, "getCurrentRef")();
         if (!node) {
             console.warn(`React ref to NativeScript View lost, so unable to update event listeners.`);
@@ -45,6 +57,9 @@ const searchBarImpl = <T extends SearchBar>(instance: Reactify<T>) => {
 }
 
 const sliderImpl = <T extends Slider>(instance: Reactify<T>) => {
+    
+    if(!(Reflect.get(instance, "getCurrentRef")() instanceof Slider)) return;
+    
     const node: T | null = Reflect.get(instance, "getCurrentRef")();
         if (!node) {
             console.warn(`React ref to NativeScript View lost, so unable to update event listeners.`);
@@ -53,6 +68,9 @@ const sliderImpl = <T extends Slider>(instance: Reactify<T>) => {
         node.on("valueChange", Reflect.get(instance, "onValueChange"));
 }
 const switchImpl = <T extends Switch>(instance: Reactify<T>) => {
+    
+    if(!(Reflect.get(instance, "getCurrentRef")() instanceof Slider)) return;
+
     const node: T | null = Reflect.get(instance, "getCurrentRef")();
         if (!node) {
             console.warn(`React ref to NativeScript View lost, so unable to update event listeners.`);

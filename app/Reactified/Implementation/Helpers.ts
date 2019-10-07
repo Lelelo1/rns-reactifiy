@@ -73,6 +73,15 @@ export const executeInOrder = (implMethods: ImplMethod[], ...args: any) => {
         run = undefined;
     }
 
+    run = implMethods.find((method) => method.name === "tabViewItemImpl");
+    if(run) {
+        const value = run(...args);
+        if(value) {
+            returnValue = value;
+        }
+        run = undefined;
+    }
+
     run = implMethods.find((method) => method.name === "pageImpl") // extends View...
     if(run) {
         const value = run(...args);
@@ -164,6 +173,15 @@ export const executeInOrder = (implMethods: ImplMethod[], ...args: any) => {
     }
 
     run = implMethods.find((method) => method.name === "switchImpl");
+    if(run) {
+        const value = run(...args);
+        if(value) {
+            returnValue = value;
+        }
+        run = undefined;
+    }
+
+    run = implMethods.find((method) => method.name === "tabViewImpl");
     if(run) {
         const value = run(...args);
         if(value) {

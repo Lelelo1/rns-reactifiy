@@ -1,21 +1,28 @@
-import { TextBase as NativeScriptTextBase, Observable} from "react-nativescript/dist/client/ElementRegistry";
+import { TextBase, Observable} from "react-nativescript/dist/client/ElementRegistry";
 import { Instance, TextInstance } from "react-nativescript/dist/shared/HostConfigTypes";
 import { FormattedString } from "tns-core-modules/text/formatted-string"
+import { Reactify } from "../Types";
+import { executeInOrder } from "../Helpers";
 
 
 export const __customHostConfigInsertBeforeImpl = <T extends Observable>(
+    instance: Reactify<T>,
     parent: T,
     child: Instance | TextInstance,
     beforeChild: Instance | TextInstance
 ): boolean => {
-    return textBaseImpl(parent, child, beforeChild);
+    return executeInOrder([textBaseImpl], instance, parent, child, beforeChild);
 }
-const textBaseImpl = <T extends Observable>(
+const textBaseImpl = <T extends TextBase>(
+    instance: Reactify<T>,
     parent: T,
     child: Instance | TextInstance,
     beforeChild: Instance | TextInstance
 ) : boolean => {
-    if(parent instanceof NativeScriptTextBase) {
+
+    if(!(Reflect.get(instance, "getCurrentRef")() instanceof TextBase)) return;
+
+    if(parent instanceof TextBase) {
         if (child instanceof FormattedString) {
             parent.formattedText = child;
             return true;

@@ -9,6 +9,9 @@ export const shouldComponentUpdateImpl = <T extends Observable>(instance: Reacti
     return observableImpl(instance, nextProps, nextState);
 }
 const observableImpl = <T extends Observable>(instance: Reactify<T>, nextProps: T & ExtraProps<T>, nextState: any) => {
+    
+    // if(!(Reflect.get(instance, "getCurrentRef")() instanceof Observable)) return;
+    
     // console.log(`Observable's shouldComponentUpdate`);
     const shouldUpdate: boolean = !shallowEqual(this.props, nextProps) || !shallowEqual(this.state, nextState);
     // console.log(`[shouldComponentUpdate] shouldUpdate: ${shouldUpdate}.`);

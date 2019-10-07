@@ -83,13 +83,13 @@ export function Reactified<T extends Observable>(observable: T, name?: string) {
 
         __ImplementsCustomNodeHierarchyManager__: true;
         __customHostConfigAppendChild? = (parentInstance: T, child: Observable | import("tns-core-modules/ui/text-base/text-base").TextBase): boolean => {
-            return __customHostConfigAppendChildImpl(parentInstance, child);
+            return __customHostConfigAppendChildImpl(this, parentInstance, child);
         }
         __customHostConfigRemoveChild? = (parentInstance: T, child: Observable | import("tns-core-modules/ui/text-base/text-base").TextBase): boolean => {
-            return __customHostConfigRemoveChildImpl(parentInstance, child);
+            return __customHostConfigRemoveChildImpl(this, parentInstance, child);
         }
         __customHostConfigInsertBefore?= (parentInstance: T, child: Observable | import("tns-core-modules/ui/text-base/text-base").TextBase, beforeChild: Observable | import("tns-core-modules/ui/text-base/text-base").TextBase): boolean => {
-            return __customHostConfigInsertBeforeImpl(parentInstance, child, beforeChild);
+            return __customHostConfigInsertBeforeImpl(this, parentInstance, child, beforeChild);
         }
     
         /* unique/ completely custom stuff... */

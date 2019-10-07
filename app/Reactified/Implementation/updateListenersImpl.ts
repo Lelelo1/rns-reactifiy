@@ -10,7 +10,8 @@ import {
     Placeholder,
     ScrollView,
     SearchBar,
-    SegmentedBar
+    SegmentedBar,
+    TabView
 } from "react-nativescript/dist/client/ElementRegistry";
 
 import { ExtraProps } from "../ExtraProps";
@@ -32,12 +33,14 @@ export const updateListenersImpl = <T extends Observable>(instance: Reactify<T> 
         placeholderImpl,
         scrollViewImpl,
         searchBarImpl,
-        segmentedBarImpl
+        segmentedBarImpl,
+        tabViewImpl
     ],
     instance, node, attach);
 }
-
 const observableImpl = <T extends Observable>(instance: Reactify<Observable>, node: T, attach: boolean | null, nextProps?: T & ExtraProps<T>) => {
+    if(!(Reflect.get(instance, "getCurrentRef")() instanceof Observable)) return;
+
     console.log("observableImpl");
     if (attach === null) {
         updateListener(node, "propertyChange", instance.props.onPropertyChange, nextProps.onPropertyChange);
@@ -50,56 +53,61 @@ const observableImpl = <T extends Observable>(instance: Reactify<Observable>, no
 
 // https://github.com/shirakaba/react-nativescript/blob/master/react-nativescript/src/components/View.ts
 const viewImpl = <T extends View>(instance: Reactify<T>, node: T, attach: boolean | null, nextProps?: T & ExtraProps<T>) => {
-    if(node instanceof View ) {
-        console.log("view impl");
-        if (attach === null) {
-            updateListener(node, "loaded", instance.props.onLoaded, nextProps.onLoaded);
-            updateListener(node, "unloaded", instance.props.onUnloaded, nextProps.onUnloaded);
-            updateListener(node, "androidBackPressed", instance.props.onAndroidBackPressed, nextProps.onAndroidBackPressed);
-            updateListener(node, "showingModally", instance.props.onShowingModally, nextProps.onShowingModally);
-            updateListener(node, "shownModally", instance.props.onShownModally, nextProps.onShownModally);
-            updateListener(node, GestureTypes.tap, instance.props.onTap, nextProps.onTap, "tap");
-            updateListener(node, GestureTypes.doubleTap, instance.props.onDoubleTap, nextProps.onDoubleTap, "doubleTap");
-            updateListener(node, GestureTypes.pinch, instance.props.onPinch, nextProps.onPinch, "pinch");
-            updateListener(node, GestureTypes.pan, instance.props.onPan, nextProps.onPan, "pan");
-            updateListener(node, GestureTypes.swipe, instance.props.onSwipe, nextProps.onSwipe, "swipe");
-            updateListener(node, GestureTypes.rotation, instance.props.onRotation, nextProps.onRotation, "rotation");
-            updateListener(node, GestureTypes.longPress, instance.props.onLongPress, nextProps.onLongPress, "longPress");
-            updateListener(node, GestureTypes.touch, instance.props.onTouch, nextProps.onTouch, "touch");
-        } else {
-            const method = (attach ? node.on : node.off).bind(node);
-            if (instance.props.onLoaded) method("loaded", instance.props.onLoaded);
-            if (instance.props.onUnloaded) method("unloaded", instance.props.onUnloaded);
-            if (instance.props.onAndroidBackPressed) method("androidBackPressed", instance.props.onAndroidBackPressed);
-            if (instance.props.onShowingModally) method("showingModally", instance.props.onShowingModally);
-            if (instance.props.onShownModally) method("shownModally", instance.props.onShownModally);
-            if (instance.props.onTap) method(GestureTypes.tap, instance.props.onTap);
-            if (instance.props.onDoubleTap) method(GestureTypes.doubleTap, instance.props.onDoubleTap);
-            if (instance.props.onPinch) method(GestureTypes.pinch, instance.props.onPinch);
-            if (instance.props.onPan) method(GestureTypes.pan, instance.props.onPan);
-            if (instance.props.onSwipe) method(GestureTypes.swipe, instance.props.onSwipe);
-            if (instance.props.onRotation) method(GestureTypes.rotation, instance.props.onRotation);
-            if (instance.props.onLongPress) method(GestureTypes.longPress, instance.props.onLongPress);
-            if (instance.props.onTouch) method(GestureTypes.touch, instance.props.onTouch);
-        }
+    
+    if(!(Reflect.get(instance, "getCurrentRef")() instanceof View)) return;
+    
+    console.log("view impl");
+    if (attach === null) {
+        updateListener(node, "loaded", instance.props.onLoaded, nextProps.onLoaded);
+        updateListener(node, "unloaded", instance.props.onUnloaded, nextProps.onUnloaded);
+        updateListener(node, "androidBackPressed", instance.props.onAndroidBackPressed, nextProps.onAndroidBackPressed);
+        updateListener(node, "showingModally", instance.props.onShowingModally, nextProps.onShowingModally);
+        updateListener(node, "shownModally", instance.props.onShownModally, nextProps.onShownModally);
+        updateListener(node, GestureTypes.tap, instance.props.onTap, nextProps.onTap, "tap");
+        updateListener(node, GestureTypes.doubleTap, instance.props.onDoubleTap, nextProps.onDoubleTap, "doubleTap");
+        updateListener(node, GestureTypes.pinch, instance.props.onPinch, nextProps.onPinch, "pinch");
+        updateListener(node, GestureTypes.pan, instance.props.onPan, nextProps.onPan, "pan");
+        updateListener(node, GestureTypes.swipe, instance.props.onSwipe, nextProps.onSwipe, "swipe");
+        updateListener(node, GestureTypes.rotation, instance.props.onRotation, nextProps.onRotation, "rotation");
+        updateListener(node, GestureTypes.longPress, instance.props.onLongPress, nextProps.onLongPress, "longPress");
+        updateListener(node, GestureTypes.touch, instance.props.onTouch, nextProps.onTouch, "touch");
+    } else {
+        const method = (attach ? node.on : node.off).bind(node);
+        if (instance.props.onLoaded) method("loaded", instance.props.onLoaded);
+        if (instance.props.onUnloaded) method("unloaded", instance.props.onUnloaded);
+        if (instance.props.onAndroidBackPressed) method("androidBackPressed", instance.props.onAndroidBackPressed);
+        if (instance.props.onShowingModally) method("showingModally", instance.props.onShowingModally);
+        if (instance.props.onShownModally) method("shownModally", instance.props.onShownModally);
+        if (instance.props.onTap) method(GestureTypes.tap, instance.props.onTap);
+        if (instance.props.onDoubleTap) method(GestureTypes.doubleTap, instance.props.onDoubleTap);
+        if (instance.props.onPinch) method(GestureTypes.pinch, instance.props.onPinch);
+        if (instance.props.onPan) method(GestureTypes.pan, instance.props.onPan);
+        if (instance.props.onSwipe) method(GestureTypes.swipe, instance.props.onSwipe);
+        if (instance.props.onRotation) method(GestureTypes.rotation, instance.props.onRotation);
+        if (instance.props.onLongPress) method(GestureTypes.longPress, instance.props.onLongPress);
+        if (instance.props.onTouch) method(GestureTypes.touch, instance.props.onTouch);
     }
 }
 
 const actionItemImpl = <T extends ActionItem>(instance: Reactify<T>, node: T, attach: boolean | null, nextProps?: T & ExtraProps<T>) => {
     /* tap assigning tap on actionitem crashes */
     /* should be conditionally ran so that two tap gesture recognizers aren't added*/
-    if(node instanceof ActionItem) {
-        console.log("actionItemImpl")
-        if (attach === null) {
-            updateListener(node, "tap", instance.props.onTap, nextProps.onTap);
-        } else {
-            const method = (attach ? node.on : node.off).bind(node);
-            if (instance.props.onTap) method("tap", instance.props.onTap);
-        }
+    
+    if(!(Reflect.get(instance, "getCurrentRef")() instanceof ActionItem)) return;
+
+    console.log("actionItemImpl")
+    if (attach === null) {
+        updateListener(node, "tap", instance.props.onTap, nextProps.onTap);
+    } else {
+        const method = (attach ? node.on : node.off).bind(node);
+        if (instance.props.onTap) method("tap", instance.props.onTap);
     }
     
 }
 const pageImpl = <T extends Page>(instance: Reactify<T>, node: T, attach: boolean | null, nextProps?: T & ExtraProps<T>) => {
+    
+    if(!(Reflect.get(instance, "getCurrentRef")() instanceof Page)) return;
+    
     console.log("pageImpl");
     if (attach === null) {
         updateListener(node, "navigatedFrom", instance.props.onNavigatedFrom, nextProps.onNavigatedFrom);
@@ -117,6 +125,10 @@ const pageImpl = <T extends Page>(instance: Reactify<T>, node: T, attach: boolea
 }
 
 const editableTextBaseImpl = <T extends EditableTextBase>(instance: Reactify<T>, node: T, attach: boolean | null, nextProps?: T & ExtraProps<T>) => {
+    
+    if(!(Reflect.get(instance, "getCurrentRef")() instanceof ActionItem)) return;
+    
+    console.log("editableTextBaseImpl");
     if (attach === null) {
         updateListener(node, "blur", instance.props.onBlur, nextProps.onBlur);
         updateListener(node, "focus", instance.props.onFocus, nextProps.onFocus);
@@ -129,6 +141,10 @@ const editableTextBaseImpl = <T extends EditableTextBase>(instance: Reactify<T>,
     }
 }
 const frameImpl = <T extends Frame>(instance: Reactify<T>, node: T, attach: boolean | null, nextProps?: T & ExtraProps<T>) => {
+    
+    if(!(Reflect.get(instance, "getCurrentRef")() instanceof Frame)) return;
+    
+    console.log("frameImpl");
     if (attach === null) {
         updateListener(node, "optionSelected", instance.props.onOptionSelected, nextProps.onOptionSelected);
     } else {
@@ -138,6 +154,10 @@ const frameImpl = <T extends Frame>(instance: Reactify<T>, node: T, attach: bool
     }
 }
 const placeholderImpl = <T extends Placeholder>(instance: Reactify<T>, node: T, attach: boolean | null, nextProps?: T & ExtraProps<T>) => { 
+    
+    if(!(Reflect.get(instance, "getCurrentRef")() instanceof Placeholder)) return;
+
+    console.log("placeholderImpl");
     if (attach === null) {
         updateListener(node, "creatingView", instance.props.onCreatingView, nextProps.onCreatingView);
     } else {
@@ -146,6 +166,10 @@ const placeholderImpl = <T extends Placeholder>(instance: Reactify<T>, node: T, 
     }
 }
 const scrollViewImpl = <T extends ScrollView>(instance: Reactify<T>, node: T, attach: boolean | null, nextProps?: T & ExtraProps<T>) => { 
+    
+    if(!(Reflect.get(instance, "getCurrentRef")() instanceof ScrollView)) return;
+    
+    console.log("scrollViewImpl");
     if (attach === null) {
         updateListener(node, "scroll", this.props.onScroll, nextProps.onScroll);
     } else {
@@ -155,6 +179,10 @@ const scrollViewImpl = <T extends ScrollView>(instance: Reactify<T>, node: T, at
     }
 }
 const searchBarImpl = <T extends SearchBar>(instance: Reactify<T>, node: T, attach: boolean | null, nextProps?: T & ExtraProps<T>) => { 
+    
+    if(!(Reflect.get(instance, "getCurrentRef")() instanceof SearchBar)) return;
+    
+    console.log("searchBarImpl");
     if (attach === null) {
         updateListener(node, "submit", instance.props.onSubmit, nextProps.onSubmit);
         updateListener(node, "close", instance.props.onClose, nextProps.onClose);
@@ -166,6 +194,10 @@ const searchBarImpl = <T extends SearchBar>(instance: Reactify<T>, node: T, atta
     }
 }
 const segmentedBarImpl = <T extends SegmentedBar>(instance: Reactify<T>, node: T, attach: boolean | null, nextProps?: T & ExtraProps<T>) => { 
+    
+    if(!(Reflect.get(instance, "getCurrentRef")() instanceof SegmentedBar)) return;
+
+    console.log("segmentedBarImpl");
     if (attach === null) {
         updateListener(
             node,
@@ -179,4 +211,24 @@ const segmentedBarImpl = <T extends SegmentedBar>(instance: Reactify<T>, node: T
         if (instance.props.onSelectedIndexChanged) method("selectedIndexChanged", instance.props.onSelectedIndexChanged);
     }
 }
+const tabViewImpl = <T extends SegmentedBar>(instance: Reactify<T>, node: T, attach: boolean | null, nextProps?: T & ExtraProps<T>) => { 
+    
+    if(!(Reflect.get(instance, "getCurrentRef")() instanceof TabView)) return;
+    
+    console.log("tabViewImpl");
+    if (attach === null) {
+        updateListener(
+            node,
+            "selectedIndexChanged",
+            instance.props.onSelectedIndexChanged,
+            nextProps.onSelectedIndexChanged
+        );
+    } else {
+        const method = (attach ? node.on : node.off).bind(node);
+    
+        if (instance.props.onSelectedIndexChanged) method("selectedIndexChanged", instance.props.onSelectedIndexChanged);
+    }
+}
+
+
 

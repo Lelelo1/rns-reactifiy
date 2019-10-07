@@ -9,6 +9,9 @@ export const onDataChangeImpl = <T extends Observable>(instance: Reactify<T>, ar
 }
 
 const datePickerImpl = <T extends DatePicker>(instance: Reactify<T>, args: EventData) => {
+    
+    if(!(Reflect.get(instance, "getCurrentRef")() instanceof DatePicker)) return;
+    
     const date: Date = (<DatePicker>args.object).date;
     instance.props.onDateChange && instance.props.onDateChange(date);
 }

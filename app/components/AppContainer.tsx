@@ -1,6 +1,6 @@
 import { hot } from 'react-hot-loader/root';
 import * as React from "react";
-import { $Page, $Label, $ActionBar, $GridLayout, $FormattedString, $Span, $Switch, $Frame, $Button, $StackLayout, $DatePicker, $TextField, $SegmentedBarItem, $Slider, $ActionItem, $TabView, $TabViewItem } from "react-nativescript";
+import { $Page, $Label, $ActionBar, $GridLayout, $Switch, $Frame, $Button, $StackLayout, $DatePicker, $TextField, $SegmentedBarItem, $Slider, $ActionItem, $TabView, $TabViewItem } from "react-nativescript";
 import { ItemSpec } from 'tns-core-modules/ui/layouts/grid-layout/grid-layout';
 import { Frame, Page, Color } from 'tns-core-modules/ui/frame/frame';
 import { Reactified } from '~/Reactified/Reactified';

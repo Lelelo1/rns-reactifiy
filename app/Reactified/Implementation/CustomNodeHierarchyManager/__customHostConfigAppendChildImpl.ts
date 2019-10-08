@@ -4,11 +4,11 @@ import { FormattedString } from "tns-core-modules/text/formatted-string"
 import { Reactify } from "../Types";
 import { executeInOrder } from "../Helpers";
 
-export const __customHostConfigAppendChildImpl = <T extends Observable>(instance: Reactify<T>,parent: T, child: Instance | TextInstance): boolean => {
+export const __customHostConfigAppendChildImpl = <T extends Observable>(instance: Reactify<T>, parent: T, child: Instance): boolean => {
     return executeInOrder([textBaseImpl], instance, parent, child);
 }
 
-const textBaseImpl = <T extends TextBase>(instance: Reactify<T>, parent: T, child: Instance | TextInstance) => {
+const textBaseImpl = <T extends TextBase>(instance: Reactify<T>, parent: T, child: Instance) => {
     
     if(!(Reflect.get(instance, "getCurrentRef")() instanceof TextBase)) return;
 

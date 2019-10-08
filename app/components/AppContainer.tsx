@@ -43,6 +43,8 @@ const MyTabViewItem = Reactified(new TabViewItem());
 const MyButton = Reactified(new Button());
 const MySegmentedBar = Reactified(new SegmentedBar());
 const MyStackLayout = Reactified(new StackLayout());
+const MyScrollView = Reactified(new ScrollView());
+
 interface Props {
     forwardedRef: React.RefObject<Frame>,
 }
@@ -97,11 +99,10 @@ class AppContainer extends React.Component<Props, State> {
                             console.log("tap");
                         }}/>
                     </$ActionBar>
-            
-                    <MyStackLayout>
-                        <MyButton text={"yooo"}/>
-                        <MyLabel text={"yeaaaaaaaa!"} backgroundColor={new Color("orange")}/>
-                    </MyStackLayout>
+                    <MyScrollView width={200} >
+                        <MyButton text={"a button"} />
+                        <MyLabel text={"laaaabel"} backgroundColor={new Color("silver")}/>
+                    </MyScrollView>
                 </$Page>
             </$Frame>
         );

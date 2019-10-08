@@ -41,10 +41,12 @@ import { SelectedIndexChangedEventData as SegmentedBarSelectedIndexChangedEventD
 import { SelectedIndexChangedEventData as TabViewSelectedIndexChangedEventData } from 'tns-core-modules/ui/tab-view/tab-view';
 
 // export type ExtraProps<T extends Observable> = ObservableProps<T> & ViewBaseProps<T> & ViewProps<T> & PageProps<T> & ActionItemProps<T>;
+
 export type ExtraProps<T extends Observable> = ObservableProps<T> & ViewBaseProps<T> & ViewProps<T>
  & PageProps<T> & ActionItemProps<T> & DatePickerProps<T> & EditableTextBaseProps<T> & FrameProps<T>
  & GridLayoutProps<T> & HtmlViewProps<T> & ListPickerProps<T> & PlaceholderProps<T> & ScrollViewProps<T>
  & SearchBarProps<T> & SegmentedBarProps<T> & SliderProps<T> & SwitchProps<T> & TabViewProps<T>;
+
 
 // using conditional so that RNSButton don't get navigatedTo (PageProps) 
 

@@ -21,8 +21,8 @@ import { onValueChangeImpl } from "./Implementation/Unique/onValueChangeImpl";
 import { onToggleImpl } from "./Implementation/Unique/onToggleImpl";
 import { PropsWithoutForwardedRef } from "react-nativescript/dist/shared/NativeScriptComponentTypings";
 
-
-export function Reactified<T extends Observable>(observable: T, name?: string) { 
+type Constructor<T> = new(...args: any[]) => T;
+export function Reactified<T extends Observable>(observable: T, name?: string): Constructor<React.Component<Partial<T> & ExtraProps<T>>> { 
 
     if(!name) {
         name = firstLetterLowercase(nameOf(observable));
@@ -32,7 +32,7 @@ export function Reactified<T extends Observable>(observable: T, name?: string) {
        return observable;
     });
     // let self: Reactify = null;
-    class Reactify extends React.Component<Partial<T> & ExtraProps<T>, any> implements CustomNodeHierarchyManager<T> {
+    class Reactify extends React.Component<Partial<T> & ExtraProps<T>> implements CustomNodeHierarchyManager<T> {
         static countOfInstances = 0;
         static defaultProps = {... observable } 
         /*
@@ -110,10 +110,7 @@ export function Reactified<T extends Observable>(observable: T, name?: string) {
         }
 
     }
-    
-    return React.forwardRef<T, Partial<T> & ExtraProps<T>>((props, ref) => {
-        return React.createElement(name, {...props, forwardedRef: ref}, props.children);
-    });
+    return Reactify;
 
      // have to declare class name to make decorators work  // https://github.com/microsoft/TypeScript/issues/7342
 }

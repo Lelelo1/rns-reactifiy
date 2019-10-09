@@ -42,22 +42,12 @@ import { SelectedIndexChangedEventData as TabViewSelectedIndexChangedEventData }
 
 // export type ExtraProps<T extends Observable> = ObservableProps<T> & ViewBaseProps<T> & ViewProps<T> & PageProps<T> & ActionItemProps<T>;
 
-export type ExtraProps<T extends Observable> = ObservableProps<T> & ViewBaseProps<T> & ViewProps<T>
+export type ExtraProps<T extends ViewBase> = ObservableProps<T> & ViewBaseProps<T> & ViewProps<T>
  & PageProps<T> & ActionItemProps<T> & DatePickerProps<T> & EditableTextBaseProps<T> & FrameProps<T>
  & GridLayoutProps<T> & HtmlViewProps<T> & ListPickerProps<T> & PlaceholderProps<T> & ScrollViewProps<T>
  & SearchBarProps<T> & SegmentedBarProps<T> & SliderProps<T> & SwitchProps<T> & TabViewProps<T>;
 
 
-// using conditional so that RNSButton don't get navigatedTo (PageProps) 
-
-
-/* 
- Should get ObservableProps
- with getter/onditional typing - since the ns component
- must be of type Observable. using below conidtional type
- also cause an type error in getCurrentRefImpl
- */
-// type ObservableProps<T extends Observable> = T extends Observable ? IObservable<T> : Empty
 
 interface ObservableProps<T extends Observable> {
     elementKey?: string // added
@@ -67,8 +57,8 @@ interface ObservableProps<T extends Observable> {
 
 /* rest is using conditional type "getters" so that button don't access get page's props etc*/
 
-type ViewBaseProps<T> = T extends ViewBase ? IViewBase : Empty
-interface IViewBase {
+type ViewBaseProps<T> = T extends ViewBase ? IViewBase<T> : Empty
+interface IViewBase<T> {
     __rns__nodeTreeRole?: string;
     dock?: Dock;
 }

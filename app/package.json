@@ -3,8 +3,5 @@
   "android": {
     "v8Flags": "--expose_gc",
     "markingMode": "none"
-  },
-  "devDependencies": {
-    "@types/react-mixin": "^2.0.32"
   }
 }

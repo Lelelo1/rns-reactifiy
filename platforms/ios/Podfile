@@ -1,11 +1,11 @@
 use_frameworks!
 
-target "testreactnativescript" do
-# NativeScriptPlatformSection /Users/hemma/Projects/test-react-nativescript/node_modules/tns-core-modules/platforms/ios/Podfile with 9.0
+target "rnsreactify" do
+# NativeScriptPlatformSection /Users/hemma/Projects/rns-reactify/node_modules/tns-core-modules/platforms/ios/Podfile with 9.0
 platform :ios, '9.0'
 # End NativeScriptPlatformSection
 
-# Begin Podfile - /Users/hemma/Projects/test-react-nativescript/node_modules/tns-core-modules/platforms/ios/Podfile
+# Begin Podfile - /Users/hemma/Projects/rns-reactify/node_modules/tns-core-modules/platforms/ios/Podfile
 # platform :ios, '9.0'
 use_frameworks!
 

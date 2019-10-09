@@ -2,9 +2,9 @@
 import * as React from "react";
 import { Observable, Button, TextField, HtmlView, Label, TabView, TabViewItem } from "react-nativescript/dist/client/ElementRegistry";
 import { executeInOrder } from "../Helpers";
-import { Reactify } from "../Types";
+import { Reactify, Base } from "../Types";
 
-export const renderImpl = <T extends Observable>(name: string, instance: Reactify<T>, observable: T): React.ReactNode => {
+export const renderImpl = <T extends Base>(name: string, instance: Reactify<T>): React.ReactNode => {
     return executeInOrder(
         [genericImpl,
         buttonImpl,
@@ -12,9 +12,9 @@ export const renderImpl = <T extends Observable>(name: string, instance: Reactif
         htmlViewImpl,
         labelImpl,
         tabViewItemImpl],
-        name, instance, observable);
+        name, instance);
 }
-const genericImpl = <T extends Observable>(name: string, instance: Reactify<T>, observable: T) => {
+const genericImpl = <T extends Base>(name: string, instance: Reactify<T>) => {
     console.log("generic render");
     const { forwardedRef, children, ...rest } = instance.props
     return React.createElement(
@@ -27,7 +27,7 @@ const genericImpl = <T extends Observable>(name: string, instance: Reactify<T>, 
     );
 }
 
-const buttonImpl = <T extends Button>(name: string, instance: Reactify<T>, observable: T) => {
+const buttonImpl = <T extends Button>(name: string, instance: Reactify<T>) => {
     
     if(!(Reflect.get(instance, "getCurrentRef")() instanceof Button)) return undefined;
         const {
@@ -91,7 +91,7 @@ const textFieldImpl = <T extends TextField>(name: string, instance: Reactify<T>,
     );
 }
 
-const htmlViewImpl = <T extends HtmlView>(name: string, instance: Reactify<T>, observable: T) => {
+const htmlViewImpl = <T extends HtmlView>(name: string, instance: Reactify<T>) => {
     
     if(!(Reflect.get(instance, "getCurrentRef")() instanceof HtmlView)) return undefined;
     
@@ -116,7 +116,7 @@ const htmlViewImpl = <T extends HtmlView>(name: string, instance: Reactify<T>, o
     );
 }
 
-const labelImpl = <T extends Label>(name: string, instance: Reactify<T>, observable: T) => {
+const labelImpl = <T extends Label>(name: string, instance: Reactify<T>) => {
     
     if(!(Reflect.get(instance, "getCurrentRef")() instanceof Label)) return undefined;
     
@@ -149,7 +149,7 @@ const labelImpl = <T extends Label>(name: string, instance: Reactify<T>, observa
         );
 }
 
-const tabViewItemImpl = <T extends TabViewItem>(name: string, instance: Reactify<T>, observable: T) => { 
+const tabViewItemImpl = <T extends TabViewItem>(name: string, instance: Reactify<T>) => { 
     
     if(!(Reflect.get(instance, "getCurrentRef")() instanceof TabViewItem)) return undefined;
     

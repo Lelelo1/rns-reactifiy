@@ -1,9 +1,9 @@
 import { EventData, Observable } from "tns-core-modules/data/observable/observable";
 import { Slider } from "react-nativescript/dist/client/ElementRegistry";
 import { executeInOrder } from "../Helpers";
-import { Reactify } from "../Types";
+import { Reactify, Base } from "../Types";
 
-export const onValueChangeImpl = <T extends Observable>(instance: Reactify<T>, args: EventData ) => {
+export const onValueChangeImpl = <T extends Base>(instance: Reactify<T>, args: EventData ) => {
     executeInOrder([sliderImpl], instance, args);
 }
 /* typo found in https://github.com/shirakaba/react-nativescript/blob/master/react-nativescript/src/components/Slider.ts */

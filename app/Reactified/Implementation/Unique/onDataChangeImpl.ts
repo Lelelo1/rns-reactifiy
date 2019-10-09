@@ -2,9 +2,9 @@
 import { EventData, Observable } from "tns-core-modules/data/observable/observable";
 import { DatePicker } from "react-nativescript/dist/client/ElementRegistry";
 import { executeInOrder } from "../Helpers";
-import { Reactify } from "../Types";
+import { Reactify, Base } from "../Types";
 
-export const onDataChangeImpl = <T extends Observable>(instance: Reactify<T>, args: EventData ) => {
+export const onDataChangeImpl = <T extends Base>(instance: Reactify<T>, args: EventData ) => {
     executeInOrder([datePickerImpl], instance, args);
 }
 

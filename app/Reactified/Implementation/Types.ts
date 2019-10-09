@@ -1,10 +1,12 @@
 import { Observable, ViewBase, View, Page } from "react-nativescript/dist/client/ElementRegistry";
 import { ExtraProps } from "../ExtraProps";
+import { Instance as Base} from "react-nativescript/dist/shared/HostConfigTypes";
 
-export type Reactify<T extends Observable> = React.Component<Partial<T> & ExtraProps<T>, any>;
+export type Reactify<T extends Base> = React.Component<Partial<T> & ExtraProps<T>, any>;
+
+export { Base }; 
 
 // export type Props<T extends Observable> = T & ExtraProps<T>;
-
 
 /*
 export type Observable<T> = T extends Observable ? Reactify<Observable> : Empty

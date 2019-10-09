@@ -17,10 +17,10 @@ import {
 import { ExtraProps } from "../ExtraProps";
 import { updateListener } from "react-nativescript/dist/client/EventHandling";
 import { GestureTypes } from "tns-core-modules/ui/gestures/gestures";
-import { tryCast, Props, Reactify } from "./Types";
+import { Reactify, Base } from "./Types";
 import { executeInOrder } from "./Helpers";
 
-export const updateListenersImpl = <T extends Observable>(instance: Reactify<T> ,node: T, attach: boolean | null, nextProps?: Props<T>) => {
+export const updateListenersImpl = <T extends Base>(instance: Reactify<T> ,node: T, attach: boolean | null, nextProps?: T & ExtraProps<T>) => {
     
     /* implementation for any rns component here - or on reactify class body*/
     executeInOrder(
@@ -36,9 +36,9 @@ export const updateListenersImpl = <T extends Observable>(instance: Reactify<T> 
         segmentedBarImpl,
         tabViewImpl
     ],
-    instance, node, attach);
+    instance, node, attach, nextProps);
 }
-const observableImpl = <T extends Observable>(instance: Reactify<Observable>, node: T, attach: boolean | null, nextProps?: T & ExtraProps<T>) => {
+const observableImpl = <T extends Base>(instance: Reactify<T>, node: T, attach: boolean | null, nextProps?: T & ExtraProps<T>) => {
     if(!(Reflect.get(instance, "getCurrentRef")() instanceof Observable)) return;
 
     console.log("observableImpl");

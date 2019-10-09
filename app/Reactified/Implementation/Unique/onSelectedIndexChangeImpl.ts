@@ -1,9 +1,9 @@
 import { EventData } from "tns-core-modules/data/observable/observable";
 import { Observable, ListPicker } from "react-nativescript/dist/client/ElementRegistry";
-import { Reactify } from "../Types";
+import { Reactify, Base } from "../Types";
 import { executeInOrder } from "../Helpers";
 
-export const onSelectIndexChangeImpl = <T extends Observable>(instance: Reactify<T>, args: EventData) => {
+export const onSelectIndexChangeImpl = <T extends Base>(instance: Reactify<T>, args: EventData) => {
     executeInOrder([listPickerImpl], instance, args);
 }
 const listPickerImpl = <T extends ListPicker>(instance: Reactify<T>, args: EventData) => {

@@ -1,9 +1,9 @@
 import { Observable } from "tns-core-modules/data/observable/observable";
 import { DatePicker, ListPicker, SearchBar, Slider, Switch } from "react-nativescript/dist/client/ElementRegistry";
 import { executeInOrder } from "../Helpers";
-import { Reactify } from "../Types";
+import { Reactify, Base } from "../Types";
 
-export const componentDidMountImpl = <T extends Observable>(instance: Reactify<T>) => {
+export const componentDidMountImpl = <T extends Base>(instance: Reactify<T>) => {
     executeInOrder(
         [observableImpl,
         datePickerImpl,
@@ -15,7 +15,7 @@ export const componentDidMountImpl = <T extends Observable>(instance: Reactify<T
     
 }
 
-const observableImpl = <T extends Observable>(instance: Reactify<T>) => {
+const observableImpl = <T extends Base>(instance: Reactify<T>) => {
     
     // if(!(Reflect.get(instance, "getCurrentRef")() instanceof Observable)) return;
 

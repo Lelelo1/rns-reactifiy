@@ -5,19 +5,19 @@ import { Reactify } from "../Types";
 import { executeInOrder } from "../Helpers";
 
 
-export const __customHostConfigInsertBeforeImpl = <T extends Observable>(
+export const __customHostConfigInsertBeforeImpl = <T extends Instance>(
     instance: Reactify<T>,
     parent: T,
-    child: Instance,
-    beforeChild: Instance
+    child: T,
+    beforeChild: T
 ): boolean => {
     return executeInOrder([textBaseImpl], instance, parent, child, beforeChild);
 }
 const textBaseImpl = <T extends TextBase>(
     instance: Reactify<T>,
     parent: T,
-    child: Instance,
-    beforeChild: Instance
+    child: T,
+    beforeChild: T
 ) : boolean => {
 
     if(!(Reflect.get(instance, "getCurrentRef")() instanceof TextBase)) return;

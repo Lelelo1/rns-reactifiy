@@ -1,14 +1,14 @@
 import { TextBase, Observable} from "react-nativescript/dist/client/ElementRegistry";
 import { Instance, TextInstance } from "react-nativescript/dist/shared/HostConfigTypes";
 import { FormattedString } from "tns-core-modules/text/formatted-string"
-import { Reactify } from "../Types";
+import { Reactify, Base } from "../Types";
 import { executeInOrder } from "../Helpers";
 
-export const __customHostConfigRemoveChildImpl = <T extends Observable>(instance: Reactify<T> ,parent: T, child: Instance | TextInstance): boolean => {
+export const __customHostConfigRemoveChildImpl = <T extends Instance>(instance: Reactify<T> ,parent: T, child: T ): boolean => {
     return executeInOrder([textBaseImpl], instance, parent, child);
 }
 
-const textBaseImpl = <T extends TextBase>(instance: Reactify<T>, parent: T, child: Instance | TextInstance): boolean => {
+const textBaseImpl = <T extends TextBase>(instance: Reactify<T>, parent: T, child: T): boolean => {
     
     if(!(Reflect.get(instance, "getCurrentRef")() instanceof TextBase)) return;
     

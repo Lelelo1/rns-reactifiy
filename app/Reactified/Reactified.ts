@@ -20,9 +20,10 @@ import { onTextChangeImpl } from "./Implementation/Unique/onTextChangeImpl";
 import { onValueChangeImpl } from "./Implementation/Unique/onValueChangeImpl";
 import { onToggleImpl } from "./Implementation/Unique/onToggleImpl";
 import { PropsWithoutForwardedRef } from "react-nativescript/dist/shared/NativeScriptComponentTypings";
+import { Base } from "./Implementation/Types";
 
-type Constructor<T> = new(...args: any[]) => T;
-export function Reactified<T extends Instance>(observable: T, name?: string): Constructor<React.Component<Partial<T> & ExtraProps<T>>> { 
+
+export function Reactified<T extends Base>(observable: T, name?: string) { 
 
     if(!name) {
         name = firstLetterLowercase(nameOf(observable));
@@ -43,7 +44,7 @@ export function Reactified<T extends Instance>(observable: T, name?: string): Co
         }
         */
         protected readonly myRef: React.RefObject<T> = React.createRef<T>();
-        protected getCurrentRef = (): T | null => {
+        protected getCurrentRef = (): Instance | null => {
             return (this.props.forwardedRef || this.myRef).current;
         }
         /**
@@ -78,17 +79,17 @@ export function Reactified<T extends Instance>(observable: T, name?: string): Co
         }
         
         render = (): React.ReactNode => {
-            return renderImpl(name, this, observable);
+            return renderImpl(name, this);
         }
 
         __ImplementsCustomNodeHierarchyManager__: true;
-        __customHostConfigAppendChild? = (parentInstance: T, child: Instance): boolean => {
+        __customHostConfigAppendChild? = (parentInstance: Instance, child: Instance): boolean => {
             return __customHostConfigAppendChildImpl(this, parentInstance, child);
         }
-        __customHostConfigRemoveChild? = (parentInstance: T, child: Instance): boolean => {
+        __customHostConfigRemoveChild? = (parentInstance: Instance, child: Instance): boolean => {
             return __customHostConfigRemoveChildImpl(this, parentInstance, child);
         }
-        __customHostConfigInsertBefore?= (parentInstance: T, child: Instance, beforeChild: Instance): boolean => {
+        __customHostConfigInsertBefore?= (parentInstance: Instance, child: Instance, beforeChild: Instance): boolean => {
             return __customHostConfigInsertBeforeImpl(this, parentInstance, child, beforeChild);
         }
     

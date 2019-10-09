@@ -1,6 +1,6 @@
 {
   "nativescript": {
-    "id": "org.nativescript.testreactnativescript",
+    "id": "org.nativescript.rnsreactify",
     "tns-android": {
       "version": "6.1.0"
     },
@@ -12,16 +12,11 @@
   "license": "SEE LICENSE IN <your-license-filename>",
   "repository": "<fill-your-repository-here>",
   "dependencies": {
-    "mixin.ts": "^1.0.1",
-    "mobx-state-tree": "^3.14.1",
     "nativescript-theme-core": "~1.0.6",
     "react": "^16.9.0",
-    "react-mixin": "^2.0.2",
     "react-nativescript": "^0.12.0",
     "tns-core-modules": "~6.1.0",
-    "tns-platform-declarations": "^6.1.1",
-    "ts-mixer": "^4.0.0",
-    "typescript-mix": "^3.1.3"
+    "tns-platform-declarations": "^6.1.1"
   },
   "devDependencies": {
     "@babel/core": "~7.5.5",

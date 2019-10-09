@@ -33,7 +33,7 @@ export function Reactified<T extends Base>(observable: T, name?: string) {
        return observable;
     });
     // let self: Reactify = null;
-    class Reactify extends React.Component<Partial<T> & ExtraProps<T>> implements CustomNodeHierarchyManager<T> {
+    class Reactify extends React.Component<Partial<T & ExtraProps<T>>> implements CustomNodeHierarchyManager<T> {
         static countOfInstances = 0;
         
         constructor(props: T & ExtraProps<T>) {

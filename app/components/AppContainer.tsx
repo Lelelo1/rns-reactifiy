@@ -42,7 +42,7 @@ class MyFancyButton extends Button {
 
 // const MyComponent = Reactified(new TabView()); 
 const MyLabel = Reactified(new Label());
-const MyTabView = Reactified<TabView>(new TabView()); 
+const MyTabView = Reactified(new TabView()); 
 const MyTabViewItem = Reactified(new TabViewItem());
 class MyButton extends Reactified(new Button()){};
 const MySegmentedBar = Reactified(new SegmentedBar());
@@ -69,6 +69,7 @@ class AppContainer extends React.Component<Props, State> {
     private readonly myEditableTextBaseRef = React.createRef<EditableTextBase>();
     private readonly myButtonRef = React.createRef<MyButton>();
     private readonly mySpanRef = React.createRef<MySpan>();
+    
     componentDidMount(){
 
 

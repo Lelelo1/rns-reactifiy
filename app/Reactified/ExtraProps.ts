@@ -29,7 +29,9 @@ import {
     SearchBar,
     SegmentedBar,
     Slider,
-    TabView
+    TabView,
+    TimePicker,
+    WebView
 } from "react-nativescript/dist/client/ElementRegistry";
 
 import { PageNavigationEventHandler } from "react-nativescript/dist/components/Page";
@@ -39,13 +41,16 @@ import { CreateViewEventData, Placeholder } from "tns-core-modules/ui/placeholde
 import { ScrollEventData } from "tns-core-modules/ui/scroll-view/scroll-view";
 import { SelectedIndexChangedEventData as SegmentedBarSelectedIndexChangedEventData } from "tns-core-modules/ui/segmented-bar/segmented-bar";
 import { SelectedIndexChangedEventData as TabViewSelectedIndexChangedEventData } from 'tns-core-modules/ui/tab-view/tab-view';
-
+import { NarrowedEventData } from "react-nativescript/dist/shared/NativeScriptComponentTypings";
+import { Base } from "./Implementation/Types";
+import { NarrowedLoadEventData } from "./Implementation/NarrowedEventData/NarrowedEventData";
 // export type ExtraProps<T extends Observable> = ObservableProps<T> & ViewBaseProps<T> & ViewProps<T> & PageProps<T> & ActionItemProps<T>;
 
 export type ExtraProps<T extends ViewBase> = ObservableProps<T> & ViewBaseProps<T> & ViewProps<T>
  & PageProps<T> & ActionItemProps<T> & DatePickerProps<T> & EditableTextBaseProps<T> & FrameProps<T>
  & GridLayoutProps<T> & HtmlViewProps<T> & ListPickerProps<T> & PlaceholderProps<T> & ScrollViewProps<T>
- & SearchBarProps<T> & SegmentedBarProps<T> & SliderProps<T> & SwitchProps<T> & TabViewProps<T>;
+ & SearchBarProps<T> & SegmentedBarProps<T> & SliderProps<T> & SwitchProps<T> & TabViewProps<T>
+ & TimePickerProps<T> & WebViewProps<T>;
 
 
 
@@ -170,6 +175,17 @@ interface ITabView {
     onSelectedIndexChange?(args: TabViewSelectedIndexChangedEventData): void;
 }
 
+type TimePickerProps<T> = T extends TimePicker ? ITimePicker<T> : Empty
+interface ITimePicker<T extends Base> {
+    onTimeChange?: (args: NarrowedEventData<T>) => void;
+}
+
+type WebViewProps<T> = T extends WebView ? IWebView<T> : Empty;
+interface IWebView<T extends WebView>{
+    onUrlChange?: (args: NarrowedEventData<T>) => void;
+    onLoadFinished?: (args: NarrowedLoadEventData) => void;
+    onLoadStarted?: (args: NarrowedLoadEventData) => void;
+}
 /* could be used set props for every single RNS Component*/
 interface Empty {
 

@@ -8,7 +8,7 @@ export const onSelectIndexChangeImpl = <T extends Base>(instance: Reactify<T>, a
 }
 const listPickerImpl = <T extends ListPicker>(instance: Reactify<T>, args: EventData) => {
     
-    if(!(Reflect.get(instance, "getCurrentRef")() instanceof ListPicker)) return;
+    if(!(Reflect.get(instance, "tnsType") instanceof ListPicker)) return;
     
     const selectedIndex: number = (<ListPicker>args.object).selectedIndex;
     instance.props.onSelectedIndexChange && instance.props.onSelectedIndexChange(selectedIndex);

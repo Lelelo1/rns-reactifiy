@@ -190,6 +190,24 @@ export const executeInOrder = (implMethods: ImplMethod[], ...args: any) => {
         run = undefined;
     }
 
+    run = implMethods.find((method) => method.name === "timePickerImpl");
+    if(run) {
+        const value = run(...args);
+        if(value) {
+            returnValue = value;
+        }
+        run = undefined;
+    }
+
+    run = implMethods.find((method) => method.name === "webViewImpl");
+    if(run) {
+        const value = run(...args);
+        if(value) {
+            returnValue = value;
+        }
+        run = undefined;
+    }
+
     run = implMethods.find((method) => method.name === "contentViewImpl");
     if(run) {
         const value = run(...args);

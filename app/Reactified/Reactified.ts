@@ -20,9 +20,9 @@ import { onTextChangeImpl } from "./Implementation/Unique/onTextChangeImpl";
 import { onValueChangeImpl } from "./Implementation/Unique/onValueChangeImpl";
 import { onToggleImpl } from "./Implementation/Unique/onToggleImpl";
 import { PropsWithoutForwardedRef } from "react-nativescript/dist/shared/NativeScriptComponentTypings";
-import { Base } from "./Implementation/Types";
+import { Base, Reactify } from "./Implementation/Types";
 
-
+type Constructor<T> = new(...args: any[]) => T;
 export function Reactified<T extends Base>(observable: T, name?: string) { 
 
     if(!name) {
@@ -35,16 +35,15 @@ export function Reactified<T extends Base>(observable: T, name?: string) {
     // let self: Reactify = null;
     class Reactify extends React.Component<Partial<T> & ExtraProps<T>> implements CustomNodeHierarchyManager<T> {
         static countOfInstances = 0;
-        static defaultProps = {... observable } 
-        /*
+        
         constructor(props: T & ExtraProps<T>) {
             super(props);
             Reactify.countOfInstances ++;
-            console.log("constructing instance " + Reactify.countOfInstances);
+            // console.log("constructing instance " + Reactify.countOfInstances);
         }
-        */
-        protected readonly myRef: React.RefObject<T> = React.createRef<T>();
-        protected getCurrentRef = (): Instance | null => {
+        protected tnsType = observable;
+        protected myRef: React.RefObject<T> = React.createRef<T>();
+        protected getCurrentRef = (): T | null => {
             return (this.props.forwardedRef || this.myRef).current;
         }
         /**
@@ -89,7 +88,7 @@ export function Reactified<T extends Base>(observable: T, name?: string) {
         __customHostConfigRemoveChild? = (parentInstance: Instance, child: Instance): boolean => {
             return __customHostConfigRemoveChildImpl(this, parentInstance, child);
         }
-        __customHostConfigInsertBefore?= (parentInstance: Instance, child: Instance, beforeChild: Instance): boolean => {
+        __customHostConfigInsertBefore? = (parentInstance: Instance, child: Instance, beforeChild: Instance): boolean => {
             return __customHostConfigInsertBeforeImpl(this, parentInstance, child, beforeChild);
         }
     
@@ -109,9 +108,9 @@ export function Reactified<T extends Base>(observable: T, name?: string) {
         private readonly onToggle = (args: EventData) => { 
             onToggleImpl(this, args);
         }
-
     }
-    return Reactify;
+    // return Reactify;
+    return <Constructor<T & Reactify>><unknown> Reactify; // hack to be able to use nativescript properties on the component 
 
      // have to declare class name to make decorators work  // https://github.com/microsoft/TypeScript/issues/7342
 }

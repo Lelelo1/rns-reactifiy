@@ -9,7 +9,7 @@ export const onValueChangeImpl = <T extends Base>(instance: Reactify<T>, args: E
 /* typo found in https://github.com/shirakaba/react-nativescript/blob/master/react-nativescript/src/components/Slider.ts */
 const sliderImpl = <T extends Slider>(instance: Reactify<T>, args: EventData) => {
     
-    if(!(Reflect.get(instance, "getCurrentRef")() instanceof Slider)) return;
+    if(!(Reflect.get(instance, "tnsType") instanceof Slider)) return;
     
     const sliderValue: number = (<Slider>args.object).value;
 

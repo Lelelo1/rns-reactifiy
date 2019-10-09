@@ -11,7 +11,9 @@ import {
     ScrollView,
     SearchBar,
     SegmentedBar,
-    TabView
+    TabView,
+    TimePicker,
+    WebView
 } from "react-nativescript/dist/client/ElementRegistry";
 
 import { ExtraProps } from "../ExtraProps";
@@ -34,14 +36,15 @@ export const updateListenersImpl = <T extends Base>(instance: Reactify<T> ,node:
         scrollViewImpl,
         searchBarImpl,
         segmentedBarImpl,
-        tabViewImpl
-    ],
+        tabViewImpl,
+        timePickerImpl,
+        webViewImpl],
     instance, node, attach, nextProps);
 }
 const observableImpl = <T extends Base>(instance: Reactify<T>, node: T, attach: boolean | null, nextProps?: T & ExtraProps<T>) => {
-    if(!(Reflect.get(instance, "getCurrentRef")() instanceof Observable)) return;
+    
+    // if(!(Reflect.get(instance, "tnsType") instanceof Observable)) return;
 
-    console.log("observableImpl");
     if (attach === null) {
         updateListener(node, "propertyChange", instance.props.onPropertyChange, nextProps.onPropertyChange);
     } else {
@@ -54,9 +57,8 @@ const observableImpl = <T extends Base>(instance: Reactify<T>, node: T, attach: 
 // https://github.com/shirakaba/react-nativescript/blob/master/react-nativescript/src/components/View.ts
 const viewImpl = <T extends View>(instance: Reactify<T>, node: T, attach: boolean | null, nextProps?: T & ExtraProps<T>) => {
     
-    if(!(Reflect.get(instance, "getCurrentRef")() instanceof View)) return;
+    if(!(Reflect.get(instance, "tnsType") instanceof View)) return;
     
-    console.log("view impl");
     if (attach === null) {
         updateListener(node, "loaded", instance.props.onLoaded, nextProps.onLoaded);
         updateListener(node, "unloaded", instance.props.onUnloaded, nextProps.onUnloaded);
@@ -93,9 +95,8 @@ const actionItemImpl = <T extends ActionItem>(instance: Reactify<T>, node: T, at
     /* tap assigning tap on actionitem crashes */
     /* should be conditionally ran so that two tap gesture recognizers aren't added*/
     
-    if(!(Reflect.get(instance, "getCurrentRef")() instanceof ActionItem)) return;
+    if(!(Reflect.get(instance, "tnsType") instanceof ActionItem)) return;
 
-    console.log("actionItemImpl")
     if (attach === null) {
         updateListener(node, "tap", instance.props.onTap, nextProps.onTap);
     } else {
@@ -106,9 +107,8 @@ const actionItemImpl = <T extends ActionItem>(instance: Reactify<T>, node: T, at
 }
 const pageImpl = <T extends Page>(instance: Reactify<T>, node: T, attach: boolean | null, nextProps?: T & ExtraProps<T>) => {
     
-    if(!(Reflect.get(instance, "getCurrentRef")() instanceof Page)) return;
+    if(!(Reflect.get(instance, "tnsType") instanceof Page)) return;
     
-    console.log("pageImpl");
     if (attach === null) {
         updateListener(node, "navigatedFrom", instance.props.onNavigatedFrom, nextProps.onNavigatedFrom);
         updateListener(node, "navigatedTo", instance.props.onNavigatedTo, nextProps.onNavigatedTo);
@@ -126,9 +126,8 @@ const pageImpl = <T extends Page>(instance: Reactify<T>, node: T, attach: boolea
 
 const editableTextBaseImpl = <T extends EditableTextBase>(instance: Reactify<T>, node: T, attach: boolean | null, nextProps?: T & ExtraProps<T>) => {
     
-    if(!(Reflect.get(instance, "getCurrentRef")() instanceof ActionItem)) return;
+    if(!(Reflect.get(instance, "tnsType") instanceof ActionItem)) return;
     
-    console.log("editableTextBaseImpl");
     if (attach === null) {
         updateListener(node, "blur", instance.props.onBlur, nextProps.onBlur);
         updateListener(node, "focus", instance.props.onFocus, nextProps.onFocus);
@@ -142,9 +141,8 @@ const editableTextBaseImpl = <T extends EditableTextBase>(instance: Reactify<T>,
 }
 const frameImpl = <T extends Frame>(instance: Reactify<T>, node: T, attach: boolean | null, nextProps?: T & ExtraProps<T>) => {
     
-    if(!(Reflect.get(instance, "getCurrentRef")() instanceof Frame)) return;
+    if(!(Reflect.get(instance, "tnsType") instanceof Frame)) return;
     
-    console.log("frameImpl");
     if (attach === null) {
         updateListener(node, "optionSelected", instance.props.onOptionSelected, nextProps.onOptionSelected);
     } else {
@@ -155,9 +153,8 @@ const frameImpl = <T extends Frame>(instance: Reactify<T>, node: T, attach: bool
 }
 const placeholderImpl = <T extends Placeholder>(instance: Reactify<T>, node: T, attach: boolean | null, nextProps?: T & ExtraProps<T>) => { 
     
-    if(!(Reflect.get(instance, "getCurrentRef")() instanceof Placeholder)) return;
+    if(!(Reflect.get(instance, "tnsType") instanceof Placeholder)) return;
 
-    console.log("placeholderImpl");
     if (attach === null) {
         updateListener(node, "creatingView", instance.props.onCreatingView, nextProps.onCreatingView);
     } else {
@@ -167,9 +164,8 @@ const placeholderImpl = <T extends Placeholder>(instance: Reactify<T>, node: T, 
 }
 const scrollViewImpl = <T extends ScrollView>(instance: Reactify<T>, node: T, attach: boolean | null, nextProps?: T & ExtraProps<T>) => { 
     
-    if(!(Reflect.get(instance, "getCurrentRef")() instanceof ScrollView)) return;
+    if(!(Reflect.get(instance, "tnsType") instanceof ScrollView)) return;
     
-    console.log("scrollViewImpl");
     if (attach === null) {
         updateListener(node, "scroll", this.props.onScroll, nextProps.onScroll);
     } else {
@@ -180,7 +176,7 @@ const scrollViewImpl = <T extends ScrollView>(instance: Reactify<T>, node: T, at
 }
 const searchBarImpl = <T extends SearchBar>(instance: Reactify<T>, node: T, attach: boolean | null, nextProps?: T & ExtraProps<T>) => { 
     
-    if(!(Reflect.get(instance, "getCurrentRef")() instanceof SearchBar)) return;
+    if(!(Reflect.get(instance, "tnsType") instanceof SearchBar)) return;
     
     console.log("searchBarImpl");
     if (attach === null) {
@@ -195,9 +191,8 @@ const searchBarImpl = <T extends SearchBar>(instance: Reactify<T>, node: T, atta
 }
 const segmentedBarImpl = <T extends SegmentedBar>(instance: Reactify<T>, node: T, attach: boolean | null, nextProps?: T & ExtraProps<T>) => { 
     
-    if(!(Reflect.get(instance, "getCurrentRef")() instanceof SegmentedBar)) return;
+    if(!(Reflect.get(instance, "tnsType") instanceof SegmentedBar)) return;
 
-    console.log("segmentedBarImpl");
     if (attach === null) {
         updateListener(
             node,
@@ -213,9 +208,8 @@ const segmentedBarImpl = <T extends SegmentedBar>(instance: Reactify<T>, node: T
 }
 const tabViewImpl = <T extends TabView>(instance: Reactify<T>, node: T, attach: boolean | null, nextProps?: T & ExtraProps<T>) => { 
     
-    if(!(Reflect.get(instance, "getCurrentRef")() instanceof TabView)) return;
+    if(!(Reflect.get(instance, "tnsType") instanceof TabView)) return;
     
-    console.log("tabViewImpl");
     if (attach === null) {
         updateListener(
             node,
@@ -230,5 +224,33 @@ const tabViewImpl = <T extends TabView>(instance: Reactify<T>, node: T, attach: 
     }
 }
 
+const timePickerImpl = <T extends TimePicker>(instance: Reactify<T>, node: T, attach: boolean | null, nextProps?: T & ExtraProps<T>) => {
+    
+    if(!(Reflect.get(instance, "tnsType") instanceof TimePicker)) return;
+    
+    if (attach === null) {
+        updateListener(node, "timeChange", instance.props.onTimeChange, nextProps.onTimeChange);
+    } else {
+        const method = (attach ? node.on : node.off).bind(node);
+
+        if (instance.props.onTimeChange) method("timeChange", instance.props.onTimeChange);
+    }
+}
+
+const webViewImpl = <T extends WebView>(instance: Reactify<T>, node: T, attach: boolean | null, nextProps?: T & ExtraProps<T>) => {
+    
+    if(!(Reflect.get(instance, "tnsType") instanceof WebView)) return;
+    
+    if (attach === null) {
+        updateListener(node, "urlChange", instance.props.onUrlChange, nextProps.onUrlChange);
+        updateListener(node, "loadFinished", instance.props.onLoadFinished, nextProps.onLoadFinished);
+        updateListener(node, "loadStarted", instance.props.onLoadStarted, nextProps.onLoadStarted);
+    } else {
+        const method = (attach ? node.on : node.off).bind(node);
+        if (instance.props.onUrlChange) method("urlChange", instance.props.onUrlChange);
+        if (instance.props.onLoadFinished) method("loadFinished", instance.props.onLoadFinished);
+        if (instance.props.onLoadStarted) method("loadStarted", instance.props.onLoadStarted);
+    }
+}
 
 

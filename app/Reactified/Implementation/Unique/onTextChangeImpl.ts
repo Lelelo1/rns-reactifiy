@@ -8,7 +8,7 @@ export const onTextChangeImpl = <T extends Observable>(instance: Reactify<T>, ar
 }
 const searchBarImpl = <T extends SearchBar>(instance: Reactify<T>, args: EventData) => {
     
-    if(!(Reflect.get(instance, "getCurrentRef")() instanceof SearchBar)) return;
+    if(!(Reflect.get(instance, "tnsType") instanceof SearchBar)) return;
     
     const text: string = (<SearchBar>args.object).text;
     instance.props.onTextChange && instance.props.onTextChange(text);

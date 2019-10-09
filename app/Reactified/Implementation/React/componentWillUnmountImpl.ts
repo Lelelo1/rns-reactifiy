@@ -23,7 +23,7 @@ const observableImpl = <T extends Base>(instance: Reactify<T>) => {
 }
 const datePickerImpl = <T extends DatePicker>(instance: Reactify<T>) => {
     
-    if(!(Reflect.get(instance, "getCurrentRef")() instanceof DatePicker)) return;
+    if(!(Reflect.get(instance, "tnsType") instanceof DatePicker)) return;
     
     const node: T | null = Reflect.get(instance, "getCurrentRef")();
     if (!node) {
@@ -34,7 +34,7 @@ const datePickerImpl = <T extends DatePicker>(instance: Reactify<T>) => {
 }
 const listPickerImpl = <T extends ListPicker>(instance: Reactify<T>) => {
     
-    if(!(Reflect.get(instance, "getCurrentRef")() instanceof ListPicker)) return;
+    if(!(Reflect.get(instance, "tnsType") instanceof ListPicker)) return;
     
     const node: T | null = this.getCurrentRef();
         if (!node) {
@@ -45,7 +45,7 @@ const listPickerImpl = <T extends ListPicker>(instance: Reactify<T>) => {
 }
 const searchBarImpl = <T extends SearchBar>(instance: Reactify<T>) => {
     
-    if(!(Reflect.get(instance, "getCurrentRef")() instanceof SearchBar)) return;
+    if(!(Reflect.get(instance, "tnsType") instanceof SearchBar)) return;
     
     const node: T | null = Reflect.get(instance, "getCurrentRef")();
         if (!node) {
@@ -58,7 +58,7 @@ const searchBarImpl = <T extends SearchBar>(instance: Reactify<T>) => {
 /* (this slider impl not the same as the others. Is probably an error) */
 const sliderImpl = <T extends Slider>(instance: Reactify<T>) => {
 
-    if(!(Reflect.get(instance, "getCurrentRef")() instanceof Slider)) return;
+    if(!(Reflect.get(instance, "tnsType") instanceof Slider)) return;
 
     const node: T | null = Reflect.get(instance, "getCurrentRef")();
         if (!node) {
@@ -69,7 +69,7 @@ const sliderImpl = <T extends Slider>(instance: Reactify<T>) => {
 }
 const switchImpl = <T extends Switch>(instance: Reactify<T>) => {
     
-    if(!(Reflect.get(instance, "getCurrentRef")() instanceof Switch)) return;
+    if(!(Reflect.get(instance, "tnsType") instanceof Switch)) return;
     
     const node: T | null = Reflect.get(instance, "getCurrentRef")();
         if (!node) {

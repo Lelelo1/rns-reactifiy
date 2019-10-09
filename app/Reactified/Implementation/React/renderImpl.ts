@@ -1,6 +1,17 @@
 
 import * as React from "react";
-import { Observable, Button, TextField, HtmlView, Label, TabView, TabViewItem } from "react-nativescript/dist/client/ElementRegistry";
+import {
+    Observable,
+    Button,
+    TextField,
+    HtmlView,
+    Label,
+    TabView,
+    TabViewItem,
+    TextView,
+    TimePicker,
+    WebView
+} from "react-nativescript/dist/client/ElementRegistry";
 import { executeInOrder } from "../Helpers";
 import { Reactify, Base } from "../Types";
 
@@ -11,11 +22,13 @@ export const renderImpl = <T extends Base>(name: string, instance: Reactify<T>):
         textFieldImpl,
         htmlViewImpl,
         labelImpl,
-        tabViewItemImpl],
+        tabViewItemImpl,
+        textViewImpl,
+        timePickerImpl,
+        webViewImpl],
         name, instance);
 }
 const genericImpl = <T extends Base>(name: string, instance: Reactify<T>) => {
-    console.log("generic render");
     const { forwardedRef, children, ...rest } = instance.props
     return React.createElement(
         name,
@@ -28,8 +41,7 @@ const genericImpl = <T extends Base>(name: string, instance: Reactify<T>) => {
 }
 
 const buttonImpl = <T extends Button>(name: string, instance: Reactify<T>) => {
-    
-    if(!(Reflect.get(instance, "getCurrentRef")() instanceof Button)) return undefined;
+    if(!(Reflect.get(instance, "tnsType") instanceof Button)) return undefined;
         const {
             forwardedRef,
             text,
@@ -60,7 +72,7 @@ const buttonImpl = <T extends Button>(name: string, instance: Reactify<T>) => {
 
 const textFieldImpl = <T extends TextField>(name: string, instance: Reactify<T>, observable: T) => {
     
-    if(!(Reflect.get(instance, "getCurrentRef")() instanceof TextField)) return undefined;
+    if(!(Reflect.get(instance, "tnsType") instanceof TextField)) return undefined;
     
     const {
         forwardedRef,
@@ -93,7 +105,7 @@ const textFieldImpl = <T extends TextField>(name: string, instance: Reactify<T>,
 
 const htmlViewImpl = <T extends HtmlView>(name: string, instance: Reactify<T>) => {
     
-    if(!(Reflect.get(instance, "getCurrentRef")() instanceof HtmlView)) return undefined;
+    if(!(Reflect.get(instance, "tnsType") instanceof HtmlView)) return undefined;
     
     const {
         forwardedRef,
@@ -118,9 +130,8 @@ const htmlViewImpl = <T extends HtmlView>(name: string, instance: Reactify<T>) =
 
 const labelImpl = <T extends Label>(name: string, instance: Reactify<T>) => {
     
-    if(!(Reflect.get(instance, "getCurrentRef")() instanceof Label)) return undefined;
+    if(!(Reflect.get(instance, "tnsType") instanceof Label)) return undefined;
     
-    console.log("label impl");
         const {
             forwardedRef,
     
@@ -151,7 +162,7 @@ const labelImpl = <T extends Label>(name: string, instance: Reactify<T>) => {
 
 const tabViewItemImpl = <T extends TabViewItem>(name: string, instance: Reactify<T>) => { 
     
-    if(!(Reflect.get(instance, "getCurrentRef")() instanceof TabViewItem)) return undefined;
+    if(!(Reflect.get(instance, "tnsType") instanceof TabViewItem)) return undefined;
     
     const {
         forwardedRef,
@@ -175,6 +186,82 @@ const tabViewItemImpl = <T extends TabViewItem>(name: string, instance: Reactify
             ref: forwardedRef || Reflect.get(instance, "myRef"),
         },
         children
+    );
+}
+
+const textViewImpl = <T extends TextView>(name: string, instance: Reactify<T>) => {
+    
+    if(!(Reflect.get(instance, "tnsType") instanceof TextView)) return undefined;
+    const {
+        forwardedRef,
+        text,
+        formattedText,
+        children,
+        ...rest
+    } = instance.props;
+
+    if (text && formattedText) {
+        console.warn(`Both text and formattedText provided; shall use formattedText.`);
+    }
+
+    const textContent = {
+        [formattedText ? "formattedText" : "text"]: formattedText || text,
+    };
+
+    return React.createElement(
+        name,
+        {
+            ...rest,
+            ...textContent,
+            ref: forwardedRef || Reflect.get(instance, "myRef"),
+        },
+        children // Weird that a TextView may contain children, but what do I know.
+    );
+}
+
+const timePickerImpl = <T extends TimePicker>(name: string, instance: Reactify<T>) => {
+    if(!(Reflect.get(instance, "tnsType") instanceof TimePicker)) return undefined;
+    const {
+        forwardedRef,
+        time,
+
+        children,
+        ...rest
+    } = instance.props;
+    return React.createElement(
+        name,
+        {
+            ...rest,
+            time: time || new Date(), // Does not help!: // This prevents the default time from becoming Sun Dec 31st 1899!
+            ref: forwardedRef || Reflect.get(instance, "myRef"),
+        },
+        children
+    );
+}
+
+const webViewImpl = <T extends WebView>(name: string, instance: Reactify<T>) => {
+    
+    if(!(Reflect.get(instance, "tnsType") instanceof WebView)) return undefined;
+
+    const {
+        forwardedRef,
+
+        children,
+    
+        ...rest
+    } = instance.props;
+    
+    if (children) {
+        console.warn("Ignoring 'children' prop on WebView; not permitted");
+    }
+    
+    return React.createElement(
+        name,
+        {
+            ...rest,
+            ref: forwardedRef || Reflect.get(instance, "myRef"),
+        },
+        null
     );
 }
 

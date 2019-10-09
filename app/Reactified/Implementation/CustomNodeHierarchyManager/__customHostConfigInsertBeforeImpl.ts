@@ -20,7 +20,7 @@ const textBaseImpl = <T extends TextBase>(
     beforeChild: T
 ) : boolean => {
 
-    if(!(Reflect.get(instance, "getCurrentRef")() instanceof TextBase)) return;
+    if(!(Reflect.get(instance, "tnsType") instanceof TextBase)) return;
 
     if(parent instanceof TextBase) {
         if (child instanceof FormattedString) {

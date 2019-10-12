@@ -11,13 +11,14 @@ export const __customHostConfigAppendChildImpl = <T extends Instance>(instance: 
 const textBaseImpl = <T extends TextBase>(instance: Reactify<T>, parent: T, child: T) => {
     
     if(!(Reflect.get(instance, "tnsType") instanceof TextBase)) return;
-
+    
     if(parent instanceof TextBase) {
         if (child instanceof FormattedString) {
             parent.formattedText = child;
             return true;
         }
     }
+    
     // i.e. defer to Host Config.
     return false;
 }

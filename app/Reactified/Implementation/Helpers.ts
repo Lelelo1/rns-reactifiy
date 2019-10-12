@@ -16,12 +16,6 @@ export function firstLetterLowercase(name: string) {
     return name.charAt(0).toLowerCase() + name.slice(1);
 }
 
-const implMethodRegistry: string[] = []; 
-console.log("all elements in element registry")
-for(let elementName in elementMap) {
-    implMethodRegistry.push(elementName + "Impl");
-}
-
 type ImplMethod = (...args: any) => any
 export const executeInOrder = (implMethods: ImplMethod[], ...args: any) => { 
     let returnValue : any = undefined;

@@ -17,9 +17,11 @@ const textBaseImpl = <T extends TextBase>(instance: Reactify<T>, parent: T, chil
             parent.formattedText = null;
             return true;
         }
-        
+       
         // i.e. defer to Host Config.
-        return false;
     }
+    
+    return false;
+    
 }
 

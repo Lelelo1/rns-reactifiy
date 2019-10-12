@@ -58,7 +58,6 @@ const observableImpl = <T extends Base>(instance: Reactify<T>, node: T, attach: 
 const viewImpl = <T extends View>(instance: Reactify<T>, node: T, attach: boolean | null, nextProps?: T & ExtraProps<T>) => {
     
     if(!(Reflect.get(instance, "tnsType") instanceof View)) return;
-    
     if (attach === null) {
         updateListener(node, "loaded", instance.props.onLoaded, nextProps.onLoaded);
         updateListener(node, "unloaded", instance.props.onUnloaded, nextProps.onUnloaded);
@@ -126,8 +125,8 @@ const pageImpl = <T extends Page>(instance: Reactify<T>, node: T, attach: boolea
 
 const editableTextBaseImpl = <T extends EditableTextBase>(instance: Reactify<T>, node: T, attach: boolean | null, nextProps?: T & ExtraProps<T>) => {
     
-    if(!(Reflect.get(instance, "tnsType") instanceof ActionItem)) return;
-    
+    if(!(Reflect.get(instance, "tnsType") instanceof EditableTextBase)) return;
+
     if (attach === null) {
         updateListener(node, "blur", instance.props.onBlur, nextProps.onBlur);
         updateListener(node, "focus", instance.props.onFocus, nextProps.onFocus);

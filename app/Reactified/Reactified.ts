@@ -1,6 +1,6 @@
 import * as React from "react";
 import { EventData } from "tns-core-modules/data/observable/observable";
-import { Observable, register, ContentView } from "react-nativescript/dist/client/ElementRegistry";
+import { Observable, register, ContentView, View, Color } from "react-nativescript/dist/client/ElementRegistry";
 import { nameOf, firstLetterLowercase } from "./Implementation/Helpers";
 import { renderImpl } from "./Implementation/React/renderImpl";
 import { getCurrentRefImpl } from "./Implementation/getCurrentRefImpl";
@@ -21,6 +21,7 @@ import { onValueChangeImpl } from "./Implementation/Unique/onValueChangeImpl";
 import { onToggleImpl } from "./Implementation/Unique/onToggleImpl";
 import { PropsWithoutForwardedRef } from "react-nativescript/dist/shared/NativeScriptComponentTypings";
 import { Base, Reactify } from "./Implementation/Types";
+import { CheckBox } from "@nstudio/nativescript-checkbox";
 
 type Constructor<T> = new(...args: any[]) => T;
 export function Reactified<T extends Base>(observable: T, name?: string) { 
@@ -35,11 +36,20 @@ export function Reactified<T extends Base>(observable: T, name?: string) {
     // let self: Reactify = null;
     class Reactify extends React.Component<Partial<T & ExtraProps<T>>> implements CustomNodeHierarchyManager<T> {
         static countOfInstances = 0;
-        
-        constructor(props: T & ExtraProps<T>) {
+        /*
+        static defaultProps = {
+            ... observable
+        }
+        */
+        constructor(props?: Partial<T & ExtraProps<T>>) {
             super(props);
             Reactify.countOfInstances ++;
             // console.log("constructing instance " + Reactify.countOfInstances);
+            /*
+            setTimeout(() => {
+                (this.getCurrentRef() as unknown as View).backgroundColor = (observable as unknown as CheckBox).backgroundColor; 
+            }, 2000)
+            */
         }
         protected tnsType = observable;
         protected myRef: React.RefObject<T> = React.createRef<T>();
@@ -77,7 +87,7 @@ export function Reactified<T extends Base>(observable: T, name?: string) {
             componentWillUnmountImpl(this);
         }
         
-        render = (): React.ReactNode => {
+        render(): React.ReactNode {
             return renderImpl(name, this);
         }
 
@@ -110,7 +120,7 @@ export function Reactified<T extends Base>(observable: T, name?: string) {
         }
     }
     // return Reactify;
-    return <Constructor<T & Reactify>><unknown> Reactify; // hack to be able to use nativescript properties on the component 
+    return <Constructor<T & Reactify>><unknown> Reactify; // create unionish type
 
      // have to declare class name to make decorators work  // https://github.com/microsoft/TypeScript/issues/7342
 }

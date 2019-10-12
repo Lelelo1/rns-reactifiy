@@ -1,4 +1,5 @@
 PODS:
+  - BEMCheckBox (1.4.1)
   - MaterialComponents/AnimationTiming (84.6.0)
   - MaterialComponents/Ink (84.6.0):
     - MaterialComponents/private/Math
@@ -23,17 +24,20 @@ PODS:
   - MDFInternationalization (2.0.0)
 
 DEPENDENCIES:
+  - BEMCheckBox (~> 1.4.1)
   - MaterialComponents/Tabs (~> 84.4)
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
+    - BEMCheckBox
     - MaterialComponents
     - MDFInternationalization
 
 SPEC CHECKSUMS:
+  BEMCheckBox: 5ba6e37ade3d3657b36caecc35c8b75c6c2b1a4e
   MaterialComponents: 71139af6ca6875fbde8ab8e64a275b7fd6a22d7f
   MDFInternationalization: 010097556d6b09d2c4ea38e0820ea6d37be6a314
 
-PODFILE CHECKSUM: 071b953ab1210ba6a9a9dd0497f3b53e3c71ef9d
+PODFILE CHECKSUM: 5f9167a59fe8b60c0366d4dae7d57de6ceae5b67
 
 COCOAPODS: 1.6.1

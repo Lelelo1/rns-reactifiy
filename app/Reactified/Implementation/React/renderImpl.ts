@@ -14,6 +14,7 @@ import {
 } from "react-nativescript/dist/client/ElementRegistry";
 import { executeInOrder } from "../Helpers";
 import { Reactify, Base } from "../Types";
+import { CheckBox } from "@nstudio/nativescript-checkbox";
 
 export const renderImpl = <T extends Base>(name: string, instance: Reactify<T>): React.ReactNode => {
     return executeInOrder(
@@ -41,8 +42,10 @@ const genericImpl = <T extends Base>(name: string, instance: Reactify<T>) => {
 }
 
 const buttonImpl = <T extends Button>(name: string, instance: Reactify<T>) => {
+
     if(!(Reflect.get(instance, "tnsType") instanceof Button)) return undefined;
-        const {
+    
+    const {
             forwardedRef,
             text,
             formattedText,
@@ -61,7 +64,7 @@ const buttonImpl = <T extends Button>(name: string, instance: Reactify<T>) => {
         return React.createElement(
             name,
             {
-                className: "btn btn-primary btn-active", // NativeScript defaults from documentation
+                // className: "btn btn-primary btn-active", // NativeScript defaults from documentation
                 ...rest,
                 ...textContent,
                 ref: forwardedRef || Reflect.get(instance, "myRef"),

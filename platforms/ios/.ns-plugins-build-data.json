@@ -15,5 +15,8 @@
 		"/Users/hemma/Projects/rns-reactify/node_modules/tns-core-modules-widgets/platforms/ios/TNSWidgets.framework/Headers/UIView+PassThroughParent.h": "cddc4157f40983b34fcb1d3846666b5ecc5b1ca5",
 		"/Users/hemma/Projects/rns-reactify/node_modules/tns-core-modules-widgets/platforms/ios/TNSWidgets.framework/Info.plist": "e6c4b9015b3db318650e0edca4077cedd7fc2253",
 		"/Users/hemma/Projects/rns-reactify/node_modules/tns-core-modules-widgets/platforms/ios/TNSWidgets.framework/TNSWidgets": "9d7101d457c427cee22942a97a406aa55b2de3b5"
+	},
+	"@nstudio/nativescript-checkbox": {
+		"/Users/hemma/Projects/rns-reactify/node_modules/@nstudio/nativescript-checkbox/platforms/ios/Podfile": "a2f76473dcfd793feb87a694f1b980a51945cd47"
 	}
 }

@@ -21,14 +21,14 @@ const textBaseImpl = <T extends TextBase>(
 ) : boolean => {
 
     if(!(Reflect.get(instance, "tnsType") instanceof TextBase)) return;
-
+    
     if(parent instanceof TextBase) {
         if (child instanceof FormattedString) {
             parent.formattedText = child;
             return true;
         }
     }
-
+    
     // i.e. defer to Host Config.
     return false;
 }

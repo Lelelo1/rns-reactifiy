@@ -11,4 +11,9 @@ use_frameworks!
 
 pod 'MaterialComponents/Tabs', '~> 84.4'
 # End Podfile
+
+# Begin Podfile - /Users/hemma/Projects/rns-reactify/node_modules/@nstudio/nativescript-checkbox/platforms/ios/Podfile
+pod 'BEMCheckBox', '~> 1.4.1'
+
+# End Podfile
 end

@@ -1,0 +1,26 @@
+{
+  "name": "rns-reactify",
+  "version": "0.13.0",
+  "description": "Create react components from nativescript components. Use nativescript ui plugins in jsx in react-nativescript.",
+  "main": "Reactified.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Lelelo1/rns-reactify.git"
+  },
+  "keywords": [
+    "react-nativescript",
+    "nativescript",
+    "react",
+    "plugin",
+    "jsx"
+  ],
+  "author": "Lelelo1",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Lelelo1/rns-reactify/issues"
+  },
+  "homepage": "https://github.com/Lelelo1/rns-reactify#readme"
+}

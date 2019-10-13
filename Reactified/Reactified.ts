@@ -24,15 +24,15 @@ import { Base, Reactify } from "./Implementation/Types";
 import { CheckBox } from "@nstudio/nativescript-checkbox";
 
 type Constructor<T> = new(...args: any[]) => T;
-export function Reactified<T extends Base>(observable: T, name?: string) { 
+export function Reactified<T extends Base>(observable: Constructor<T>, name: string) { 
 
+    /*
     if(!name) {
         name = firstLetterLowercase(nameOf(observable));
     }
+    */
     console.log("registering " + name);
-    register(name, () => {
-       return observable;
-    });
+    register(name, () => observable);
     // let self: Reactify = null;
     class Reactify extends React.Component<Partial<T & ExtraProps<T>>> implements CustomNodeHierarchyManager<T> {
         static countOfInstances = 0;

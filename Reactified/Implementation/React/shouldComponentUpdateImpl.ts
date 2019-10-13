@@ -14,7 +14,7 @@ const observableImpl = <T extends Base>(instance: Reactify<T>, nextProps: T & Ex
     // if(!(Reflect.get(instance, "tnsType") instanceof Observable)) return;
     
     // console.log(`Observable's shouldComponentUpdate`);
-    const shouldUpdate: boolean = !shallowEqual(this.props, nextProps) || !shallowEqual(this.state, nextState);
+    const shouldUpdate: boolean = !shallowEqual(instance.props, nextProps) || !shallowEqual(instance.state, nextState);
     // console.log(`[shouldComponentUpdate] shouldUpdate: ${shouldUpdate}.`);
     Reflect.get(instance, "updateListenersHelper")(null, nextProps);
     // https://lucybain.com/blog/2018/react-js-pure-component/

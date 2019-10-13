@@ -21,7 +21,6 @@ import { onValueChangeImpl } from "./Implementation/Unique/onValueChangeImpl";
 import { onToggleImpl } from "./Implementation/Unique/onToggleImpl";
 import { PropsWithoutForwardedRef } from "react-nativescript/dist/shared/NativeScriptComponentTypings";
 import { Base, Reactify } from "./Implementation/Types";
-import { CheckBox } from "@nstudio/nativescript-checkbox";
 
 type Constructor<T> = new(...args: any[]) => T;
 export function Reactified<T extends Base>(observable: Constructor<T>, name: string) { 

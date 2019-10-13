@@ -31,7 +31,7 @@ export function Reactified<T extends Base>(observable: Constructor<T>, name: str
     }
     */
     console.log("registering " + name);
-    register(name, () => observable);
+    register(name, () => new observable());
     // let self: Reactify = null;
     class Reactify extends React.Component<Partial<T & ExtraProps<T>>> implements CustomNodeHierarchyManager<T> {
         static countOfInstances = 0;
@@ -49,10 +49,12 @@ export function Reactified<T extends Base>(observable: Constructor<T>, name: str
                 (this.getCurrentRef() as unknown as View).backgroundColor = (observable as unknown as CheckBox).backgroundColor; 
             }, 2000)
             */
+            
         }
-        protected tnsType = observable;
+        protected tnsType = new observable();
         protected myRef: React.RefObject<T> = React.createRef<T>();
         protected getCurrentRef = (): T | null => {
+            
             return (this.props.forwardedRef || this.myRef).current;
         }
         /**

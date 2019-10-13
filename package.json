@@ -27,5 +27,8 @@
     "nativescript": "^6.1.2",
     "react": "^16.10.2",
     "react-nativescript": "^0.13.0"
+  },
+  "devDependencies": {
+    "@types/react": "^16.9.5"
   }
 }

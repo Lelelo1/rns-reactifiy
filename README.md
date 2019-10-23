@@ -1,7 +1,7 @@
 # rns-reactify
 
 Installation:
-`npm install git+https://github.com/Lelelo1/rns-reactify.git`
+`npm i git+https://github.com/Lelelo1/rns-reactify.git`
 
 Usage:
 ```

@@ -1,5 +1,7 @@
 # rns-reactify
 
+Creates react components out of nativescript components, including nativescript ui plugins.
+
 Installation:
 `npm i git+https://github.com/Lelelo1/rns-reactify.git`
 

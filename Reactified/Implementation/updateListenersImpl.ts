@@ -19,10 +19,10 @@ import {
 import { ExtraProps } from "../ExtraProps";
 import { updateListener } from "react-nativescript/dist/client/EventHandling";
 import { GestureTypes } from "tns-core-modules/ui/gestures/gestures";
-import { Reactify, Base } from "./Types";
+import { Reactify, Base, Props } from "./Types";
 import { executeInOrder } from "./Helpers";
 
-export const updateListenersImpl = <T extends Base>(instance: Reactify<T> ,node: T, attach: boolean | null, nextProps?: T & ExtraProps<T>) => {
+export const updateListenersImpl = <T extends Base>(instance: Reactify<T> ,node: T, attach: boolean | null, nextProps?: Props<T>) => {
     
     /* implementation for any rns component here - or on reactify class body*/
     executeInOrder(
@@ -41,7 +41,7 @@ export const updateListenersImpl = <T extends Base>(instance: Reactify<T> ,node:
         webViewImpl],
     instance, node, attach, nextProps);
 }
-const observableImpl = <T extends Base>(instance: Reactify<T>, node: T, attach: boolean | null, nextProps?: T & ExtraProps<T>) => {
+const observableImpl = <T extends Base>(instance: Reactify<T>, node: T, attach: boolean | null, nextProps?: Props<T>) => {
     
     // if(!(Reflect.get(instance, "tnsType") instanceof Observable)) return;
 
@@ -55,7 +55,7 @@ const observableImpl = <T extends Base>(instance: Reactify<T>, node: T, attach: 
 }
 
 // https://github.com/shirakaba/react-nativescript/blob/master/react-nativescript/src/components/View.ts
-const viewImpl = <T extends View>(instance: Reactify<T>, node: T, attach: boolean | null, nextProps?: T & ExtraProps<T>) => {
+const viewImpl = <T extends View>(instance: Reactify<T>, node: T, attach: boolean | null, nextProps?: Props<T>) => {
     
     if(!(Reflect.get(instance, "tnsType") instanceof View)) return;
     if (attach === null) {
@@ -90,7 +90,7 @@ const viewImpl = <T extends View>(instance: Reactify<T>, node: T, attach: boolea
     }
 }
 
-const actionItemImpl = <T extends ActionItem>(instance: Reactify<T>, node: T, attach: boolean | null, nextProps?: T & ExtraProps<T>) => {
+const actionItemImpl = <T extends ActionItem>(instance: Reactify<T>, node: T, attach: boolean | null, nextProps?: Props<T>) => {
     /* tap assigning tap on actionitem crashes */
     /* should be conditionally ran so that two tap gesture recognizers aren't added*/
     
@@ -104,7 +104,7 @@ const actionItemImpl = <T extends ActionItem>(instance: Reactify<T>, node: T, at
     }
     
 }
-const pageImpl = <T extends Page>(instance: Reactify<T>, node: T, attach: boolean | null, nextProps?: T & ExtraProps<T>) => {
+const pageImpl = <T extends Page>(instance: Reactify<T>, node: T, attach: boolean | null, nextProps?: Props<T>) => {
     
     if(!(Reflect.get(instance, "tnsType") instanceof Page)) return;
     
@@ -123,7 +123,7 @@ const pageImpl = <T extends Page>(instance: Reactify<T>, node: T, attach: boolea
     }
 }
 
-const editableTextBaseImpl = <T extends EditableTextBase>(instance: Reactify<T>, node: T, attach: boolean | null, nextProps?: T & ExtraProps<T>) => {
+const editableTextBaseImpl = <T extends EditableTextBase>(instance: Reactify<T>, node: T, attach: boolean | null, nextProps?: Props<T>) => {
     
     if(!(Reflect.get(instance, "tnsType") instanceof EditableTextBase)) return;
 
@@ -138,7 +138,7 @@ const editableTextBaseImpl = <T extends EditableTextBase>(instance: Reactify<T>,
         if (instance.props.onTextChange) method("textChange", instance.props.onTextChange);
     }
 }
-const frameImpl = <T extends Frame>(instance: Reactify<T>, node: T, attach: boolean | null, nextProps?: T & ExtraProps<T>) => {
+const frameImpl = <T extends Frame>(instance: Reactify<T>, node: T, attach: boolean | null, nextProps?: Props<T>) => {
     
     if(!(Reflect.get(instance, "tnsType") instanceof Frame)) return;
     
@@ -150,7 +150,7 @@ const frameImpl = <T extends Frame>(instance: Reactify<T>, node: T, attach: bool
         if (instance.props.onOptionSelected) method("optionSelected", instance.props.onOptionSelected);
     }
 }
-const placeholderImpl = <T extends Placeholder>(instance: Reactify<T>, node: T, attach: boolean | null, nextProps?: T & ExtraProps<T>) => { 
+const placeholderImpl = <T extends Placeholder>(instance: Reactify<T>, node: T, attach: boolean | null, nextProps?: Props<T>) => { 
     
     if(!(Reflect.get(instance, "tnsType") instanceof Placeholder)) return;
 
@@ -161,7 +161,7 @@ const placeholderImpl = <T extends Placeholder>(instance: Reactify<T>, node: T, 
         if (instance.props.onCreatingView) method("creatingView", instance.props.onCreatingView);
     }
 }
-const scrollViewImpl = <T extends ScrollView>(instance: Reactify<T>, node: T, attach: boolean | null, nextProps?: T & ExtraProps<T>) => { 
+const scrollViewImpl = <T extends ScrollView>(instance: Reactify<T>, node: T, attach: boolean | null, nextProps?: Props<T>) => { 
     
     if(!(Reflect.get(instance, "tnsType") instanceof ScrollView)) return;
     
@@ -173,7 +173,7 @@ const scrollViewImpl = <T extends ScrollView>(instance: Reactify<T>, node: T, at
         if (instance.props.onScroll) method("scroll", instance.props.onScroll);
     }
 }
-const searchBarImpl = <T extends SearchBar>(instance: Reactify<T>, node: T, attach: boolean | null, nextProps?: T & ExtraProps<T>) => { 
+const searchBarImpl = <T extends SearchBar>(instance: Reactify<T>, node: T, attach: boolean | null, nextProps?: Props<T>) => { 
     
     if(!(Reflect.get(instance, "tnsType") instanceof SearchBar)) return;
     
@@ -188,7 +188,7 @@ const searchBarImpl = <T extends SearchBar>(instance: Reactify<T>, node: T, atta
         if (instance.props.onClose) method("close", instance.props.onClose);
     }
 }
-const segmentedBarImpl = <T extends SegmentedBar>(instance: Reactify<T>, node: T, attach: boolean | null, nextProps?: T & ExtraProps<T>) => { 
+const segmentedBarImpl = <T extends SegmentedBar>(instance: Reactify<T>, node: T, attach: boolean | null, nextProps?: Props<T>) => { 
     
     if(!(Reflect.get(instance, "tnsType") instanceof SegmentedBar)) return;
 
@@ -205,7 +205,7 @@ const segmentedBarImpl = <T extends SegmentedBar>(instance: Reactify<T>, node: T
         if (instance.props.onSelectedIndexChange) method("selectedIndexChange", instance.props.onSelectedIndexChange);
     }
 }
-const tabViewImpl = <T extends TabView>(instance: Reactify<T>, node: T, attach: boolean | null, nextProps?: T & ExtraProps<T>) => { 
+const tabViewImpl = <T extends TabView>(instance: Reactify<T>, node: T, attach: boolean | null, nextProps?: Props<T>) => { 
     
     if(!(Reflect.get(instance, "tnsType") instanceof TabView)) return;
     
@@ -223,7 +223,7 @@ const tabViewImpl = <T extends TabView>(instance: Reactify<T>, node: T, attach: 
     }
 }
 
-const timePickerImpl = <T extends TimePicker>(instance: Reactify<T>, node: T, attach: boolean | null, nextProps?: T & ExtraProps<T>) => {
+const timePickerImpl = <T extends TimePicker>(instance: Reactify<T>, node: T, attach: boolean | null, nextProps?: Props<T>) => {
     
     if(!(Reflect.get(instance, "tnsType") instanceof TimePicker)) return;
     
@@ -236,7 +236,7 @@ const timePickerImpl = <T extends TimePicker>(instance: Reactify<T>, node: T, at
     }
 }
 
-const webViewImpl = <T extends WebView>(instance: Reactify<T>, node: T, attach: boolean | null, nextProps?: T & ExtraProps<T>) => {
+const webViewImpl = <T extends WebView>(instance: Reactify<T>, node: T, attach: boolean | null, nextProps?: Props<T>) => {
     
     if(!(Reflect.get(instance, "tnsType") instanceof WebView)) return;
     

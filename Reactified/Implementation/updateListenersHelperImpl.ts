@@ -1,6 +1,6 @@
 import { Observable } from "tns-core-modules/data/observable/observable";
 import { ExtraProps } from "../ExtraProps";
-import { Reactify, Base } from "./Types";
+import { Reactify, Base, Props } from "./Types";
 // import { Reactify } from "./Types";
 
 /*
@@ -8,11 +8,11 @@ export const observableImpl = <T extends Observable>(instance: React.Component<T
     
 }
 */
-export const updateListenersHelperImpl = <T extends Base>(instance: Reactify<T>, attach: boolean | null, nextProps?: T & ExtraProps<T>) => {
+export const updateListenersHelperImpl = <T extends Base>(instance: Reactify<T>, attach: boolean | null, nextProps?: Props<T>) => {
     observableImpl(instance, attach, nextProps);
 }
 
-const observableImpl = <T extends Base>(instance: Reactify<T>, attach: boolean | null, nextProps?: T & ExtraProps<T>) => {
+const observableImpl = <T extends Base>(instance: Reactify<T>, attach: boolean | null, nextProps?: Props<T>) => {
     
     // if(!(Reflect.get(instance, "getCurrentRef")() instanceof Observable)) return;
     

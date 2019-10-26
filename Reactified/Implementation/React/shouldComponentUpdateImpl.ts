@@ -1,15 +1,14 @@
 import { Observable } from "tns-core-modules/data/observable/observable";
 
-import { ExtraProps } from "~/Reactified/ExtraProps";
 import { shallowEqual } from "react-nativescript/dist/client/shallowEqual";
-import { Reactify, Base } from "../Types";
+import { Reactify, Base, Props } from "../Types";
 
 
-export const shouldComponentUpdateImpl = <T extends Base>(instance: Reactify<T>, nextProps: T & ExtraProps<T>, nextState: any): boolean => {
+export const shouldComponentUpdateImpl = <T extends Base>(instance: Reactify<T>, nextProps: Props<T>, nextState: any): boolean => {
     return observableImpl(instance, nextProps, nextState);
 }
 
-const observableImpl = <T extends Base>(instance: Reactify<T>, nextProps: T & ExtraProps<T>, nextState: any) => {
+const observableImpl = <T extends Base>(instance: Reactify<T>, nextProps: Props<T>, nextState: any) => {
     
     // if(!(Reflect.get(instance, "tnsType") instanceof Observable)) return;
     

@@ -20,7 +20,7 @@ import { onTextChangeImpl } from "./Implementation/Unique/onTextChangeImpl";
 import { onValueChangeImpl } from "./Implementation/Unique/onValueChangeImpl";
 import { onToggleImpl } from "./Implementation/Unique/onToggleImpl";
 import { PropsWithoutForwardedRef } from "react-nativescript/dist/shared/NativeScriptComponentTypings";
-import { Base, Reactify } from "./Implementation/Types";
+import { Base, Reactify, Props } from "./Implementation/Types";
 import { NativeScriptProps } from "./NativeScriptProps";
 
 type Constructor<T> = new(...args: any[]) => T;
@@ -34,14 +34,14 @@ export function Reactified<T extends Base>(observable: Constructor<T>, name: str
     console.log("registering " + name);
     register(name, () => new observable());
     // let self: Reactify = null;
-    class Reactify extends React.Component<NativeScriptProps<T> & ExtraProps<T>> implements CustomNodeHierarchyManager<T> {
+    class Reactify extends React.Component<Props<T>> implements CustomNodeHierarchyManager<T> {
         static countOfInstances = 0;
         /*
         static defaultProps = {
             ... observable
         }
         */
-        constructor(props?: NativeScriptProps<T> & ExtraProps<T>) {
+        constructor(props?: Props<T>) {
             super(props);
             Reactify.countOfInstances ++;
             this.props
@@ -63,7 +63,7 @@ export function Reactified<T extends Base>(observable: Constructor<T>, name: str
         * Helper method for updateListeners: simply gets the current ref to pass on to it.
         * @param attach true: attach; false: detach; null: update
         */
-        protected updateListenersHelper = (attach: boolean | null, nextProps?: T & ExtraProps<T>): void  => {
+        protected updateListenersHelper = (attach: boolean | null, nextProps?: Props<T>): void  => {
             updateListenersHelperImpl(this, attach, nextProps);
         }
         /**
@@ -71,7 +71,7 @@ export function Reactified<T extends Base>(observable: Constructor<T>, name: str
         * @param attach true: attach; false: detach; null: update
         */
     
-        protected updateListeners = (node: T, attach: boolean | null, nextProps?: T & ExtraProps<T>): void => {
+        protected updateListeners = (node: T, attach: boolean | null, nextProps?: Props<T>): void => {
             updateListenersImpl(this, node, attach, nextProps);        
         }
         componentDidMount = () => {
@@ -82,7 +82,7 @@ export function Reactified<T extends Base>(observable: Constructor<T>, name: str
         * comparison of props and state. We'll implement our Component's shouldComponentUpdate() to
         * match the way PureComponent is handled.
         */
-        shouldComponentUpdate = (nextProps: NativeScriptProps<T> & ExtraProps<T>, nextState: any): boolean => {
+        shouldComponentUpdate = (nextProps: Props<T>, nextState: any): boolean => {
             return shouldComponentUpdateImpl(this, nextProps, nextState);
         }
         componentWillUnmount = () => {
@@ -122,8 +122,8 @@ export function Reactified<T extends Base>(observable: Constructor<T>, name: str
             onToggleImpl(this, args);
         }
     }
-    // return Reactify;
-    return <Constructor<T & Reactify>><unknown> Reactify; // create unionish type
+    return Reactify;
+    // return <Constructor<T & Reactify>><unknown> Reactify; // create unionish. can't causes prop onLoaded to get both onLoaded from Viewbase and onLoaded from ExtraProps 
 
      // have to declare class name to make decorators work  // https://github.com/microsoft/TypeScript/issues/7342
 }

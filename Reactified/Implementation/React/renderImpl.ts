@@ -14,7 +14,6 @@ import {
 } from "react-nativescript/dist/client/ElementRegistry";
 import { executeInOrder } from "../Helpers";
 import { Reactify, Base } from "../Types";
-import { CheckBox } from "@nstudio/nativescript-checkbox";
 
 export const renderImpl = <T extends Base>(name: string, instance: Reactify<T>): React.ReactNode => {
     return executeInOrder(

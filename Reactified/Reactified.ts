@@ -21,6 +21,7 @@ import { onValueChangeImpl } from "./Implementation/Unique/onValueChangeImpl";
 import { onToggleImpl } from "./Implementation/Unique/onToggleImpl";
 import { PropsWithoutForwardedRef } from "react-nativescript/dist/shared/NativeScriptComponentTypings";
 import { Base, Reactify } from "./Implementation/Types";
+import { NativeScriptProps } from "./NativeScriptProps";
 
 type Constructor<T> = new(...args: any[]) => T;
 export function Reactified<T extends Base>(observable: Constructor<T>, name: string) { 
@@ -33,16 +34,17 @@ export function Reactified<T extends Base>(observable: Constructor<T>, name: str
     console.log("registering " + name);
     register(name, () => new observable());
     // let self: Reactify = null;
-    class Reactify extends React.Component<Partial<T & ExtraProps<T>>> implements CustomNodeHierarchyManager<T> {
+    class Reactify extends React.Component<NativeScriptProps<T> & ExtraProps<T>> implements CustomNodeHierarchyManager<T> {
         static countOfInstances = 0;
         /*
         static defaultProps = {
             ... observable
         }
         */
-        constructor(props?: Partial<T & ExtraProps<T>>) {
+        constructor(props?: NativeScriptProps<T> & ExtraProps<T>) {
             super(props);
             Reactify.countOfInstances ++;
+            this.props
             // console.log("constructing instance " + Reactify.countOfInstances);
             /*
             setTimeout(() => {
@@ -54,7 +56,7 @@ export function Reactified<T extends Base>(observable: Constructor<T>, name: str
         protected tnsType = new observable();
         protected myRef: React.RefObject<T> = React.createRef<T>();
         protected getCurrentRef = (): T | null => {
-            
+
             return (this.props.forwardedRef || this.myRef).current;
         }
         /**
@@ -80,7 +82,7 @@ export function Reactified<T extends Base>(observable: Constructor<T>, name: str
         * comparison of props and state. We'll implement our Component's shouldComponentUpdate() to
         * match the way PureComponent is handled.
         */
-        shouldComponentUpdate = (nextProps: T & ExtraProps<T>, nextState: any): boolean => {
+        shouldComponentUpdate = (nextProps: NativeScriptProps<T> & ExtraProps<T>, nextState: any): boolean => {
             return shouldComponentUpdateImpl(this, nextProps, nextState);
         }
         componentWillUnmount = () => {

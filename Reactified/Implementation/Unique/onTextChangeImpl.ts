@@ -1,9 +1,9 @@
 import { EventData } from "tns-core-modules/data/observable/observable";
 import { Observable, SearchBar } from "react-nativescript/dist/client/ElementRegistry";
-import { Reactify } from "../Types";
+import { Reactify, Base } from "../Types";
 import { executeInOrder } from "../Helpers";
 
-export const onTextChangeImpl = <T extends Observable>(instance: Reactify<T>, args: EventData) => {
+export const onTextChangeImpl = <T extends Base>(instance: Reactify<T>, args: EventData) => {
     executeInOrder([searchBarImpl], instance, args);
 }
 const searchBarImpl = <T extends SearchBar>(instance: Reactify<T>, args: EventData) => {

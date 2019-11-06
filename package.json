@@ -24,10 +24,9 @@
   },
   "homepage": "https://github.com/Lelelo1/rns-reactify#readme",
   "dependencies": {
-    "nativescript": "^6.1.2",
-    "react": "^16.10.2",
+    "react": "^16.11.0",
     "react-nativescript": "^0.13.0",
-    "tns-core-modules": "^6.1.2"
+    "tns-core-modules": "^6.2.0"
   },
   "devDependencies": {
     "@types/react": "^16.9.5"

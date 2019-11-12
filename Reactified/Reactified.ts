@@ -95,13 +95,13 @@ export function Reactified<T extends Base>(observable: Constructor<T>, name: str
         }
 
         __ImplementsCustomNodeHierarchyManager__: true;
-        __customHostConfigAppendChild? = (parentInstance: Instance, child: Instance): boolean => {
+        __customHostConfigAppendChild? = (parentInstance: T, child: T): boolean => {
             return __customHostConfigAppendChildImpl(this, parentInstance, child);
         }
-        __customHostConfigRemoveChild? = (parentInstance: Instance, child: Instance): boolean => {
+        __customHostConfigRemoveChild? = (parentInstance: T, child: T): boolean => {
             return __customHostConfigRemoveChildImpl(this, parentInstance, child);
         }
-        __customHostConfigInsertBefore? = (parentInstance: Instance, child: Instance, beforeChild: Instance): boolean => {
+        __customHostConfigInsertBefore? = (parentInstance: T, child: T, beforeChild: T): boolean => {
             return __customHostConfigInsertBeforeImpl(this, parentInstance, child, beforeChild);
         }
     

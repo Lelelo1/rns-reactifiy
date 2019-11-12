@@ -1,11 +1,11 @@
 import { TextBase, Observable} from "react-nativescript/dist/client/ElementRegistry";
 import { Instance, TextInstance } from "react-nativescript/dist/shared/HostConfigTypes";
 import { FormattedString } from "tns-core-modules/text/formatted-string"
-import { Reactify } from "../Types";
+import { Reactify, Base } from "../Types";
 import { executeInOrder } from "../Helpers";
 
 
-export const __customHostConfigInsertBeforeImpl = <T extends Instance>(
+export const __customHostConfigInsertBeforeImpl = <T extends Base>(
     instance: Reactify<T>,
     parent: T,
     child: T,

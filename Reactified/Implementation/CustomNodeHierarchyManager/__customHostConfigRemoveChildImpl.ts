@@ -4,7 +4,7 @@ import { FormattedString } from "tns-core-modules/text/formatted-string"
 import { Reactify, Base } from "../Types";
 import { executeInOrder } from "../Helpers";
 
-export const __customHostConfigRemoveChildImpl = <T extends Instance>(instance: Reactify<T> ,parent: T, child: T ): boolean => {
+export const __customHostConfigRemoveChildImpl = <T extends Base>(instance: Reactify<T> ,parent: T, child: T ): boolean => {
     return executeInOrder([textBaseImpl], instance, parent, child);
 }
 

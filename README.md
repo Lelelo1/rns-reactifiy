@@ -27,5 +27,5 @@ Result:
 ![alt text](https://user-images.githubusercontent.com/42244983/67231429-987da980-f43f-11e9-9c7f-7019d751c1cc.png)
 
 
-Notice:
+**Notice**:
 Don't use this yet - as a problem in release build has beed discovered #15

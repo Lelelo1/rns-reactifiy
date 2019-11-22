@@ -28,4 +28,4 @@ Result:
 
 
 **Notice**:
-Don't use this yet - as a problem in release build has beed discovered #15
+Don't use this yet - as a problem in release build has been discovered #15
